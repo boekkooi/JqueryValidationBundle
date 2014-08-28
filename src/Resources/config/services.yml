@@ -1,0 +1,31 @@
+parameters:
+  boekkooi.jquery_validation.form.validation_extension.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Extension\ValidationTypeExtension
+
+  boekkooi.jquery_validation.rule_collector.class: Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollector
+  boekkooi.jquery_validation.constraint_finder.class: Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder
+
+  boekkooi.jquery_validation.twig.jquery_validation.class: Boekkooi\Bundle\JqueryValidationBundle\Twig\JqueryValidationExtension
+
+services:
+  boekkooi.jquery_validation.form.validation_extension:
+    class: %boekkooi.jquery_validation.form.validation_extension.class%
+    arguments:
+      - @boekkooi.jquery_validation.constraint_finder
+      - @boekkooi.jquery_validation.rule_collector
+    tags:
+      - { name: form.type_extension, alias: form }
+
+  boekkooi.jquery_validation.rule_collector:
+    class: %boekkooi.jquery_validation.rule_collector.class%
+
+  boekkooi.jquery_validation.constraint_finder:
+    class: %boekkooi.jquery_validation.constraint_finder.class%
+    arguments:
+      - @validator.mapping.class_metadata_factory
+
+  boekkooi.jquery_validation.twig.jquery_validation:
+    class: %boekkooi.jquery_validation.twig.jquery_validation.class%
+    arguments:
+      - @translator
+    tags:
+     - { name: twig.extension }

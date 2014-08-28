@@ -1,0 +1,34 @@
+{
+    "name": "boekkooi/jquery-validation-bundle",
+    "type": "symfony-bundle",
+    "keywords": [ "jquery", "form", "validation", "validator", "symfony", "twig"],
+    "description": "Jquery form validation bundle for symfony 2",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.5",
+        "symfony/form": "~2.5",
+        "symfony/validator": "~2.5",
+        "symfony/twig-bundle": "~2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Warnar Boekkooi",
+            "email": "warnar@boekkooi.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Boekkooi\\Bundle\\JqueryValidationBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Boekkooi\\Bundle\\JqueryValidationBundle\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}
