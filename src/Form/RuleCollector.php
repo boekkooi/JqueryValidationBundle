@@ -30,7 +30,8 @@ class RuleCollector implements FormPassInterface
         return [
             new Rule\Compiler\ConstraintGroupFilterPass(),
             new Rule\Compiler\RuleCollectionPass(new Rule\ConstraintResolver()),
-            new Rule\Compiler\ValueToDuplicatesPass()
+            new Rule\Compiler\ValueToDuplicatesPass(),
+            new Rule\Compiler\CollectionPrototypePass()
         ];
     }
 }
