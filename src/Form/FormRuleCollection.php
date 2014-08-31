@@ -24,10 +24,16 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     private $view;
 
-    public function __construct(FormInterface $form, FormView $view)
+    /**
+     * @var FormRuleCollection|null
+     */
+    private $root;
+
+    public function __construct(FormInterface $form, FormView $view, FormRuleCollection $root = null)
     {
         $this->form = $form;
         $this->view = $view;
+        $this->root = $root;
     }
 
     /**
@@ -44,6 +50,22 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
     public function getView()
     {
         return $this->view;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return $this->root === null;
+    }
+
+    /**
+     * @return FormRuleCollection|null
+     */
+    public function getRoot()
+    {
+        return $this->root;
     }
 
     /**
@@ -70,7 +92,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function set($form, RuleCollection $collection)
     {
-        $name = $this->getFormName($form);
+        $name = static::getFormName($form);
 
         unset($this->rules[$name]);
 
@@ -85,7 +107,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function add($form, RuleCollection $collection)
     {
-        $name = $this->getFormName($form);
+        $name = static::getFormName($form);
         if (isset($this->rules[$name])) {
             $this->rules[$name]->addCollection($collection);
         } else {
@@ -111,7 +133,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function get($form)
     {
-        $name = $this->getFormName($form);
+        $name = static::getFormName($form);
         return isset($this->rules[$name]) ? $this->rules[$name] : null;
     }
 
@@ -122,26 +144,8 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function remove($form)
     {
-        $name = $this->getFormName($form);
+        $name = static::getFormName($form);
         unset($this->rules[$name]);
-    }
-
-    public function clean()
-    {
-        $this->rules = array_filter($this->rules, function($collection) { return $collection->count() > 0; });
-    }
-
-    private function getFormName($form)
-    {
-        if ($form instanceof FormView && isset($form->vars['full_name'])) {
-            return $form->vars['full_name'];
-        }
-        if (is_string($form)) {
-            return $form;
-        }
-
-        // TODO use bundle exception
-        throw new \InvalidArgumentException();
     }
 
     /**
@@ -159,5 +163,18 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
                 $this->rules[$name] = $rule;
             }
         }
+    }
+
+    public static function getFormName($form)
+    {
+        if ($form instanceof FormView && isset($form->vars['full_name'])) {
+            return $form->vars['full_name'];
+        }
+        if (is_string($form)) {
+            return $form;
+        }
+
+        // TODO use bundle exception
+        throw new \InvalidArgumentException();
     }
 } 

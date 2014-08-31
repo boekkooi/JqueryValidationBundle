@@ -32,16 +32,25 @@ class ValidationTypeExtension extends AbstractTypeExtension
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $collection = new FormRuleCollection($form, $view);
-        $this->ruleCollector->process(
-            $collection,
-            $this->findConstraints($form)
-        );
-
         $rootCollection = $this->getRuleCollection($view, $form);
-        $rootCollection->addCollection($collection);
-        if ($form->isRoot()) {
-            $rootCollection->clean();
+
+        // Detect the root form. This is not the same FormInterface (see the collection implementation)
+        if ($form->isRoot() && $view->parent === null) {
+            $collection = $rootCollection;
+
+            $this->ruleCollector->process(
+                $collection,
+                $this->findConstraints($form)
+            );
+        } else {
+            $collection = new FormRuleCollection($form, $view, $rootCollection);
+
+            $this->ruleCollector->process(
+                $collection,
+                $this->findConstraints($form)
+            );
+
+            $rootCollection->addCollection($collection);
         }
     }
 
