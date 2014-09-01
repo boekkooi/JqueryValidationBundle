@@ -23,13 +23,13 @@ class DataConstraintFinder
     {
         $constraints = [];
 
-        $data = $this->getData($form);
-        if ($data === null) {
+        $class = $this->getDataClass($form);
+        if ($class === null) {
             return $constraints;
         }
 
         /** @var \Symfony\Component\Validator\Mapping\ClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataFor($data);
+        $metadata = $this->metadataFactory->getMetadataFor($class);
         // TODO support sub forms
         $v = $form->getPropertyPath()->getElement(0);
         foreach($metadata->getPropertyMetadata($v) as $metadata) {
@@ -40,23 +40,22 @@ class DataConstraintFinder
     }
 
     /**
-     * Gets the form data root used by the given form.
+     * Gets the form root data class used by the given form.
      *
      * @param FormInterface $form
-     * @return mixed
+     * @return string|null
      */
-    private function getData(FormInterface $form)
+    private function getDataClass(FormInterface $form)
     {
-        if ($form->isRoot()) {
-            return $form->getData();
-        }
-
-        $propertyPath = $form->getPropertyPath();
-
         $dataForm = $form;
-        for ($i = $propertyPath->getLength(); $i != 0; $i--) {
-            $dataForm = $dataForm->getParent();
+        if (!$form->isRoot()) {
+            $propertyPath = $form->getPropertyPath();
+
+            for ($i = $propertyPath->getLength(); $i != 0; $i--) {
+                $dataForm = $dataForm->getParent();
+            }
         }
-        return $dataForm->getData();
+
+        return $dataForm->getConfig()->getDataClass();
     }
 }
