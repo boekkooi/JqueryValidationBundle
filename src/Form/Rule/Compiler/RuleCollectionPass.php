@@ -25,7 +25,7 @@ class RuleCollectionPass implements FormPassInterface
     {
         $collection->add(
             $collection->getView(),
-            $this->constraintResolver->resolve($constraints)
+            $this->constraintResolver->resolve($constraints, $collection->getForm())
         );
     }
 }

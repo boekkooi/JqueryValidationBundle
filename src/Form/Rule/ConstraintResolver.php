@@ -21,16 +21,16 @@ class ConstraintResolver implements ConstraintResolverInterface
         $this->mappers = $this->getDefaultResolvers();
     }
 
-    public function resolve($constraints)
+    public function resolve($constraints, FormInterface $form)
     {
         $collection = new RuleCollection();
         foreach ($this->mappers as $mapper) {
             foreach ($constraints as $constraint) {
-                if (!$mapper->supports($constraint)) {
+                if (!$mapper->supports($constraint, $form)) {
                     continue;
                 }
 
-                $mapper->resolve($collection, $constraint);
+                $mapper->resolve($collection, $constraint, $form);
             }
         }
 

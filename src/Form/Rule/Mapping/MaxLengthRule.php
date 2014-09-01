@@ -3,8 +3,10 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormHelper;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,7 +19,7 @@ class MaxLengthRule implements ConstraintMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint)
+    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
     {
         /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
         $collection->add(
@@ -30,14 +32,25 @@ class MaxLengthRule implements ConstraintMapperInterface
         );
     }
 
-    public function supports(Constraint $constraint)
+    public function supports(Constraint $constraint, FormInterface $form)
     {
-        return
-            in_array(get_class($constraint), [
-                'Symfony\Component\Validator\Constraints\Choice',
-                'Symfony\Component\Validator\Constraints\Length'
-            ], true) &&
-            $constraint->max !== null &&
-            $constraint->min != $constraint->max;
+        /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
+        $constraintClass = get_class($constraint);
+        if (!in_array($constraintClass, ['Symfony\Component\Validator\Constraints\Choice', 'Symfony\Component\Validator\Constraints\Length'], true) ||
+            $constraint->max === null ||
+            $constraint->min == $constraint->max) {
+            return false;
+        }
+
+        if ($constraintClass === 'Symfony\Component\Validator\Constraints\Length' && $this->isType($form, 'choice')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function isType(FormInterface $type, $typeName)
+    {
+        return FormHelper::isType($type->getConfig()->getType(), $typeName);
     }
 }

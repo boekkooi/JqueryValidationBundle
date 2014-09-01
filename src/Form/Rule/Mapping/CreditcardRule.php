@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,7 +18,7 @@ class CreditcardRule implements ConstraintMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint)
+    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
     {
         /** @var \Symfony\Component\Validator\Constraints\CardScheme $constraint */
         $collection->add(
@@ -30,7 +31,7 @@ class CreditcardRule implements ConstraintMapperInterface
         );
     }
 
-    public function supports(Constraint $constraint)
+    public function supports(Constraint $constraint, FormInterface $form)
     {
         return get_class($constraint) === 'Symfony\Component\Validator\Constraints\CardScheme';
     }

@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -18,7 +19,7 @@ class MaxRule implements ConstraintMapperInterface
      * {@inheritdoc}
      * @param
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint)
+    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
     {
         /** @var \Symfony\Component\Validator\Constraints\AbstractComparison $constraint */
         $constraintClass = get_class($constraint);
@@ -54,7 +55,7 @@ class MaxRule implements ConstraintMapperInterface
         );
     }
 
-    public function supports(Constraint $constraint)
+    public function supports(Constraint $constraint, FormInterface $form)
     {
         $constraintClass = get_class($constraint);
 
