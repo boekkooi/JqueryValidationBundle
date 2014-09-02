@@ -3,8 +3,10 @@ parameters:
 
   boekkooi.jquery_validation.rule_collector.class: Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollector
   boekkooi.jquery_validation.constraint_finder.class: Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder
+  boekkooi.jquery_validation.constraint_resolver.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintResolver
 
   boekkooi.jquery_validation.twig.jquery_validation.class: Boekkooi\Bundle\JqueryValidationBundle\Twig\JqueryValidationExtension
+
 
 services:
   boekkooi.jquery_validation.form.validation_extension:
@@ -17,6 +19,8 @@ services:
 
   boekkooi.jquery_validation.rule_collector:
     class: %boekkooi.jquery_validation.rule_collector.class%
+    arguments:
+      - []
 
   boekkooi.jquery_validation.constraint_finder:
     class: %boekkooi.jquery_validation.constraint_finder.class%
@@ -28,4 +32,35 @@ services:
     arguments:
       - @translator
     tags:
-     - { name: twig.extension }
+      - { name: twig.extension }
+
+  boekkooi.jquery_validation.pass.group:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ConstraintGroupFilterPass
+    public: false
+    tags:
+     - { name: validator.rule_pass, priority: -10 }
+
+  boekkooi.jquery_validation.constraint_resolver:
+    class: %boekkooi.jquery_validation.constraint_resolver.class%
+    public: false
+
+  boekkooi.jquery_validation.pass.collection:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RuleCollectionPass
+    arguments:
+      - @boekkooi.jquery_validation.constraint_resolver
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 0 }
+
+  boekkooi.jquery_validation.pass.value_duplicates_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ValueToDuplicatesPass
+    public: false
+    tags:
+     - { name: validator.rule_pass, priority: 10 }
+
+  boekkooi.jquery_validation.pass.collection_type:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\CollectionPrototypePass
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 10 }
+

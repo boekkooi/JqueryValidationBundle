@@ -14,12 +14,7 @@ class ConstraintResolver implements ConstraintResolverInterface
     /**
      * @var ConstraintMapperInterface[]
      */
-    protected $mappers;
-
-    public function __construct()
-    {
-        $this->mappers = $this->getDefaultResolvers();
-    }
+    protected $mappers = array();
 
     public function resolve($constraints, FormInterface $form)
     {
@@ -37,22 +32,30 @@ class ConstraintResolver implements ConstraintResolverInterface
         return $collection;
     }
 
-    protected function getDefaultResolvers()
+    public function addDefaultMappers()
     {
-        return array(
-            new Mapping\RequiredRule(),
+        $this->mappers = array_merge(
+            $this->mappers,
+            array(
+                new Mapping\RequiredRule(),
 
-            new Mapping\NumberRule(),
-            new Mapping\MinRule(),
-            new Mapping\MaxRule(),
+                new Mapping\NumberRule(),
+                new Mapping\MinRule(),
+                new Mapping\MaxRule(),
 
-            new Mapping\MinLengthRule(),
-            new Mapping\MaxLengthRule(),
+                new Mapping\MinLengthRule(),
+                new Mapping\MaxLengthRule(),
 
-            new Mapping\EmailRule(),
-            new Mapping\UrlRule(),
-            new Mapping\CreditcardRule()
+                new Mapping\EmailRule(),
+                new Mapping\UrlRule(),
+                new Mapping\CreditcardRule()
+            )
         );
+    }
+
+    public function addMapper(ConstraintMapperInterface $mapper)
+    {
+        $this->mappers[] = $mapper;
     }
 }
 

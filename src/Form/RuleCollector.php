@@ -13,9 +13,12 @@ class RuleCollector implements FormPassInterface
      */
     private $passes;
 
-    public function __construct()
+    /**
+     * @param FormPassInterface[] $passes
+     */
+    public function __construct(array $passes)
     {
-        $this->passes = $this->getFormPasses();
+        $this->passes = $passes;
     }
 
     public function process(FormRuleCollection $collection, $constraints)
@@ -23,15 +26,5 @@ class RuleCollector implements FormPassInterface
         foreach ($this->passes as $pass) {
             $pass->process($collection, $constraints);
         }
-    }
-
-    protected function getFormPasses()
-    {
-        return [
-            new Rule\Compiler\ConstraintGroupFilterPass(),
-            new Rule\Compiler\RuleCollectionPass(new Rule\ConstraintResolver()),
-            new Rule\Compiler\ValueToDuplicatesPass(),
-            new Rule\Compiler\CollectionPrototypePass()
-        ];
     }
 }
