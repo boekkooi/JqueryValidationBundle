@@ -3,6 +3,8 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -15,28 +17,55 @@ class CollectionPrototypePass implements FormPassInterface
         $view = $collection->getView();
 
         // Check if this is a a prototype/collection type
-        /** @var \Symfony\Component\Form\FormInterface|null $prototype */
+        /** @var FormInterface|null $prototype */
         $prototype = $form->getConfig()->getAttribute('prototype');
         if (!$prototype || !isset($view->vars['prototype'])) {
             return;
         }
 
-        /** @var \Symfony\Component\Form\FormView $prototypeView */
+        /** @var FormView $prototypeView */
         $prototypeView = $view->vars['prototype'];
 
-        // Remove the prototype rules from the default rules
+        // Extract the prototype rules from the default rules
         $rootCollection = $collection->isRoot() ? $collection : $collection->getRoot();
+        $prototypeCollection = $this->extractRules($rootCollection, $prototype, $prototypeView);
+        if ($prototypeCollection->count() > 0) {
+            $view->vars['jquery_validation_rules'] = $prototypeCollection;
+        }
+    }
 
-        $rules = $rootCollection->get($prototypeView);
-        $rootCollection->remove($prototypeView);
+    /**
+     * @param FormRuleCollection $collection
+     * @param FormInterface $form
+     * @param FormView $view
+     * @return \Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection
+     */
+    protected function extractRules(FormRuleCollection $collection, FormInterface $form, FormView $view)
+    {
+        $extracted = new FormRuleCollection($form, $view, $collection);
+        if ($form->getConfig()->getCompound()) {
+            $prefix = $view->vars['full_name'];
 
-        // No rules
-        if (empty($rules) === null) {
-            return;
+            $found = [];
+            foreach ($collection as $name => $rules) {
+                if (strpos($name, $prefix) === 0) {
+                    $found[] = $name;
+                }
+            }
+        } else {
+            $found = [$view];
         }
 
-        $prototypeCollection = new FormRuleCollection($prototype, $prototypeView, $rootCollection);
-        $prototypeCollection->add($prototypeView, $rules);
-        $view->vars['jquery_validation_rules'] = $prototypeCollection;
+        foreach ($found as $foundView) {
+            $rules = $collection->get($foundView);
+            if ($rules === null) {
+                continue;
+            }
+
+            $extracted->add($foundView, $rules);
+            $collection->remove($foundView);
+        }
+
+        return $extracted;
     }
-} 
+}
