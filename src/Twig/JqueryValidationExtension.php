@@ -56,7 +56,7 @@ class JqueryValidationExtension extends Twig_Extension
 
         if ($collection->isRoot()) {
             return sprintf(
-                '<script>$("%s").validate(%s);</script>',
+                '$("%s").validate(%s);',
                 $selector,
                 json_encode($this->generateOptions($view, $collection))
             );
@@ -79,10 +79,7 @@ class JqueryValidationExtension extends Twig_Extension
             }
 
             if (!empty($js)) {
-                return sprintf(
-                    '<script>%s</script>',
-                    implode(';', $js)
-                );
+                return implode(';', $js);
             }
 
         }
