@@ -1,9 +1,11 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -17,7 +19,7 @@ class ValueToDuplicatesPass implements FormPassInterface
      */
     private $keyReflCache = null;
 
-    public function process(FormRuleCollection $collection, $constraints)
+    public function process(FormRuleCollection $collection, ConstraintCollection $constraints)
     {
         $form = $collection->getForm();
         if (!$form->getConfig()->getCompound()) {
@@ -114,4 +116,4 @@ class ValueToDuplicatesPass implements FormPassInterface
         // TODO use bundle exception
         throw new \RuntimeException();
     }
-} 
+}

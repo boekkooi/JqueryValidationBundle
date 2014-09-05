@@ -2,6 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -21,7 +22,7 @@ class RuleCollector implements FormPassInterface
         $this->passes = $passes;
     }
 
-    public function process(FormRuleCollection $collection, $constraints)
+    public function process(FormRuleCollection $collection, ConstraintCollection $constraints)
     {
         foreach ($this->passes as $pass) {
             $pass->process($collection, $constraints);

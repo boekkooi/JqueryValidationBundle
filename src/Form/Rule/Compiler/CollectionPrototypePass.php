@@ -3,6 +3,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Form\FormView;
  */
 class CollectionPrototypePass implements FormPassInterface
 {
-    public function process(FormRuleCollection $collection, $constraints)
+    public function process(FormRuleCollection $collection, ConstraintCollection $constraints)
     {
         $form = $collection->getForm();
         $view = $collection->getView();

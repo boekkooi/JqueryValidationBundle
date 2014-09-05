@@ -4,7 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Extension;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -97,24 +97,23 @@ class ValidationTypeExtension extends AbstractTypeExtension
      */
     protected function findConstraints(FormInterface $form)
     {
-        $constraints = [];
+        $constraints = new ConstraintCollection();
 
         // Find constraints configured with the form
         $formConstraints = $form->getConfig()->getOption('constraints');
         if (!empty($formConstraints)) {
-            if (!is_array($formConstraints)) {
-                $formConstraints = [$formConstraints];
+            if (is_array($formConstraints)) {
+                $constraints->addCollection(
+                    new ConstraintCollection($formConstraints)
+                );
+            } else {
+                $constraints->add($formConstraints);
             }
-            $constraints = array_merge(
-                $constraints,
-                $formConstraints
-            );
         }
 
         // Find constraints bound by data
         if ($form->getConfig()->getMapped()) {
-            $constraints = array_merge(
-                $constraints,
+            $constraints->addCollection(
                 $this->constraintFinder->find($form)
             );
         }

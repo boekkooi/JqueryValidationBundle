@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
@@ -21,11 +22,9 @@ class DataConstraintFinder
 
     public function find(FormInterface $form)
     {
-        $constraints = [];
-
         $class = $this->getDataClass($form);
         if ($class === null) {
-            return $constraints;
+            return new ConstraintCollection();
         }
 
         /** @var \Symfony\Component\Validator\Mapping\ClassMetadata $metadata */
@@ -33,10 +32,10 @@ class DataConstraintFinder
         // TODO support sub forms
         $v = $form->getPropertyPath()->getElement(0);
         foreach($metadata->getPropertyMetadata($v) as $metadata) {
-            return $metadata->getConstraints();
+            return new ConstraintCollection($metadata->getConstraints());
         }
 
-        return $constraints;
+        return new ConstraintCollection();
     }
 
     /**
