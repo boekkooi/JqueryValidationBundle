@@ -47,14 +47,14 @@ class CollectionPrototypePass implements FormPassInterface
         if ($form->getConfig()->getCompound()) {
             $prefix = $view->vars['full_name'];
 
-            $found = [];
+            $found = array();
             foreach ($collection as $name => $rules) {
                 if (strpos($name, $prefix) === 0) {
                     $found[] = $name;
                 }
             }
         } else {
-            $found = [$view];
+            $found = array($view);
         }
 
         foreach ($found as $foundView) {

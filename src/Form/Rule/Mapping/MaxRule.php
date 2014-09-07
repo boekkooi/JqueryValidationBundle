@@ -62,10 +62,10 @@ class MaxRule implements ConstraintMapperInterface
         $constraintClass = get_class($constraint);
 
         return
-            in_array($constraintClass, [
+            in_array($constraintClass, array(
                 'Symfony\Component\Validator\Constraints\LessThan',
                 'Symfony\Component\Validator\Constraints\LessThanOrEqual'
-            ], true) ||
+            ), true) ||
             $constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->max !== null
         ;
     }

@@ -63,11 +63,10 @@ class MinRule implements ConstraintMapperInterface
         $constraintClass = get_class($constraint);
 
         return
-            in_array($constraintClass, [
-                    'Symfony\Component\Validator\Constraints\GreaterThan',
-                    'Symfony\Component\Validator\Constraints\GreaterThanOrEqual'
-                ], true) ||
-            $constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->min !== null
-            ;
+            in_array($constraintClass, array(
+                'Symfony\Component\Validator\Constraints\GreaterThan',
+                'Symfony\Component\Validator\Constraints\GreaterThanOrEqual'
+            ), true) ||
+            $constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->min !== null;
     }
 }

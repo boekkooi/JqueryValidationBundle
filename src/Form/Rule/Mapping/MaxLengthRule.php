@@ -37,7 +37,7 @@ class MaxLengthRule implements ConstraintMapperInterface
     {
         /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
         $constraintClass = get_class($constraint);
-        if (!in_array($constraintClass, ['Symfony\Component\Validator\Constraints\Choice', 'Symfony\Component\Validator\Constraints\Length'], true) ||
+        if (!in_array($constraintClass, array('Symfony\Component\Validator\Constraints\Choice', 'Symfony\Component\Validator\Constraints\Length'), true) ||
             $constraint->max === null ||
             $constraint->min == $constraint->max) {
             return false;

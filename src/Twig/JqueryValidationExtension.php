@@ -121,7 +121,7 @@ class JqueryValidationExtension extends Twig_Extension
 
     protected function fieldRulesViewData(FormRuleCollection $collection)
     {
-        $fields = [];
+        $fields = array();
         foreach ($collection as $name => $rules) {
             $fields[] = array(
                 'name' => $name,
