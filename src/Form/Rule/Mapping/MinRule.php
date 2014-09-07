@@ -28,14 +28,16 @@ class MinRule implements ConstraintMapperInterface
             $rule = new Rule(
                 self::RULE_NAME,
                 $constraint->value + 1, // TODO support floats
-                new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value))
+                new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value)),
+                $constraint->groups
             );
         }
         elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\GreaterThanOrEqual') {
             $rule = new Rule(
                 self::RULE_NAME,
                 $constraint->value,
-                new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value))
+                new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value)),
+                $constraint->groups
             );
         }
         /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
@@ -43,7 +45,8 @@ class MinRule implements ConstraintMapperInterface
             $rule = new Rule(
                 self::RULE_NAME,
                 $constraint->min,
-                new RuleMessage($constraint->minMessage, array('{{ limit }}', $constraint->min))
+                new RuleMessage($constraint->minMessage, array('{{ limit }}', $constraint->min)),
+                $constraint->groups
             );
         } else {
             // TODO use bundle exception

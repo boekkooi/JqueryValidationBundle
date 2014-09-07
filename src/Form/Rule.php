@@ -25,12 +25,13 @@ class Rule
     /**
      * @var array
      */
-    public $groups = array(Constraint::DEFAULT_GROUP);
+    public $groups;
 
-    public function __construct($name, $options = null, RuleMessage $message = null)
+    public function __construct($name, $options = null, RuleMessage $message = null, array $groups = array(Constraint::DEFAULT_GROUP))
     {
         $this->name = $name;
         $this->options = $options;
         $this->message = $message;
+        $this->groups = $groups;
     }
 }

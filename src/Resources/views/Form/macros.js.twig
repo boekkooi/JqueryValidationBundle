@@ -1,0 +1,91 @@
+{% macro validation_groups(groups, activeGroups) %}
+    {%- set activeGroups = activeGroups|default([]) -%}
+    {%- for group in groups -%}
+        "{{ group|e('js') }}": {{ group in activeGroups ? 'true' : 'false' }}{% if not loop.last %}, {% endif %}
+    {%- endfor -%}
+{% endmacro %}
+
+{# Generate all rules for all fields #}
+{% macro form_rules(fields, includeGroupDeps) %}
+    {%- import _self as gen -%}
+
+    {% set first = true %}
+    {% for field in fields %}
+        {%- if field.rules|length > 0 -%}
+            {%- if not first %},{% endif -%}
+            "{{ field.name|e('js') }}": {
+                {{- gen.rules(field.rules, includeGroupDeps) -}}
+            }
+            {%- set first = false -%}
+        {%- endif -%}
+    {% endfor %}
+{% endmacro %}
+
+{# Generate all rules #}
+{% macro rules(field_rules, includeGroupDeps, includeMessage) %}
+    {%- import _self as gen -%}
+
+    {%- for rule in field_rules -%}
+        "{{ rule.name|e('js') }}": {{- gen.rule(rule, includeGroupDeps) -}}{% if not loop.last %}, {%- endif %}
+    {%- endfor -%}
+
+    {%- if includeMessage|default(false) -%}
+        ,"messages": { {{- gen.rules_messages(field_rules) -}} }
+    {%- endif -%}
+{% endmacro %}
+
+{# Generate a rule #}
+{% macro rule(rule, includeGroupDeps) %}
+    {%- import _self as gen -%}
+
+    {%- if includeGroupDeps|default(false) -%}
+        {
+            {%- if rule.options is not sameas(true) -%}
+                param: {{- rule.options|json_encode() -}},
+            {%- endif -%}
+
+            depends: function() {
+                return {% for group in rule.groups -%}
+                    groups["{{ group|e('js') }}"] {% if not loop.last %} || {% endif %}
+                {%- endfor -%};
+            }
+        }
+    {%- else -%}
+        {{- rule.options|json_encode()|raw -}}
+    {%- endif -%}
+{% endmacro %}
+
+{# Generate all messages for all fields #}
+{% macro form_messages(fields) %}
+    {%- import _self as gen -%}
+
+    {%- for field in fields -%}
+        {%- if field.rules|length > 0 -%}
+            "{{ field.name|e('js') }}": {
+                {{- gen.rules_messages(field.rules) -}}
+            }
+            {%- if not loop.last %}, {% endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{# Generate all messages for a set of rules #}
+{% macro rules_messages(field_rules) %}
+    {%- import _self as gen -%}
+    
+    {%- for rule in field_rules -%}
+        {%- if rule.message -%}
+            "{{ rule.name|e('js') }}": "{{ gen.rule_message(rule.message) }}"
+            {%- if not loop.last -%}, {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{# Create a string based on a form rule message #}
+{% macro rule_message(msg) %}
+    {%- if msg.plural is null -%}
+        {{- msg.message|trans(msg.parameters, 'validators')|e('js') -}}
+    {%- else -%}
+        {{- msg.message|transchoice(msg.plural, msg.parameters|merge({'%count%': msg.plural}), 'validators')|e('js') -}}
+    {%- endif -%}
+{% endmacro %}

@@ -2,9 +2,8 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Twig;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -14,16 +13,6 @@ use Twig_SimpleFunction;
 class JqueryValidationExtension extends Twig_Extension
 {
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getFunctions()
@@ -31,8 +20,8 @@ class JqueryValidationExtension extends Twig_Extension
         return array(
              new Twig_SimpleFunction(
                 'form_jquery_validation',
-                array($this, 'buildJavascript'),
-                array('pre_escape' => 'html', 'is_safe' => array('html'))
+                array($this, 'renderJavascript'),
+                array('needs_environment' => true, 'pre_escape' => array('html', 'js'), 'is_safe' => array('html', 'js'))
             )
         );
     }
@@ -45,95 +34,100 @@ class JqueryValidationExtension extends Twig_Extension
         return 'boekkooi_jquery_validation';
     }
 
-    public function buildJavascript(FormView $view)
+    public function renderJavascript(\Twig_Environment $twig, FormView $view)
     {
         if (!isset($view->vars['jquery_validation_rules'])) {
             return '';
         }
+
         /** @var \Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection $collection */
         $collection = $view->vars['jquery_validation_rules'];
-        $selector = $this->getFormSelector($collection);
 
-        if ($collection->isRoot()) {
-            return sprintf(
-                '$("%s").validate(%s);',
-                $selector,
-                json_encode($this->generateOptions($view, $collection))
-            );
-        } else {
-            $js = [];
-            $formOptions = $this->generateOptions($view, $collection);
-            foreach ($formOptions['rules'] as $name => $rules) {
-                // TODO better escaping
-                $options = $rules;
-                if (isset($formOptions['messages'][$name])) {
-                    $options['messages'] = $formOptions['messages'][$name];
-                }
+        if (!$collection->isRoot()) {
+            $rootView = $collection->getRoot()->getView();
 
-                $js[] = sprintf(
-                    '$("%s *[name=\\"%s\\"]").rules("add", %s)',
-                    $selector,
-                    $name,
-                    json_encode($options)
-                );
-            }
-
-            if (!empty($js)) {
-                return implode(';', $js);
-            }
-
+            return $twig->render('BoekkooiJqueryValidationBundle:Form:dynamic_validate.js.twig', array(
+                'form' => $rootView,
+                'fields' => $this->fieldRulesViewData($collection),
+                'validation_groups' => $this->validationGroupsViewData($rootView),
+                'enforce_validation_groups' => isset($rootView->vars['jquery_validation_buttons']) && count($rootView->vars['jquery_validation_buttons']) > 0
+            ));
         }
+
+        return $twig->render('BoekkooiJqueryValidationBundle:Form:form_validate.js.twig', array(
+            'form' => $collection->getView(),
+            'fields' => $this->fieldRulesViewData($collection),
+            'buttons' => $this->buttonsViewData($view),
+            'validation_groups' => $this->validationGroupsViewData($view),
+            'enforce_validation_groups' => isset($view->vars['jquery_validation_buttons']) && count($view->vars['jquery_validation_buttons']) > 0
+        ));
     }
 
-    protected function generateOptions(FormView $view, FormRuleCollection $collection)
+    protected function validationGroupsViewData(FormView $view)
     {
-        $validationOptions = array(
-            'rules' => [],
-            'messages' => []
+        $it = new \RecursiveIteratorIterator(
+            new \RecursiveArrayIterator($view->vars['jquery_validation_groups'])
         );
-        foreach ($collection as $name => $ruleCollection) {
-            /** @var \Boekkooi\Bundle\JqueryValidationBundle\Form\Rule $rule */
-            $rules = [];
-            $messages = [];
-            foreach ($ruleCollection as $rule) {
-                $rules[$rule->name] = $rule->options;
-                if ($rule->message) {
-                    $messages[$rule->name] = $this->translateMessage($rule->message);
-                }
-            }
-
-            if (!empty($rules)) {
-                $validationOptions['rules'][$name] = $rules;
-            }
-            if (!empty($messages)) {
-                $validationOptions['messages'][$name] = $messages;
-            }
-        }
-
-        return $validationOptions;
-    }
-
-    protected function translateMessage(RuleMessage $message)
-    {
-        $domain = 'validators';
-        return null === $message->plural
-            ? $this->translator->trans($message->message, $message->parameters, $domain)
-            : $this->translator->transChoice($message->message, $message->plural, array_merge(array('%count%' => $message->plural), $message->parameters), $domain);
+        return array_unique(array_filter(iterator_to_array($it, false)));
     }
 
     /**
-     * @param $collection
-     * @return string
+     * Transform the buttons in the given form into a array that can easily be used by twig.
+     *
+     * @param FormView $view
+     * @return array
      */
-    public function getFormSelector($collection)
+    protected function buttonsViewData(FormView $view)
     {
-        $rootView = $collection->isRoot() ? $collection->getView() : $collection->getRoot()->getView();
-        if (isset($rootView->vars['attr']['id'])) {
-            $selector = '#' . $rootView->vars['attr']['id'];
-            return $selector;
-        } else {
-            $selector = sprintf('form[name=\\"%s\\"]', $rootView->vars['full_name']);
-            return $selector;
+        $buttons = array();
+        if (empty($view->vars['jquery_validation_buttons'])) {
+            return $buttons;
         }
+
+        $validationGroups = $view->vars['jquery_validation_groups'];
+        foreach ($view->vars['jquery_validation_buttons'] as $name) {
+            $groups = isset($validationGroups[$name]) ? $validationGroups[$name] : null;
+
+            // If the form group is null used the closest validation group
+            if ($groups === null) {
+                $path = new PropertyPath($name);
+                do {
+                    if (isset($validationGroups[(string)$path]) && ($groups = $validationGroups[(string)$path]) !== null) {
+                        $groups = $validationGroups[(string)$path];
+                    }
+                    $path = $path->getParent();
+                } while($path !== null && $groups === null);
+            }
+
+            // A cancel button
+            $cancel = false;
+            if (empty($groups)) {
+                $cancel = true;
+                $groups = array();
+            }
+
+            // Create the view array
+            $buttons[] = array(
+                'name' => $name,
+                'cancel' => $cancel,
+                'validation_groups' => array_unique($groups)
+            );
+        }
+
+        return $buttons;
+    }
+
+
+    protected function fieldRulesViewData(FormRuleCollection $collection)
+    {
+        $fields = [];
+        foreach ($collection as $name => $rules) {
+            $fields[] = array(
+                'name' => $name,
+                'rules' => $rules
+            );
+        }
+
+        return $fields;
     }
 }

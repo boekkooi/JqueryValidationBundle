@@ -26,7 +26,8 @@ class NumberRule implements ConstraintMapperInterface
             new Rule(
                 self::RULE_NAME,
                 true,
-                new RuleMessage($constraint->invalidMessage)
+                new RuleMessage($constraint->invalidMessage),
+                $constraint->groups
             )
         );
     }

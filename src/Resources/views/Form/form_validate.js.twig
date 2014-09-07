@@ -1,0 +1,34 @@
+{% import "BoekkooiJqueryValidationBundle:Form:macros.js.twig" as gen %}
+
+{%- autoescape false -%}
+(function($) {
+    {% if form.vars.id is defined -%}
+        var form = $("#{{ form.vars.id|e('js') }}");
+    {%- else -%}
+        var form = $("form[name=\"{{ form.vars.full_name|e('js') }}\"]");
+    {%- endif -%}
+
+    {%- if validation_groups|length > 0 -%}
+        var groups = { {{- gen.validation_groups(validation_groups) -}} };
+    {%- endif -%}
+
+    {%- for button in buttons -%}
+        {%- if button.cancel -%}
+            form.find("*[name=\"{{ button.name|e('js') }}\"]").addClass("cancel");
+        {%- else -%}
+            form.find("*[name=\"{{ button.name|e('js') }}\"]").click(function() {
+                groups = { {{- gen.validation_groups(validation_groups, button.validation_groups) -}} };
+            });
+        {%- endif -%}
+    {%- endfor %}
+
+    form.validate({
+        rules: {
+            {{- gen.form_rules(fields, enforce_validation_groups) -}}
+        },
+        messages: {
+            {{- gen.form_messages(fields) -}}
+        }
+    });
+})(jQuery);
+{%- endautoescape -%}

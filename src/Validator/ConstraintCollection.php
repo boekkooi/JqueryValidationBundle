@@ -79,6 +79,11 @@ class ConstraintCollection implements \IteratorAggregate, \Countable
         }
     }
 
+    public function clear()
+    {
+        $this->constraints = array();
+    }
+
     /**
      * Adds a constraint collection at the end of the current set by appending all
      * constraint of the added collection.

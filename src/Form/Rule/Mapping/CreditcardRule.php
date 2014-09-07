@@ -26,7 +26,8 @@ class CreditcardRule implements ConstraintMapperInterface
             new Rule(
                 self::RULE_NAME,
                 true,
-                new RuleMessage($constraint->message)
+                new RuleMessage($constraint->message),
+                $constraint->groups
             )
         );
     }
