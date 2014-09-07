@@ -3,7 +3,7 @@ Installation
 
 Add BoekkooiJqueryValidationBundle by running the command:
 ```
-composer require boekkooi/twig-jack-bundle dev-master
+composer require boekkooi/jquery-validation-bundle dev-master
 ```
 
 Enable the bundle in the kernel:

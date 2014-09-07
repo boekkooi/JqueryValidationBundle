@@ -22,7 +22,7 @@ But please try it! I really need some feedback and help to make this a stable an
 
 [Install and configure](doc/install.md)
 -------------
-`composer require boekkooi/twig-jack-bundle dev-master`
+`composer require boekkooi/jquery-validation-bundle dev-master`
 
 All the installation instructions are located in the [documentation]](doc/install.md).
 
