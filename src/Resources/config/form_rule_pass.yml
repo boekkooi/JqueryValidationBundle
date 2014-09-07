@@ -1,0 +1,26 @@
+services:
+  boekkooi.jquery_validation.pass.group:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ConstraintGroupFilterPass
+    public: false
+    tags:
+     - { name: validator.rule_pass, priority: -10 }
+
+  boekkooi.jquery_validation.pass.collection:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RuleCollectionPass
+    arguments:
+      - @boekkooi.jquery_validation.constraint_resolver
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 0 }
+
+  boekkooi.jquery_validation.pass.value_duplicates_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ValueToDuplicatesPass
+    public: false
+    tags:
+     - { name: validator.rule_pass, priority: 10 }
+
+  boekkooi.jquery_validation.pass.collection_type:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\CollectionPrototypePass
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 10 }

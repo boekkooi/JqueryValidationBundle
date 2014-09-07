@@ -1,7 +1,9 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -18,5 +20,37 @@ class BoekkooiJqueryValidationExtension  extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), $config);
+
+        $this->configureForm($container, $config, $loader);
+        $this->configureTwig($config, $loader);
+    }
+
+    /**
+     * @param array $config
+     * @param $loader
+     */
+    private function configureTwig(array $config, LoaderInterface $loader)
+    {
+        if ($config['twig']['enabled']) {
+            $loader->load('twig.yml');
+        }
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param $loader
+     */
+    private function configureForm(ContainerBuilder $container, array $config, LoaderInterface $loader)
+    {
+        $container->setParameter('boekkooi.jquery_validation.enabled', $config['form']['enabled']);
+
+        $loader->load('form_rule_pass.yml');
+        $loader->load('form_rule_mapper.yml');
+
+        $this->configureTwig($config, $loader);
     }
 }

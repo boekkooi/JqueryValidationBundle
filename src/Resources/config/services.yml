@@ -5,15 +5,13 @@ parameters:
   boekkooi.jquery_validation.constraint_finder.class: Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder
   boekkooi.jquery_validation.constraint_resolver.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintResolver
 
-  boekkooi.jquery_validation.twig.jquery_validation.class: Boekkooi\Bundle\JqueryValidationBundle\Twig\JqueryValidationExtension
-
-
 services:
   boekkooi.jquery_validation.form.form_extension:
     class: %boekkooi.jquery_validation.form.form_extension.class%
     arguments:
       - @boekkooi.jquery_validation.constraint_finder
       - @boekkooi.jquery_validation.rule_collector
+      - %boekkooi.jquery_validation.enabled%
     tags:
       - { name: form.type_extension, alias: form }
 
@@ -27,38 +25,6 @@ services:
     arguments:
       - @validator.mapping.class_metadata_factory
 
-  boekkooi.jquery_validation.twig.jquery_validation:
-    class: %boekkooi.jquery_validation.twig.jquery_validation.class%
-    tags:
-      - { name: twig.extension }
-
-  boekkooi.jquery_validation.pass.group:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ConstraintGroupFilterPass
-    public: false
-    tags:
-     - { name: validator.rule_pass, priority: -10 }
-
   boekkooi.jquery_validation.constraint_resolver:
     class: %boekkooi.jquery_validation.constraint_resolver.class%
     public: false
-
-  boekkooi.jquery_validation.pass.collection:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RuleCollectionPass
-    arguments:
-      - @boekkooi.jquery_validation.constraint_resolver
-    public: false
-    tags:
-      - { name: validator.rule_pass, priority: 0 }
-
-  boekkooi.jquery_validation.pass.value_duplicates_transformer:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ValueToDuplicatesPass
-    public: false
-    tags:
-     - { name: validator.rule_pass, priority: 10 }
-
-  boekkooi.jquery_validation.pass.collection_type:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\CollectionPrototypePass
-    public: false
-    tags:
-      - { name: validator.rule_pass, priority: 10 }
-

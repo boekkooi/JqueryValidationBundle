@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -28,14 +29,19 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     private $constraintFinder;
 
-    public function __construct(DataConstraintFinder $constraintFinder, FormPassInterface $ruleCollector)
+    public function __construct(DataConstraintFinder $constraintFinder, FormPassInterface $ruleCollector, $enabled = true)
     {
         $this->ruleCollector = $ruleCollector;
         $this->constraintFinder = $constraintFinder;
+        $this->defaultEnabled = $enabled;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        if (!$this->isEnabled($view, $form, $options)) {
+            return;
+        }
+
         $validation_groups = FormHelper::getValidationGroups($form);
 
         // Handle the actual form root.
@@ -58,6 +64,10 @@ class FormTypeExtension extends AbstractTypeExtension
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        if (!$this->isEnabled($view, $form, $options)) {
+            return;
+        }
+
         $rootCollection = $this->getRuleCollection($view);
 
         if ($form->isRoot() && $view->parent === null) {
@@ -79,6 +89,15 @@ class FormTypeExtension extends AbstractTypeExtension
         }
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setOptional(array('jquery_validation'));
+        $resolver->setAllowedTypes(array(
+            'jquery_validation' => array('bool', 'null')
+        ));
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -87,11 +106,33 @@ class FormTypeExtension extends AbstractTypeExtension
         return 'form';
     }
 
+    protected function isEnabled(FormView $view, FormInterface $form, array $options)
+    {
+        $enabled = isset($options['jquery_validation']) && $options['jquery_validation'] === true || $this->defaultEnabled ? true : false;
+        if ($form->isRoot() && $view->parent === null) {
+            return $enabled;
+        }
+
+        $viewRoot = FormHelper::getViewRoot($view);
+
+        // The root has no validation data so it's disabled
+        if (!isset($viewRoot->vars['jquery_validation_rules'])) {
+            return false;
+        }
+        // The jquery_validation option is not set but validation is active to this is enabled
+        if (!isset($options['jquery_validation']) || $options['jquery_validation'] === null) {
+            return true;
+        }
+
+        // Options was specified to return it
+        return $enabled;
+    }
+
     /**
      * @param FormView $view
      * @return FormRuleCollection
      */
-    private function getRuleCollection(FormView $view)
+    protected function getRuleCollection(FormView $view)
     {
         $viewRoot = FormHelper::getViewRoot($view);
         if (!isset($viewRoot->vars['jquery_validation_rules'])) {
@@ -100,7 +141,6 @@ class FormTypeExtension extends AbstractTypeExtension
 
         return $viewRoot->vars['jquery_validation_rules'];
     }
-
 
     /**
      * Find all constraints for the given FormInterface.
@@ -134,7 +174,7 @@ class FormTypeExtension extends AbstractTypeExtension
         return $constraints;
     }
 
-    private function buildSubmitViews(FormView $view, FormInterface $form)
+    protected function buildSubmitViews(FormView $view, FormInterface $form)
     {
         // We have to walk through the entire form and detect the submit buttons
         $iterator = new RecursiveFormIterator($form);

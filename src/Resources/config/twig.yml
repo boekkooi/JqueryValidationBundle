@@ -1,0 +1,8 @@
+parameters:
+  boekkooi.jquery_validation.twig.jquery_validation.class: Boekkooi\Bundle\JqueryValidationBundle\Twig\JqueryValidationExtension
+
+services:
+  boekkooi.jquery_validation.twig.jquery_validation:
+    class: %boekkooi.jquery_validation.twig.jquery_validation.class%
+    tags:
+      - { name: twig.extension }

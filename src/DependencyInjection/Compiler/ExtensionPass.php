@@ -31,7 +31,6 @@ class ExtensionPass implements CompilerPassInterface
 
         $mappers = $container->findTaggedServiceIds('validator.rule_mapper');
         $resolverDef = $container->getDefinition('boekkooi.jquery_validation.constraint_resolver');
-        $resolverDef->addMethodCall('addDefaultMappers');
         foreach ($mappers as $id => $attr) {
             $resolverDef->addMethodCall('addMapper', array(new Reference($id)));
         }
