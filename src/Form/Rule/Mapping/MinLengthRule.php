@@ -27,7 +27,7 @@ class MinLengthRule implements ConstraintMapperInterface
             new Rule(
                 self::RULE_NAME,
                 $constraint->min,
-                new RuleMessage($constraint->minMessage, array('{{ limit }}' => $constraint->min), (int)$constraint->min),
+                new RuleMessage($constraint->minMessage, array('{{ limit }}' => $constraint->min), (int) $constraint->min),
                 $constraint->groups
             )
         );

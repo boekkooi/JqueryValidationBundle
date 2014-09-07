@@ -31,7 +31,7 @@ class DataConstraintFinder
         $metadata = $this->metadataFactory->getMetadataFor($class);
         // TODO support sub forms
         $v = $form->getPropertyPath()->getElement(0);
-        foreach($metadata->getPropertyMetadata($v) as $metadata) {
+        foreach ($metadata->getPropertyMetadata($v) as $metadata) {
             return new ConstraintCollection($metadata->getConstraints());
         }
 

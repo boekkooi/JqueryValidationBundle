@@ -134,6 +134,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
     public function get($form)
     {
         $name = static::getFormName($form);
+
         return isset($this->rules[$name]) ? $this->rules[$name] : null;
     }
 
@@ -177,4 +178,4 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
         // TODO use bundle exception
         throw new \InvalidArgumentException();
     }
-} 
+}

@@ -180,7 +180,7 @@ class FormTypeExtension extends AbstractTypeExtension
         $iterator = new RecursiveFormIterator($form);
         $iterator = new \RecursiveIteratorIterator($iterator);
 
-        foreach($iterator as $button) {
+        foreach ($iterator as $button) {
             /** @var FormInterface $button */
             if (!$button instanceof ClickableInterface) {
                 continue;

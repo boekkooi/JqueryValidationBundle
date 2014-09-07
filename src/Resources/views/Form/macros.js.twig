@@ -72,7 +72,7 @@
 {# Generate all messages for a set of rules #}
 {% macro rules_messages(field_rules) %}
     {%- import _self as gen -%}
-    
+
     {%- for rule in field_rules -%}
         {%- if rule.message -%}
             "{{ rule.name|e('js') }}": "{{ gen.rule_message(rule.message) }}"

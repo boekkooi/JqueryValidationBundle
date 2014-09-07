@@ -30,8 +30,7 @@ class MaxRule implements ConstraintMapperInterface
                 new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value)),
                 $constraint->groups
             );
-        }
-        elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\LessThanOrEqual') {
+        } elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\LessThanOrEqual') {
             $rule = new Rule(
                 self::RULE_NAME,
                 $constraint->value,
@@ -71,4 +70,3 @@ class MaxRule implements ConstraintMapperInterface
         ;
     }
 }
-

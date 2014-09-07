@@ -27,7 +27,7 @@ class MaxLengthRule implements ConstraintMapperInterface
             new Rule(
                 self::RULE_NAME,
                 $constraint->max,
-                new RuleMessage($constraint->maxMessage, array('{{ limit }}' => $constraint->max), (int)$constraint->max),
+                new RuleMessage($constraint->maxMessage, array('{{ limit }}' => $constraint->max), (int) $constraint->max),
                 $constraint->groups
             )
         );

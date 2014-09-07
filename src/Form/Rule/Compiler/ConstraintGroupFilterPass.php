@@ -19,6 +19,7 @@ class ConstraintGroupFilterPass implements FormPassInterface
         // If the validation group is false we ignore everything
         if ($groups === false) {
             $constraints->clear();
+
             return;
         }
 
@@ -47,12 +48,13 @@ class ConstraintGroupFilterPass implements FormPassInterface
 
         $path = new PropertyPath($collection->getView()->vars['full_name']);
         while ($path !== null) {
-            $name = (string)$path;
+            $name = (string) $path;
             if (isset($rootView->vars['jquery_validation_groups'][$name])) {
                 return $rootView->vars['jquery_validation_groups'][$name];
             }
             $path = $path->getParent();
         }
+
         return array(Constraint::DEFAULT_GROUP);
     }
 

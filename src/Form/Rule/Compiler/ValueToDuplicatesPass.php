@@ -77,6 +77,7 @@ class ValueToDuplicatesPass implements FormPassInterface
                 return $transformer;
             }
         }
+
         return null;
     }
 
@@ -88,6 +89,7 @@ class ValueToDuplicatesPass implements FormPassInterface
             $refl->setAccessible(true);
             $this->keyReflCache = $refl;
         }
+
         return $this->keyReflCache->getValue($transformer);
     }
 
@@ -110,6 +112,7 @@ class ValueToDuplicatesPass implements FormPassInterface
             }
 
             $formSelector = $this->getFieldSelector($root);
+
             return trim(sprintf('%s *[name="%s"]', $formSelector, $vars['full_name']));
         }
 

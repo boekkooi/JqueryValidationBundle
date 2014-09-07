@@ -68,6 +68,7 @@ class JqueryValidationExtension extends Twig_Extension
         $it = new \RecursiveIteratorIterator(
             new \RecursiveArrayIterator($view->vars['jquery_validation_groups'])
         );
+
         return array_unique(array_filter(iterator_to_array($it, false)));
     }
 
@@ -92,11 +93,11 @@ class JqueryValidationExtension extends Twig_Extension
             if ($groups === null) {
                 $path = new PropertyPath($name);
                 do {
-                    if (isset($validationGroups[(string)$path]) && ($groups = $validationGroups[(string)$path]) !== null) {
-                        $groups = $validationGroups[(string)$path];
+                    if (isset($validationGroups[(string) $path]) && ($groups = $validationGroups[(string) $path]) !== null) {
+                        $groups = $validationGroups[(string) $path];
                     }
                     $path = $path->getParent();
-                } while($path !== null && $groups === null);
+                } while ($path !== null && $groups === null);
             }
 
             // A cancel button

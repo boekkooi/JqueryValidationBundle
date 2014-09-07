@@ -36,5 +36,3 @@ class ConstraintResolver implements ConstraintResolverInterface
         $this->mappers[] = $mapper;
     }
 }
-
-

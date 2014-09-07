@@ -17,7 +17,8 @@ final class FormHelper
                 return true;
             }
             $type = $type->getParent();
-        } while($type !== null);
+        } while ($type !== null);
+
         return false;
     }
 
@@ -52,6 +53,7 @@ final class FormHelper
         while ($root->parent !== null) {
             $root = $root->parent;
         }
+
         return $root;
     }
 }

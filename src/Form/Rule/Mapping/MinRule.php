@@ -31,8 +31,7 @@ class MinRule implements ConstraintMapperInterface
                 new RuleMessage($constraint->message, array('{{ compared_value }}', $constraint->value)),
                 $constraint->groups
             );
-        }
-        elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\GreaterThanOrEqual') {
+        } elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\GreaterThanOrEqual') {
             $rule = new Rule(
                 self::RULE_NAME,
                 $constraint->value,
@@ -72,4 +71,3 @@ class MinRule implements ConstraintMapperInterface
             ;
     }
 }
-
