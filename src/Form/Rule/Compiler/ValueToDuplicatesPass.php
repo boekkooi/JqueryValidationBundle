@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -33,15 +34,10 @@ class ValueToDuplicatesPass implements FormPassInterface
         $keys = $this->getKeys($transformer);
         $formView = $collection->getView();
 
-        // Currently only a form is supported that uses all children for the duplication.
-        if (count($keys) !== $form->count()) {
-            return;
-        }
-
         $primary = array_shift($keys);
         $primaryView = $formView->children[$primary];
 
-        // Copy all rules to the first child
+        // Copy all rules to the first child/key element
         $ruleCollection = $collection->get($formView);
         if (count($ruleCollection) > 0) {
             $collection->add(
@@ -51,6 +47,12 @@ class ValueToDuplicatesPass implements FormPassInterface
         }
         $collection->remove($formView);
 
+        // Get correct error message if one is set.
+        $invalidMessage = null;
+        if ($form->getConfig()->hasOption('invalid_message')) {
+            $invalidMessage = new RuleMessage($form->getConfig()->getOption('invalid_message'));
+        }
+
         // Create equalTo rules for all other fields
         foreach ($keys as $childName) {
             $childCollection = new RuleCollection();
@@ -58,7 +60,8 @@ class ValueToDuplicatesPass implements FormPassInterface
                 'equalTo',
                 new Rule(
                     'equalTo',
-                    $this->getFieldSelector($primaryView)
+                    $this->getFieldSelector($primaryView),
+                    $invalidMessage
                 )
             );
 
