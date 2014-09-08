@@ -29,6 +29,11 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     private $constraintFinder;
 
+    /**
+     * @var boolean
+     */
+    private $defaultEnabled;
+
     public function __construct(DataConstraintFinder $constraintFinder, FormPassInterface $ruleCollector, $enabled = true)
     {
         $this->ruleCollector = $ruleCollector;

@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -8,5 +9,5 @@ use Symfony\Component\Form\FormInterface;
  */
 interface ConstraintResolverInterface
 {
-    public function resolve($constraints, FormInterface $form);
+    public function resolve(ConstraintCollection $constraints, FormInterface $form);
 }

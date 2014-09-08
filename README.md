@@ -1,5 +1,7 @@
 Boekkooi Jquery Validation Bundle
 =============
+[![Build Status](https://travis-ci.org/boekkooi/JqueryValidationBundle.svg?branch=master)](https://travis-ci.org/boekkooi/JqueryValidationBundle)[![Code Coverage](https://scrutinizer-ci.com/g/boekkooi/JqueryValidationBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/boekkooi/JqueryValidationBundle/?branch=master)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/boekkooi/JqueryValidationBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/boekkooi/JqueryValidationBundle/?branch=master)![Total Downloads](https://poser.pugx.org/boekkooi/jquery-validation-bundle/downloads.svg)](https://packagist.org/packages/boekkooi/jquery-validation-bundle)[![Latest Stable Version](https://poser.pugx.org/boekkooi/jquery-validation-bundle/v/stable.svg)](https://packagist.org/packages/boekkooi/jquery-validation-bundle)[![License](https://poser.pugx.org/boekkooi/jquery-validation-bundle/license.svg)](https://packagist.org/packages/boekkooi/jquery-validation-bundle)
+
 Welcome! Did you ever have the need to have some Javascript form validation within your symfony application?
 Well I did! So I made this little bundle to do it for me.
 

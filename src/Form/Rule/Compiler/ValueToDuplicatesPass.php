@@ -39,7 +39,7 @@ class ValueToDuplicatesPass implements FormPassInterface
 
         // Copy all rules to the first child/key element
         $ruleCollection = $collection->get($formView);
-        if (count($ruleCollection) > 0) {
+        if (!empty($ruleCollection)) {
             $collection->add(
                 $primaryView,
                 $ruleCollection
@@ -109,7 +109,6 @@ class ValueToDuplicatesPass implements FormPassInterface
                 $root = $root->parent;
             }
 
-            $formSelector = '';
             if ($view === $root) {
                 return sprintf('form[name="%s"]', $vars['full_name']);
             }

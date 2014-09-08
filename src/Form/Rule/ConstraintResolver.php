@@ -3,6 +3,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -15,7 +16,7 @@ class ConstraintResolver implements ConstraintResolverInterface
      */
     protected $mappers = array();
 
-    public function resolve($constraints, FormInterface $form)
+    public function resolve(ConstraintCollection $constraints, FormInterface $form)
     {
         $collection = new RuleCollection();
         foreach ($this->mappers as $mapper) {
