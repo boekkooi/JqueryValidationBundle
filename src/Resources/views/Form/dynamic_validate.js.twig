@@ -2,15 +2,10 @@
 
 {%- autoescape false -%}
 (function($) {
-    {% if form.vars.id is defined -%}
-        var form = $("#{{ form.vars.id|e('js') }}");
-    {%- else -%}
-        var form = $("form[name=\"{{ form.vars.full_name|e('js') }}\"]");
-    {%- endif -%}
+    var form = $("{{- gen.form_jquery_selector(form) -}}");
 
-
-    {% set first = true %}
-    {% for field in fields %}
+    {%- set first = true -%}
+    {%- for field in fields -%}
         {%- if field.rules|length > 0 -%}
             {%- if not first %},{% endif -%}
                 form.find("*[name=\"{{ field.name|e('js') }}\"]").rules("add", {
@@ -18,6 +13,6 @@
                 });
             {%- set first = false -%}
         {%- endif -%}
-    {% endfor %}
+    {%- endfor -%}
 })(jQuery);
 {%- endautoescape -%}

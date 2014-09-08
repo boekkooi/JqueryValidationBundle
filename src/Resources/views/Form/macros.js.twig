@@ -1,3 +1,11 @@
+{% macro form_jquery_selector(form) %}
+    {%- if form.vars.attr.id is defined -%}
+        #{{- form.vars.attr.id|e('js') -}}
+    {%- else -%}
+        form[name=\"{{- form.vars.full_name|e('js') -}}\"]
+    {%- endif -%}
+{% endmacro %}
+
 {% macro validation_groups(groups, activeGroups) %}
     {%- set activeGroups = activeGroups|default([]) -%}
     {%- for group in groups -%}
@@ -59,12 +67,14 @@
 {% macro form_messages(fields) %}
     {%- import _self as gen -%}
 
+    {% set first = true %}
     {%- for field in fields -%}
         {%- if field.rules|length > 0 -%}
+            {%- if not first %},{% endif -%}
             "{{ field.name|e('js') }}": {
                 {{- gen.rules_messages(field.rules) -}}
             }
-            {%- if not loop.last %}, {% endif -%}
+            {%- set first = false -%}
         {%- endif -%}
     {%- endfor -%}
 {% endmacro %}

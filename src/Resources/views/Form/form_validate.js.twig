@@ -2,11 +2,7 @@
 
 {%- autoescape false -%}
 (function($) {
-    {% if form.vars.id is defined -%}
-        var form = $("#{{ form.vars.id|e('js') }}");
-    {%- else -%}
-        var form = $("form[name=\"{{ form.vars.full_name|e('js') }}\"]");
-    {%- endif -%}
+    var form = $("{{- gen.form_jquery_selector(form) -}}");
 
     {%- if validation_groups|length > 0 -%}
         var groups = { {{- gen.validation_groups(validation_groups) -}} };
