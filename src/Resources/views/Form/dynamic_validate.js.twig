@@ -4,14 +4,11 @@
 (function($) {
     var form = $("{{- gen.form_jquery_selector(form) -}}");
 
-    {%- set first = true -%}
     {%- for field in fields -%}
         {%- if field.rules|length > 0 -%}
-            {%- if not first %},{% endif -%}
-                form.find("*[name=\"{{ field.name|e('js') }}\"]").rules("add", {
-                    {{- gen.rules(field.rules, enforce_validation_groups, true)  -}}
-                });
-            {%- set first = false -%}
+            form.find("*[name=\"{{ field.name|e('js') }}\"]").rules("add", {
+                {{- gen.rules(field.rules, enforce_validation_groups, true)  -}}
+            });
         {%- endif -%}
     {%- endfor -%}
 })(jQuery);
