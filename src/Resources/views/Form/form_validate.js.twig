@@ -4,7 +4,7 @@
 (function($) {
     var form = $("{{- gen.form_jquery_selector(form) -}}");
 
-    {%- if validation_groups|length > 0 -%}
+    {%- if includeGroupDeps|default(false) and validation_groups|length > 0 -%}
         var groups = { {{- gen.validation_groups(validation_groups) -}} };
     {%- endif -%}
 

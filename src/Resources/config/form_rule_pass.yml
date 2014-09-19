@@ -1,6 +1,12 @@
 services:
-  boekkooi.jquery_validation.pass.group:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ConstraintGroupFilterPass
+  boekkooi.jquery_validation.pass.groups:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ValidationGroupPass
+    public: false
+    tags:
+     - { name: validator.rule_pass, priority: -10 }
+
+  boekkooi.jquery_validation.pass.button_groups:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\ButtonValidationGroupPass
     public: false
     tags:
      - { name: validator.rule_pass, priority: -10 }
@@ -21,6 +27,12 @@ services:
 
   boekkooi.jquery_validation.pass.collection_type:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\CollectionPrototypePass
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 10 }
+
+  boekkooi.jquery_validation.pass.required_attr:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RequiredViewPass
     public: false
     tags:
       - { name: validator.rule_pass, priority: 10 }

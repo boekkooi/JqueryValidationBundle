@@ -3,10 +3,11 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Extension;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormHelper;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\RecursiveFormIterator;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\ClickableIterator;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\GroupCollection;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormInterface;
@@ -47,7 +48,7 @@ class FormTypeExtension extends AbstractTypeExtension
             return;
         }
 
-        $validation_groups = FormHelper::getValidationGroups($form);
+        $validation_groups = self::getValidationGroups($form);
 
         // Handle the actual form root.
         if ($form->isRoot() && $view->parent === null) {
@@ -58,11 +59,11 @@ class FormTypeExtension extends AbstractTypeExtension
                 $validation_groups = array(Constraint::DEFAULT_GROUP);
             }
 
-            $this->buildSubmitViews($view, $form);
+            $this->addSubmitButtonData($view, $form);
         }
 
         if ($validation_groups !== null) {
-            $rootView = FormHelper::getViewRoot($view);
+            $rootView = self::getViewRoot($view);
             $rootView->vars['jquery_validation_groups'][$view->vars['full_name']] = $validation_groups;
         }
     }
@@ -77,19 +78,18 @@ class FormTypeExtension extends AbstractTypeExtension
 
         if ($form->isRoot() && $view->parent === null) {
             $collection = $rootCollection;
-
-            $this->ruleCollector->process(
-                $collection,
-                $this->findConstraints($form)
-            );
         } else {
             $collection = new FormRuleCollection($form, $view, $rootCollection);
+        }
 
-            $this->ruleCollector->process(
-                $collection,
-                $this->findConstraints($form)
-            );
+        $context = new FormContext($this->findConstraints($form), new GroupCollection());
 
+        $this->ruleCollector->process(
+            $collection,
+            $context
+        );
+
+        if ($collection !== $rootCollection) {
             $rootCollection->addCollection($collection);
         }
     }
@@ -118,7 +118,7 @@ class FormTypeExtension extends AbstractTypeExtension
             return $enabled;
         }
 
-        $viewRoot = FormHelper::getViewRoot($view);
+        $viewRoot = self::getViewRoot($view);
 
         // The root has no validation data so it's disabled
         if (!isset($viewRoot->vars['jquery_validation_rules'])) {
@@ -139,7 +139,7 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected function getRuleCollection(FormView $view)
     {
-        $viewRoot = FormHelper::getViewRoot($view);
+        $viewRoot = self::getViewRoot($view);
         if (!isset($viewRoot->vars['jquery_validation_rules'])) {
             throw new \LogicException('getRuleCollection is called before it was set by buildView');
         }
@@ -179,19 +179,13 @@ class FormTypeExtension extends AbstractTypeExtension
         return $constraints;
     }
 
-    protected function buildSubmitViews(FormView $view, FormInterface $form)
+    protected function addSubmitButtonData(FormView $view, FormInterface $form)
     {
         // We have to walk through the entire form and detect the submit buttons
-        $iterator = new RecursiveFormIterator($form);
-        $iterator = new \RecursiveIteratorIterator($iterator);
-
+        $iterator = new ClickableIterator($form);
+        /** @var ClickableInterface|FormInterface $button */
         foreach ($iterator as $button) {
-            /** @var FormInterface $button */
-            if (!$button instanceof ClickableInterface) {
-                continue;
-            }
-
-            // Create the button name.
+            // Create the button name since the button view has not been created yet
             $name = array($button->getName());
             for ($i = $iterator->getDepth()-1; $i >= 0; $i--) {
                 $name[] = $iterator->getSubIterator($i)->current()->getName();
@@ -212,7 +206,42 @@ class FormTypeExtension extends AbstractTypeExtension
             if (!isset($view->vars['jquery_validation_groups'])) {
                 $view->vars['jquery_validation_groups'] = array();
             }
-            $view->vars['jquery_validation_groups'][$name] = FormHelper::getValidationGroups($button);
+            $view->vars['jquery_validation_groups'][$name] = self::getValidationGroups($button);
         }
+    }
+
+    private static function getValidationGroups(FormInterface $form)
+    {
+        $cfg = $form->getConfig();
+
+        if ($cfg->hasOption('jquery_validation_groups')) {
+            $groups = $cfg->getOption('jquery_validation_groups');
+        } else {
+            $groups = $cfg->getOption('validation_groups');
+        }
+
+        if ($groups === null || $groups === false) {
+            return $groups;
+        }
+
+        if (!is_string($groups) && is_callable($groups)) {
+            throw new \RuntimeException('Callable validation_groups are not supported. Disable jquery_validation or set jquery_validation_groups');
+        }
+
+        return (array) $groups;
+    }
+
+    /**
+     * @param FormView $view
+     * @return FormView
+     */
+    private static function getViewRoot(FormView $view)
+    {
+        $root = $view;
+        while ($root->parent !== null) {
+            $root = $root->parent;
+        }
+
+        return $root;
     }
 }

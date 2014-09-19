@@ -1,76 +1,30 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class RuleCollection implements \IteratorAggregate, \Countable
+class RuleCollection extends ArrayCollection
 {
     /**
-     * @var Rule[]
+     * @param int|string $key
+     * @param Rule $value
      */
-    private $rules = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
+    public function set($key, $value)
     {
-        return new \ArrayIterator($this->rules);
+        $this->assertRuleInstance($value);
+
+        parent::set($key, $value);
     }
 
     /**
-     * {@inheritdoc}
+     * @throw \LogicException
      */
-    public function count()
+    public function add($value)
     {
-        return count($this->rules);
-    }
-
-    /**
-     * Adds a rule.
-     *
-     * @param string $name  The rule name
-     * @param Rule  $rule A Rule instance
-     */
-    public function add($name, Rule $rule)
-    {
-        unset($this->rules[$name]);
-
-        $this->rules[$name] = $rule;
-    }
-
-    /**
-     * Returns all rules in this collection.
-     *
-     * @return Rule[] An array of rules
-     */
-    public function all()
-    {
-        return $this->rules;
-    }
-
-    /**
-     * Gets a rule list by name.
-     *
-     * @param string $name  The rule name
-     * @return Rule|null A array of Rule instances or null when not found
-     */
-    public function get($name)
-    {
-        return isset($this->rules[$name]) ? $this->rules[$name] : null;
-    }
-
-    /**
-     * Removes a rule or an array of rules by name from the collection
-     *
-     * @param string|array $name The rule name or an array of rule names
-     */
-    public function remove($name)
-    {
-        foreach ((array) $name as $n) {
-            unset($this->rules[$n]);
-        }
+        throw new \LogicException('RuleCollection must be used as a dictionary');
     }
 
     /**
@@ -81,9 +35,15 @@ class RuleCollection implements \IteratorAggregate, \Countable
      */
     public function addCollection(RuleCollection $collection)
     {
-        foreach ($collection->all() as $name => $rule) {
-            unset($this->rules[$name]);
-            $this->rules[$name] = $rule;
+        foreach ($collection as $name => $rule) {
+            $this->set($name, $rule);
+        }
+    }
+
+    private function assertRuleInstance($value)
+    {
+        if (!$value instanceof Rule) {
+            throw new \InvalidArgumentException('Expected a "\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule" instance');
         }
     }
 }

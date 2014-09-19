@@ -6,7 +6,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -20,7 +20,7 @@ class ValueToDuplicatesPass implements FormPassInterface
      */
     private $keyReflCache = null;
 
-    public function process(FormRuleCollection $collection, ConstraintCollection $constraints)
+    public function process(FormRuleCollection $collection, FormContext $context)
     {
         $form = $collection->getForm();
         if (!$form->getConfig()->getCompound()) {
@@ -56,7 +56,7 @@ class ValueToDuplicatesPass implements FormPassInterface
         // Create equalTo rules for all other fields
         foreach ($keys as $childName) {
             $childCollection = new RuleCollection();
-            $childCollection->add(
+            $childCollection->set(
                 'equalTo',
                 new Rule(
                     'equalTo',

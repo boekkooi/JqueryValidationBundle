@@ -22,7 +22,7 @@ class MaxLengthRule implements ConstraintMapperInterface
     public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
     {
         /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
-        $collection->add(
+        $collection->set(
             self::RULE_NAME,
             new Rule(
                 self::RULE_NAME,

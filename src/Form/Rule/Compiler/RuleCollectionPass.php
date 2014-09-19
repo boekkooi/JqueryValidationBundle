@@ -4,7 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintResolverInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -21,11 +21,11 @@ class RuleCollectionPass implements FormPassInterface
         $this->constraintResolver = $constraintResolver;
     }
 
-    public function process(FormRuleCollection $collection, ConstraintCollection $constraints)
+    public function process(FormRuleCollection $collection, FormContext $context)
     {
         $collection->add(
             $collection->getView(),
-            $this->constraintResolver->resolve($constraints, $collection->getForm())
+            $this->constraintResolver->resolve($context->getConstraints(), $collection->getForm())
         );
     }
 }

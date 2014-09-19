@@ -51,7 +51,7 @@ class MaxRule implements ConstraintMapperInterface
             throw new \LogicException();
         }
 
-        $collection->add(
+        $collection->set(
             self::RULE_NAME,
             $rule
         );

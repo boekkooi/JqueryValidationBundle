@@ -22,7 +22,7 @@ class UrlRule implements ConstraintMapperInterface
     {
         /** @var \Symfony\Component\Validator\Constraints\Url $constraint */
         // TODO use custom pattern when protocols is not https, http, sftp, ftp
-        $collection->add(
+        $collection->set(
             self::RULE_NAME,
             new Rule(
                 self::RULE_NAME,

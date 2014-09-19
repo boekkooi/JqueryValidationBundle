@@ -21,7 +21,7 @@ class NumberRule implements ConstraintMapperInterface
     public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
     {
         /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
-        $collection->add(
+        $collection->set(
             self::RULE_NAME,
             new Rule(
                 self::RULE_NAME,
