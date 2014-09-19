@@ -34,7 +34,7 @@
     {%- import _self as gen -%}
 
     {%- for rule in field_rules -%}
-        "{{ rule.name|e('js') }}": {{- gen.rule(rule, includeGroupDeps) -}}{% if not loop.last %}, {%- endif %}
+        "{{ rule.name|e('js') }}": {{- gen.rule(rule, includeGroupDeps) -}}{% if not loop.last %}, {%- endif -%}
     {%- endfor -%}
 
     {%- if includeMessage|default(false) -%}
@@ -54,7 +54,7 @@
 
             depends: function() {
                 return {% for group in rule.groups -%}
-                    groups["{{ group|e('js') }}"] {% if not loop.last %} || {% endif %}
+                    groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
                 {%- endfor -%};
             }
         }

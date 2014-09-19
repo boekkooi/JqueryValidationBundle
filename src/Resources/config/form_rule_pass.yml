@@ -36,3 +36,11 @@ services:
     public: false
     tags:
       - { name: validator.rule_pass, priority: 10 }
+
+  boekkooi.jquery_validation.pass.reject_rule_groups:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RejectUnusedGroupsInRulesPass
+    public: false
+    tags:
+      - { name: validator.rule_pass, priority: 10 }
+
+
