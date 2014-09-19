@@ -46,21 +46,23 @@ class JqueryValidationExtension extends Twig_Extension
         if (!$collection->isRoot()) {
             $rootView = $collection->getRoot()->getView();
 
-            return $twig->render('BoekkooiJqueryValidationBundle:Form:dynamic_validate.js.twig', array(
+            $js = $twig->render('BoekkooiJqueryValidationBundle:Form:dynamic_validate.js.twig', array(
                 'form' => $rootView,
                 'fields' => $this->fieldRulesViewData($collection),
                 'validation_groups' => $this->validationGroupsViewData($rootView),
                 'enforce_validation_groups' => isset($rootView->vars['jquery_validation_buttons']) && count($rootView->vars['jquery_validation_buttons']) > 0
             ));
+        } else {
+            $js = $twig->render('BoekkooiJqueryValidationBundle:Form:form_validate.js.twig', array(
+                'form' => $collection->getView(),
+                'fields' => $this->fieldRulesViewData($collection),
+                'buttons' => $this->buttonsViewData($view),
+                'validation_groups' => $this->validationGroupsViewData($view),
+                'enforce_validation_groups' => isset($view->vars['jquery_validation_buttons']) && count($view->vars['jquery_validation_buttons']) > 0
+            ));
         }
 
-        return $twig->render('BoekkooiJqueryValidationBundle:Form:form_validate.js.twig', array(
-            'form' => $collection->getView(),
-            'fields' => $this->fieldRulesViewData($collection),
-            'buttons' => $this->buttonsViewData($view),
-            'validation_groups' => $this->validationGroupsViewData($view),
-            'enforce_validation_groups' => isset($view->vars['jquery_validation_buttons']) && count($view->vars['jquery_validation_buttons']) > 0
-        ));
+        return preg_replace('/\s+/', ' ' , $js);
     }
 
     protected function validationGroupsViewData(FormView $view)
