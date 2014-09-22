@@ -4,10 +4,16 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Validator;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 
 /**
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
 class ConstraintCollectionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ConstraintCollection
+     */
+    private $SUT;
+
     /**
      * @var \Symfony\Component\Validator\Constraint | \PHPUnit_Framework_MockObject_MockObject
      */

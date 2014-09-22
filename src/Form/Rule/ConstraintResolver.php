@@ -25,7 +25,7 @@ class ConstraintResolver implements ConstraintResolverInterface
                     continue;
                 }
 
-                $mapper->resolve($collection, $constraint, $form);
+                $mapper->resolve($constraint, $form, $collection);
             }
         }
 

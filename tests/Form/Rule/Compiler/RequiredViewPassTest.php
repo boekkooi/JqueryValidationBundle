@@ -1,60 +1,98 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RequiredViewPass;
+use Symfony\Component\Validator\Constraint;
 
 /**
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RequiredViewPass
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class RequiredViewPassTest extends \PHPUnit_Framework_TestCase
+class RequiredViewPassTest extends BaseFormPassTest
 {
-    /**
-     * @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $form;
-
-    /**
-     * @var \Symfony\Component\Form\FormView | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $formView;
-
-    /**
-     * @var \Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $formRuleCollection;
-
-    /**
-     * @var \Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $formContext;
-
-    /**
-     * @var \Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface
-     */
-    protected $SUT;
-
     protected function setUp()
     {
-        $this->form = $this->getMock('Symfony\Component\Form\FormInterface');
-        $this->formView = $this->getMock('Symfony\Component\Form\FormView');
-
-        $this->formRuleCollection = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection', array(), array($this->form, $this->formView));
-        $this->formContext = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext');
-
+        parent::setUp();
 
         $this->SUT = new RequiredViewPass();
     }
 
     /**
      * @test
+     * @dataProvider provide_required_constraint_classes
      */
-    public function it_should_implement_FormPassInterface()
+    public function it_should_set_required_if_a_required_constraint_is_found()
     {
-        $this->assertInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface', $this->SUT);
+        $this->given_the_form_view_attr_required_is(false);
+        $this->given_the_default_validation_group_is_used();
+
+        foreach (func_get_args() as $constraintClass) {
+            $this->constraintCollection->add(new $constraintClass(array('groups' => Constraint::DEFAULT_GROUP)));
+        }
+
+        $this->execute_process();
+
+        $this->assertTrue($this->formView->vars['required']);
     }
 
-    protected function execute_process()
+    /**
+     * @test
+     * @dataProvider provide_not_required_constraint_classes
+     */
+    public function it_should_set_not_required_if_a_required_constraint_is_not_found()
     {
-        $this->SUT->process($this->formRuleCollection, $this->formContext);
+        $this->given_the_form_view_attr_required_is(true);
+        $this->given_the_default_validation_group_is_used();
+
+        foreach (func_get_args() as $constraintClass) {
+            $this->constraintCollection->add(new $constraintClass(array('groups' => Constraint::DEFAULT_GROUP)));
+        }
+
+        $this->execute_process();
+
+        $this->assertFalse($this->formView->vars['required']);
+    }
+
+    /**
+     * @test
+     */
+    public function is_should_do_nothing_when_required_is_not_set()
+    {
+        $this->execute_process();
+
+        $this->assertFalse(isset($this->formView->vars['required']));
+    }
+
+    public function given_the_form_view_attr_required_is($value)
+    {
+        $this->formView->vars['required'] = $value;
+    }
+
+    public function provide_required_constraint_classes()
+    {
+        return array(
+            array('Symfony\Component\Validator\Constraints\NotNull'),
+            array('Symfony\Component\Validator\Constraints\NotBlank'),
+            array('Symfony\Component\Validator\Constraints\Required'),
+
+            array( 'Symfony\Component\Validator\Constraints\Uuid', 'Symfony\Component\Validator\Constraints\NotNull'),
+            array( 'Symfony\Component\Validator\Constraints\Time', 'Symfony\Component\Validator\Constraints\NotBlank'),
+            array( 'Symfony\Component\Validator\Constraints\Locale', 'Symfony\Component\Validator\Constraints\Required'),
+        );
+    }
+
+    public function provide_not_required_constraint_classes()
+    {
+        return array(
+            array(
+                'Symfony\Component\Validator\Constraints\Uuid',
+                'Symfony\Component\Validator\Constraints\Time',
+                'Symfony\Component\Validator\Constraints\Locale'
+            ),
+            array(
+                'Symfony\Component\Validator\Constraints\Blank'
+            ),
+            array()
+        );
     }
 }
- 

@@ -18,8 +18,12 @@ class UrlRule implements ConstraintMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
+    public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection)
     {
+        if (!$this->supports($constraint, $form)) {
+            throw new \LogicException();
+        }
+
         /** @var \Symfony\Component\Validator\Constraints\Url $constraint */
         // TODO use custom pattern when protocols is not https, http, sftp, ftp
         $collection->set(

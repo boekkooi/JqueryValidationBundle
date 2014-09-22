@@ -11,11 +11,12 @@ use Symfony\Component\Validator\Constraint;
 interface ConstraintMapperInterface
 {
     /**
-     * @param RuleCollection $collection
      * @param Constraint $constraint
      * @param FormInterface $form
+     * @param RuleCollection $collection
+     * @return
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form);
+    public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection);
 
     /**
      * @param Constraint $constraint

@@ -18,9 +18,13 @@ class RequiredRule implements ConstraintMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
+    public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection)
     {
-        /** @var \Symfony\Component\Validator\Constraints\NotBlank $constraint */
+        if (!$this->supports($constraint, $form)) {
+            throw new \LogicException();
+        }
+
+        /** @var \Symfony\Component\Validator\Constraints\NotBlank | \Symfony\Component\Validator\Constraints\NotNull $constraint */
         $collection->set(
             self::RULE_NAME,
             new Rule(
@@ -34,6 +38,13 @@ class RequiredRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return get_class($constraint) === 'Symfony\Component\Validator\Constraints\NotBlank';
+        return in_array(
+            get_class($constraint),
+            array(
+                'Symfony\Component\Validator\Constraints\NotBlank',
+                'Symfony\Component\Validator\Constraints\NotNull'
+            ),
+            true
+        );
     }
 }

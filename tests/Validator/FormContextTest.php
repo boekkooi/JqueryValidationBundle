@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Validator\GroupCollection;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
 class FormContextTest extends \PHPUnit_Framework_TestCase

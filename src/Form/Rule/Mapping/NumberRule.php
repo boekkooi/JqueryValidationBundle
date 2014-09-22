@@ -18,8 +18,12 @@ class NumberRule implements ConstraintMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(RuleCollection $collection, Constraint $constraint, FormInterface $form)
+    public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection)
     {
+        if (!$this->supports($constraint, $form)) {
+            throw new \LogicException();
+        }
+
         /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
         $collection->set(
             self::RULE_NAME,
