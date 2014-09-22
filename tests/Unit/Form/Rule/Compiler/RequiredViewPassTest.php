@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RequiredViewPass;
 use Symfony\Component\Validator\Constraint;

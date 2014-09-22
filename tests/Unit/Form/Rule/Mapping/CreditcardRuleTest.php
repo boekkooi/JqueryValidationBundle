@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\CreditcardRule;

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Validator\Util;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Validator\Util;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\Util\GroupFilterIterator;
 use Symfony\Component\Validator\Constraint;

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 

@@ -1,29 +1,29 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class NumberRuleTest extends BaseConstraintMapperTest
+class UrlRuleTest extends BaseConstraintMapperTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->SUT = new NumberRule();
+        $this->SUT = new UrlRule();
     }
 
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\Range(array('min' => 1))),
+            array(new Constraints\Url()),
         );
     }
 
@@ -31,8 +31,8 @@ class NumberRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(
-                new Constraints\Range(array('invalidMessage' => 'msg', 'min' => 1)),
-                new Rule('number', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP))
+                new Constraints\Url(array('message' => 'msg_url')),
+                new Rule('url', true, new RuleMessage('msg_url'), array(Constraint::DEFAULT_GROUP))
             )
         );
     }

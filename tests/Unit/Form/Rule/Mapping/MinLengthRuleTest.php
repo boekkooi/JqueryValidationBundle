@@ -1,24 +1,24 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxLengthRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinLengthRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxLengthRule
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinLengthRule
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class MaxLengthRuleTest extends BaseConstraintMapperTest
+class MinLengthRuleTest extends BaseConstraintMapperTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->SUT = new MaxLengthRule();
+        $this->SUT = new MinLengthRule();
     }
 
     protected function setUpBaseTest()
@@ -33,14 +33,14 @@ class MaxLengthRuleTest extends BaseConstraintMapperTest
     {
         $this->given_form_is_of_type('choice');
 
-        $this->assertFalse($this->execute_supports(new Constraints\Length(array('max' => 1))));
+        $this->assertFalse($this->execute_supports(new Constraints\Length(array('min' => 1))));
     }
 
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\Choice(array('choices' => array(), 'max' => 1))),
-            array(new Constraints\Length(array('max' => 1)))
+            array(new Constraints\Choice(array('choices' => array(), 'min' => 1))),
+            array(new Constraints\Length(array('min' => 1)))
         );
     }
 
@@ -48,12 +48,12 @@ class MaxLengthRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(
-                new Constraints\Length(array('max' => 3, 'maxMessage' => 'Yo')),
-                new Rule('maxlength', 3, new RuleMessage('Yo', array('{{ limit }}' => 3), 3), array(Constraint::DEFAULT_GROUP))
+                new Constraints\Length(array('min' => 3, 'minMessage' => 'Yo')),
+                new Rule('minlength', 3, new RuleMessage('Yo', array('{{ limit }}' => 3), 3), array(Constraint::DEFAULT_GROUP))
             ),
             array(
-                new Constraints\Choice(array('max' => 2, 'maxMessage' => 'Choosy', 'choices' => array())),
-                new Rule('maxlength', 2, new RuleMessage('Choosy', array('{{ limit }}' => 2), 2), array(Constraint::DEFAULT_GROUP))
+                new Constraints\Choice(array('min' => 2, 'minMessage' => 'Choosy', 'choices' => array())),
+                new Rule('minlength', 2, new RuleMessage('Choosy', array('{{ limit }}' => 2), 2), array(Constraint::DEFAULT_GROUP))
             )
         );
     }
@@ -61,11 +61,11 @@ class MaxLengthRuleTest extends BaseConstraintMapperTest
     public function provide_unsupported_constraints()
     {
         return array(
-            array(new Constraints\Length(array('min' => 1))),
+            array(new Constraints\Length(array('max' => 1))),
             array(new Constraints\Length(array('min' => 1, 'max' => 1))),
 
             array(new Constraints\Choice(array('min' => 1, 'max' => 1, 'choices' => array()))),
-            array(new Constraints\Choice(array('min' => 1, 'choices' => array())))
+            array(new Constraints\Choice(array('max' => 1, 'choices' => array())))
         );
     }
 

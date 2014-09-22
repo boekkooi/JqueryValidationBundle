@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintResolver;
 

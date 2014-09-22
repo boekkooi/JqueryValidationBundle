@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
 

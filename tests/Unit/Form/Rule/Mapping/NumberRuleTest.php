@@ -1,28 +1,29 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class EmailRuleTest extends BaseConstraintMapperTest
+class NumberRuleTest extends BaseConstraintMapperTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->SUT = new EmailRule();
+        $this->SUT = new NumberRule();
     }
 
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\Email()),
+            array(new Constraints\Range(array('min' => 1))),
         );
     }
 
@@ -30,8 +31,8 @@ class EmailRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(
-                new Constraints\Email(array('message' => 'msg', 'groups' => array('email_group'))),
-                new Rule('email', true, new RuleMessage('msg'), array('email_group'))
+                new Constraints\Range(array('invalidMessage' => 'msg', 'min' => 1)),
+                new Rule('number', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP))
             )
         );
     }

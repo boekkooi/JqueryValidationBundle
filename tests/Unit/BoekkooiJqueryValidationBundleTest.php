@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle;
 
 use Boekkooi\Bundle\JqueryValidationBundle\BoekkooiJqueryValidationBundle;
 

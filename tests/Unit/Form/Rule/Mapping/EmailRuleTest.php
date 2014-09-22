@@ -1,29 +1,28 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class UrlRuleTest extends BaseConstraintMapperTest
+class EmailRuleTest extends BaseConstraintMapperTest
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->SUT = new UrlRule();
+        $this->SUT = new EmailRule();
     }
 
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\Url()),
+            array(new Constraints\Email()),
         );
     }
 
@@ -31,8 +30,8 @@ class UrlRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(
-                new Constraints\Url(array('message' => 'msg_url')),
-                new Rule('url', true, new RuleMessage('msg_url'), array(Constraint::DEFAULT_GROUP))
+                new Constraints\Email(array('message' => 'msg', 'groups' => array('email_group'))),
+                new Rule('email', true, new RuleMessage('msg'), array('email_group'))
             )
         );
     }

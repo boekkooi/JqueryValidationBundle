@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Validator;
+namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Validator;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 
