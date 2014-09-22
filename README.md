@@ -21,12 +21,26 @@ Warning
 This bundle is currently **NOT** stable and you probably don't want to use it in production.
 But please try it! I really need some feedback and help to make this a stable and complete bundle.
 
-
 [Install and configure](doc/install.md)
 -------------
 `composer require boekkooi/jquery-validation-bundle dev-master`
 
 All the installation instructions are located in the [documentation]](doc/install.md).
+
+
+Demo
+-------------
+Yeah so .... nope there is no real demo **but** what you can do is the following:
+```BASH
+git clone https://github.com/boekkooi/JqueryValidationBundle.git
+cd JqueryValidationBundle
+
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+
+php -S 0.0.0.0:8000 tests/Functional/app/web.php
+```
+Now you can see the functional test pages, these should give you a good idea of what is possible.
 
 
 License

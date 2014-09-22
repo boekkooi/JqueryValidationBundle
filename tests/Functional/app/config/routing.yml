@@ -1,0 +1,10 @@
+form_simple:
+  path:  '/'
+  defaults:
+    _controller: TestBundle:Form:simple
+
+form_simple_data:
+  path:  '/simple_data'
+  defaults:
+    _controller: TestBundle:Form:simpleData
+

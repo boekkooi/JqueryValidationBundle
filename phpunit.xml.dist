@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit colors="true" bootstrap="tests/bootstrap.php">
+    <php>
+        <server name="KERNEL_DIR" value="tests/Functional/app" />
+    </php>
+
     <testsuites>
-        <testsuite name="JqueryValidation test suite">
-            <directory>./tests/</directory>
+        <testsuite name="JqueryValidation unit test suite">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="JqueryValidation functional test suite">
+            <directory>./tests/Functional</directory>
         </testsuite>
     </testsuites>
 
