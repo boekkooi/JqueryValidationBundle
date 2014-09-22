@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -61,11 +62,11 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return FormRuleCollection|null
+     * @return FormRuleCollection
      */
     public function getRoot()
     {
-        return $this->root;
+        return $this->isRoot() ? $this : $this->root;
     }
 
     /**
@@ -92,7 +93,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function set($form, RuleCollection $collection)
     {
-        $name = static::getFormName($form);
+        $name = FormHelper::getFormName($form);
 
         unset($this->rules[$name]);
 
@@ -107,7 +108,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function add($form, RuleCollection $collection)
     {
-        $name = static::getFormName($form);
+        $name = FormHelper::getFormName($form);
         if (isset($this->rules[$name])) {
             $this->rules[$name]->addCollection($collection);
         } else {
@@ -133,7 +134,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function get($form)
     {
-        $name = static::getFormName($form);
+        $name = FormHelper::getFormName($form);
 
         return isset($this->rules[$name]) ? $this->rules[$name] : null;
     }
@@ -145,7 +146,7 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
      */
     public function remove($form)
     {
-        $name = static::getFormName($form);
+        $name = FormHelper::getFormName($form);
         unset($this->rules[$name]);
     }
 
@@ -164,18 +165,5 @@ class FormRuleCollection implements \IteratorAggregate, \Countable
                 $this->rules[$name] = $rule;
             }
         }
-    }
-
-    public static function getFormName($form)
-    {
-        if ($form instanceof FormView && isset($form->vars['full_name'])) {
-            return $form->vars['full_name'];
-        }
-        if (is_string($form)) {
-            return $form;
-        }
-
-        // TODO use bundle exception
-        throw new \InvalidArgumentException();
     }
 }
