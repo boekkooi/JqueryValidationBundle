@@ -55,6 +55,7 @@ class ClickableIterator extends \FilterIterator
         if (!$innerIterator instanceof \RecursiveIteratorIterator) {
             throw new \LogicException();
         }
+
         return $innerIterator;
     }
 }

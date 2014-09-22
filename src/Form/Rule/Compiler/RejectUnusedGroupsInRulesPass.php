@@ -8,11 +8,14 @@ use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class RejectUnusedGroupsInRulesPass implements FormPassInterface {
-
+class RejectUnusedGroupsInRulesPass implements FormPassInterface
+{
     public function process(FormRuleCollection $collection, FormContext $context)
     {
         $rules = $collection->get($collection->getView());
+        if ($rules === null) {
+            return;
+        }
 
         /** @var \Boekkooi\Bundle\JqueryValidationBundle\Form\Rule $rule */
         foreach ($rules as $name => $rule) {

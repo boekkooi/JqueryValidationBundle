@@ -1,6 +1,5 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
-use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>

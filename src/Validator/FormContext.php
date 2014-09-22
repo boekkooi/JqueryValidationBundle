@@ -1,5 +1,6 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Validator;
+
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\Util\GroupFilterIterator;
 
 /**

@@ -42,5 +42,3 @@ services:
     public: false
     tags:
       - { name: validator.rule_pass, priority: 10 }
-
-

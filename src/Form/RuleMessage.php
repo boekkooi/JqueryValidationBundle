@@ -8,8 +8,6 @@ class RuleMessage
 {
     public $message;
 
-    public $translation_domain = null;
-
     public $parameters;
 
     public $plural;
