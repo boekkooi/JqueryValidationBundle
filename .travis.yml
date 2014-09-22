@@ -17,6 +17,9 @@ before_script:
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/validator=$SYMFONY_VERSION; fi;'
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/form=$SYMFONY_VERSION; fi;'
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/twig-bundle=$SYMFONY_VERSION; fi;'
+  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/browser-kit=$SYMFONY_VERSION; fi;'
+  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/finder=$SYMFONY_VERSION; fi;'
+  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/yaml=$SYMFONY_VERSION; fi;'
   - sh -c 'if [ "$TWIG_VERSION" != "" ]; then composer require --no-update twig/twig=$TWIG_VERSION; fi;'
   - sh -c 'if [  $(phpenv version-name) = "5.3.3" ]; then composer remove --no-update --dev -n fabpot/php-cs-fixer; fi;'
   - composer install --dev
