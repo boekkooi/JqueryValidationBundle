@@ -39,11 +39,22 @@ class ClickableIterator extends \FilterIterator
      * The current active sub iterator
      *
      * @param $level
-     * @return \RecursiveFormIterator The current active sub iterator.
+     * @return RecursiveFormIterator The current active sub iterator.
      */
     public function getSubIterator($level = null)
     {
-        // TODO check docs if this is really null
         return $this->getInnerIterator()->getSubIterator($level);
+    }
+
+    /**
+     * @return \RecursiveIteratorIterator
+     */
+    public function getInnerIterator()
+    {
+        $innerIterator = parent::getInnerIterator();
+        if (!$innerIterator instanceof \RecursiveIteratorIterator) {
+            throw new \LogicException();
+        }
+        return $innerIterator;
     }
 }

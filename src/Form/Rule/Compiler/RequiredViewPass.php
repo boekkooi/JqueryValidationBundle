@@ -19,11 +19,14 @@ class RequiredViewPass implements FormPassInterface
     public function process(FormRuleCollection $collection, FormContext $context)
     {
         $view = $collection->getView();
+        if (!isset($view->vars['required'])) {
+            return;
+        }
 
         // Check if the field is really required according to HTML validation
         // (aka the required for symfony form means it needs to be submitted but maybe null or "")
         foreach ($context as $constraint) {
-            if (in_array(get_class($constraint), static::$requiredConstraintClasses)) {
+            if (in_array(get_class($constraint), static::$requiredConstraintClasses, true)) {
                 $view->vars['required'] = true;
 
                 return;

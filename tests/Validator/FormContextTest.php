@@ -34,6 +34,14 @@ class FormContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_should_be_traversable()
+    {
+        $this->assertInstanceOf('Traversable', $this->SUT);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_be_disabled_when_a_group_exists_that_is_false()
     {
         $this->given_group_contain_false();

@@ -7,11 +7,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class RecursiveFormIterator extends \IteratorIterator implements \RecursiveIterator
 {
-    public function __construct(FormInterface $form)
-    {
-        parent::__construct($form);
-    }
-
     /**
      * {@inheritdoc}
      */

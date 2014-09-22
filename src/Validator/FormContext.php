@@ -5,7 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Validator\Util\GroupFilterIterator;
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class FormContext
+class FormContext implements \IteratorAggregate
 {
     /**
      * @var ConstraintCollection
