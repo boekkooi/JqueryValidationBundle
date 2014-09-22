@@ -16,7 +16,7 @@ class GroupFilterIterator extends \FilterIterator
     /**
      * @var GroupCollection
      */
-    private $groups = array();
+    private $groups;
 
     /**
      * Constructor
@@ -39,7 +39,7 @@ class GroupFilterIterator extends \FilterIterator
     public function accept()
     {
         $constraint = $this->current();
-        if (!$constraint instanceof Constraint) {
+        if (!$constraint instanceof Constraint || count($constraint->groups) === 0) {
             return false;
         }
 

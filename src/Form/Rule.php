@@ -1,5 +1,6 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
+
 use Symfony\Component\Validator\Constraint;
 
 /**

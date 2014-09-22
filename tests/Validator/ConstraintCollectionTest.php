@@ -38,6 +38,24 @@ class ConstraintCollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_should_allow_adding_collections()
+    {
+        $c1 = $this->getMock('Symfony\Component\Validator\Constraint');
+        $c2 = $this->getMock('Symfony\Component\Validator\Constraint');
+
+        $collection = new ConstraintCollection();
+        $collection->add($c1);
+        $collection->add($c2);
+
+        $this->SUT->add($this->constraint);
+        $this->SUT->addCollection($collection);
+
+        $this->assertEquals(array($this->constraint, $c1, $c2), $this->SUT->toArray());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_set_constraint_instance()
     {
         $this->SUT->set(2, $this->constraint);
