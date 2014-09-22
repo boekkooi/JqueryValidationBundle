@@ -28,8 +28,7 @@ class CollectionPrototypePass implements FormPassInterface
         $prototypeView = $view->vars['prototype'];
 
         // Extract the prototype rules from the default rules
-        $rootCollection = $collection->isRoot() ? $collection : $collection->getRoot();
-        $prototypeCollection = $this->extractRules($rootCollection, $prototype, $prototypeView);
+        $prototypeCollection = $this->extractRules($collection->getRoot(), $prototype, $prototypeView);
         if ($prototypeCollection->count() > 0) {
             $view->vars['jquery_validation_rules'] = $prototypeCollection;
         }

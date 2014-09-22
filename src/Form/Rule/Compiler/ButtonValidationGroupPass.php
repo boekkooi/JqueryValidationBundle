@@ -19,7 +19,7 @@ class ButtonValidationGroupPass implements FormPassInterface
             return;
         }
 
-        $view = $this->getRootView($collection);
+        $view = $collection->getRoot()->getView();
 
         // No buttons or validation groups so nothing to do
         if (empty($view->vars['jquery_validation_buttons']) || empty($view->vars['jquery_validation_groups'])) {
@@ -51,14 +51,5 @@ class ButtonValidationGroupPass implements FormPassInterface
 
             $groupCollection->add($btnGroups);
         }
-    }
-
-    private function getRootView(FormRuleCollection $collection)
-    {
-        if ($collection->isRoot()) {
-            return $collection->getView();
-        }
-
-        return $collection->getRoot()->getView();
     }
 }

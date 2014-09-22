@@ -18,7 +18,7 @@ class ValidationGroupPass implements FormPassInterface
             return;
         }
 
-        $rootView = $this->getRootView($collection);
+        $rootView = $collection->getRoot()->getView();
 
         if (empty($rootView->vars['jquery_validation_groups'])) {
             return;
@@ -52,14 +52,5 @@ class ValidationGroupPass implements FormPassInterface
         } while ($path !== null);
 
         return array(Constraint::DEFAULT_GROUP);
-    }
-
-    private function getRootView(FormRuleCollection $collection)
-    {
-        if ($collection->isRoot()) {
-            return $collection->getView();
-        }
-
-        return $collection->getRoot()->getView();
     }
 }
