@@ -37,6 +37,9 @@ class ButtonsFormType extends AbstractType
             ->add('mainValidation', 'submit', array(
                 'validation_groups' => 'main',
             ))
+            ->add('mainAndDefaultValidation', 'submit', array(
+                'validation_groups' => array('main', 'Default'),
+            ))
             ->add('noValidation', 'submit', array(
                 'validation_groups' => false,
             ))

@@ -89,6 +89,9 @@ class SimpleFormTest extends WebTestCase
                 form.find("*[name=\"buttons\x5BmainValidation\x5D\"]").click(function () {
                     groups = {"main": true, "Default": false};
                 });
+                form.find("*[name=\"buttons\x5BmainAndDefaultValidation\x5D\"]").click(function () {
+                    groups = {"main": true, "Default": true};
+                });
                 form.find("*[name=\"buttons\x5BnoValidation\x5D\"]").addClass("cancel");
 
                 form.validate({

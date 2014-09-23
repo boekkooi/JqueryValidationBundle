@@ -2,31 +2,44 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Test: {{ form.vars.name }}</title>
+    <link href='http://ajax.aspnetcdn.com/ajax/bootstrap/3.2.0/css/bootstrap.min.css' rel="stylesheet" type="text/css" media="all" />
     <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.1.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
 </head>
-<body>
-    <ul>
-        <li><a href="{{ path('form_simple') }}">Simple Form</a></li>
-        <li><a href="{{ path('form_simple_data') }}">Simple Data Form</a></li>
-        <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
-        <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
-    </ul>
+<body class="container" style="margin-top: 15px">
+    <div class="panel panel-default">
+        <div class="panel-heading">Test: {{ form.vars.name }}</div>
+        <div class="panel-body">
+            <ul class="nav nav-pills nav-stacked col-xs-5 col-sm-3">
+                <li><a href="{{ path('form_simple') }}">Simple Form</a></li>
+                <li><a href="{{ path('form_simple_data') }}">Simple Data Form</a></li>
+                <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
+                <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
+            </ul>
+            <div class="col-xs-7 col-sm-9">
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="alert alert-info" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
 
-    {% form_theme form _self %}
+                {% form_theme form _self %}
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
 
-        {% if button is not defined or not button %}
-            <input type="submit">
-        {% endif %}
-    {{ form_end(form) }}
+                    {% if button is not defined or not button %}
+                        <input type="submit">
+                    {% endif %}
+                {{ form_end(form) }}
 
-    <script id="validation_script">
-        {{ form_jquery_validation(form) }}
-    </script>
+                <script id="validation_script">
+                    {{ form_jquery_validation(form) }}
+                </script>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

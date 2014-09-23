@@ -23,5 +23,5 @@ class SimpleData
      * @Assert\NotBlank()
      * @Assert\Length(min="2", max="255")
      */
-    protected $password;
+    public $password;
 }
