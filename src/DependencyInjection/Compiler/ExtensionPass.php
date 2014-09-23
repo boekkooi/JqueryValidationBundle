@@ -15,36 +15,24 @@ class ExtensionPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->registerRuleFormPasses($container);
+        $this->registerRuleProcessors($container);
+        $this->registerRuleCompilers($container);
         $this->registerRuleMappers($container);
     }
 
     /**
      * @param ContainerBuilder $container
-     * @return array
      */
-    protected function registerRuleMappers(ContainerBuilder $container)
+    protected function registerRuleProcessors(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('boekkooi.jquery_validation.constraint_resolver')) {
+        if (!$container->hasDefinition('boekkooi.jquery_validation.rule_processor')) {
             return;
         }
 
-        $mappers = $container->findTaggedServiceIds('validator.rule_mapper');
-        $resolverDef = $container->getDefinition('boekkooi.jquery_validation.constraint_resolver');
-        foreach ($mappers as $id => $attr) {
-            $resolverDef->addMethodCall('addMapper', array(new Reference($id)));
-        }
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     */
-    protected function registerRuleFormPasses(ContainerBuilder $container)
-    {
         $passes = new \SplPriorityQueue();
         $order = PHP_INT_MAX;
-        foreach ($container->findTaggedServiceIds('validator.rule_pass') as $id => $attr) {
-            $priority = isset($attr['priority']) ? intval($attr['priority']) : 0;
+        foreach ($container->findTaggedServiceIds('form_rule_processor') as $id => $attr) {
+            $priority = isset($attr[0]['priority']) ? $attr[0]['priority'] : 0;
 
             $passes->insert($id, array($priority, --$order));
         }
@@ -53,6 +41,48 @@ class ExtensionPass implements CompilerPassInterface
         foreach ($passes as $id) {
             $references[] = new Reference($id);
         }
-        $container->getDefinition('boekkooi.jquery_validation.rule_collector')->replaceArgument(0, $references);
+        $container->getDefinition('boekkooi.jquery_validation.rule_processor')->replaceArgument(0, $references);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerRuleCompilers(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('boekkooi.jquery_validation.rule_compiler')) {
+            return;
+        }
+
+        $passes = new \SplPriorityQueue();
+        $order = PHP_INT_MAX;
+        foreach ($container->findTaggedServiceIds('form_rule_compiler') as $id => $attr) {
+            $priority = isset($attr[0]['priority']) ? $attr[0]['priority'] : 0;
+
+            $passes->insert($id, array($priority, --$order));
+        }
+
+        $references = array();
+        foreach ($passes as $id) {
+            $references[] = new Reference($id);
+        }
+        $container->getDefinition('boekkooi.jquery_validation.rule_compiler')->replaceArgument(0, $references);
+    }
+
+
+    /**
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    protected function registerRuleMappers(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('boekkooi.jquery_validation.form.rule.processor.constraint_mapper')) {
+            return;
+        }
+
+        $mappers = $container->findTaggedServiceIds('form_rule_constraint_mapper');
+        $resolverDef = $container->getDefinition('boekkooi.jquery_validation.form.rule.processor.constraint_mapper');
+        foreach ($mappers as $id => $attr) {
+            $resolverDef->addMethodCall('addMapper', array(new Reference($id)));
+        }
     }
 }

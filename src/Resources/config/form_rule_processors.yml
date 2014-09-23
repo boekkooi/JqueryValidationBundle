@@ -1,0 +1,24 @@
+services:
+  boekkooi.jquery_validation.form.rule.processor.required_view:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\RequiredViewPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 0 }
+
+  boekkooi.jquery_validation.form.rule.processor.collection:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\CollectionPrototypePass
+    public: false
+    tags:
+      - { name: form_rule_processor, priority: 0 }
+
+  boekkooi.jquery_validation.form.rule.processor.value_duplicates_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 0 }
+
+  boekkooi.jquery_validation.form.rule.processor.constraint_mapper:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ConstraintMappingPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 100 }

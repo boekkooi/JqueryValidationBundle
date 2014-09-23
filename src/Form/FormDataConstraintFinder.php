@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class DataConstraintFinder
+class FormDataConstraintFinder
 {
     /**
      * @var MetadataFactoryInterface

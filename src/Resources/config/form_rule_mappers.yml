@@ -3,52 +3,52 @@ services:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.number:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.min:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.max:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.min_length:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinLengthRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.max_length:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxLengthRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.email:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.url:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.creditcard:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\CreditcardRule
     public: false
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }

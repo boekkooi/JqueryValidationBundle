@@ -48,8 +48,9 @@ class BoekkooiJqueryValidationExtension  extends Extension
     {
         $container->setParameter('boekkooi.jquery_validation.enabled', $config['form']['enabled']);
 
-        $loader->load('form_rule_pass.yml');
-        $loader->load('form_rule_mapper.yml');
+        $loader->load('form_rule_processors.yml');
+        $loader->load('form_rule_mappers.yml');
+        $loader->load('form_rule_compilers.yml');
 
         $this->configureTwig($config, $loader);
     }

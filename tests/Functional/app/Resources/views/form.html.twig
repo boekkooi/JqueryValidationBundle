@@ -16,6 +16,7 @@
                 <li><a href="{{ path('form_simple_data') }}">Simple Data Form</a></li>
                 <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
                 <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
+                <li><a href="{{ path('form_collection_compound') }}">Collection Compound Form</a></li>
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
@@ -46,6 +47,9 @@
 {% block collection_widget -%}
     {% if prototype is defined %}
         {%- set attr = attr|merge({'data-prototype-js': form_jquery_validation(form)}) -%}
+    {% endif %}
+    {% if prototype is defined %}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
     {% endif %}
     {{- block('form_widget') -}}
 {%- endblock collection_widget %}

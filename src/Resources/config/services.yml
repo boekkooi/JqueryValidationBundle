@@ -1,22 +1,35 @@
 parameters:
   boekkooi.jquery_validation.form.form_extension.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Extension\FormTypeExtension
+  boekkooi.jquery_validation.form.button_extension.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Extension\ButtonTypeExtension
 
-  boekkooi.jquery_validation.rule_collector.class: Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollector
-  boekkooi.jquery_validation.constraint_finder.class: Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder
-  boekkooi.jquery_validation.constraint_resolver.class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintResolver
+  boekkooi.jquery_validation.rule_processor.class: Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessor
+  boekkooi.jquery_validation.rule_compiler.class: Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompiler
+
+  boekkooi.jquery_validation.constraint_finder.class: Boekkooi\Bundle\JqueryValidationBundle\Form\FormDataConstraintFinder
 
 services:
   boekkooi.jquery_validation.form.form_extension:
     class: %boekkooi.jquery_validation.form.form_extension.class%
     arguments:
+      - @boekkooi.jquery_validation.rule_processor
+      - @boekkooi.jquery_validation.rule_compiler
       - @boekkooi.jquery_validation.constraint_finder
-      - @boekkooi.jquery_validation.rule_collector
       - %boekkooi.jquery_validation.enabled%
     tags:
       - { name: form.type_extension, alias: form }
 
-  boekkooi.jquery_validation.rule_collector:
-    class: %boekkooi.jquery_validation.rule_collector.class%
+  boekkooi.jquery_validation.form.button_extension:
+    class: %boekkooi.jquery_validation.form.button_extension.class%
+    tags:
+      - { name: form.type_extension, alias: button }
+
+  boekkooi.jquery_validation.rule_processor:
+    class: %boekkooi.jquery_validation.rule_processor.class%
+    arguments:
+      - []
+
+  boekkooi.jquery_validation.rule_compiler:
+    class: %boekkooi.jquery_validation.rule_compiler.class%
     arguments:
       - []
 
@@ -24,7 +37,3 @@ services:
     class: %boekkooi.jquery_validation.constraint_finder.class%
     arguments:
       - @validator.mapping.class_metadata_factory
-
-  boekkooi.jquery_validation.constraint_resolver:
-    class: %boekkooi.jquery_validation.constraint_resolver.class%
-    public: false

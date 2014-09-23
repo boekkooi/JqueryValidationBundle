@@ -1,10 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
-/**
- * @author Warnar Boekkooi <warnar@boekkooi.net>
- */
-class RecursiveFormIterator extends \IteratorIterator implements \RecursiveIterator
+class FormViewRecursiveIterator extends \IteratorIterator implements \RecursiveIterator
 {
     /**
      * {@inheritdoc}
@@ -19,6 +16,6 @@ class RecursiveFormIterator extends \IteratorIterator implements \RecursiveItera
      */
     public function hasChildren()
     {
-        return (bool) $this->current()->getConfig()->getCompound();
+        return $this->current()->count() > 0;
     }
 }

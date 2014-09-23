@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ButtonsFormType;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleDataFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType;
@@ -41,6 +42,14 @@ class FormController extends Controller
     public function collectionAction(Request $request)
     {
         $form = $this->createForm(new CollectionFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
+
+    public function collectionCompoundAction(Request $request)
+    {
+        $form = $this->createForm(new CollectionCompoundFormType());
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));

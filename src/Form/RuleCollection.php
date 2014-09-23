@@ -20,6 +20,7 @@ class RuleCollection extends ArrayCollection
     }
 
     /**
+     * {@inheritdoc}
      * @throw \LogicException
      */
     public function add($value)

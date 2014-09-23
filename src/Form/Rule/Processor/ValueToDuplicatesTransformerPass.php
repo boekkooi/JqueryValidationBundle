@@ -1,28 +1,28 @@
 <?php
-namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class ValueToDuplicatesPass implements FormPassInterface
+class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
 {
     /**
      * @var null|\ReflectionProperty
      */
-    private $keyReflCache = null;
+    private $keyReflectionCache = null;
 
-    public function process(FormRuleCollection $collection, FormContext $context)
+    public function process(FormRuleProcessorContext $context, FormRuleContextBuilder $collection)
     {
-        $form = $collection->getForm();
+        $form = $context->getForm();
         if (!$form->getConfig()->getCompound()) {
             return;
         }
@@ -32,7 +32,7 @@ class ValueToDuplicatesPass implements FormPassInterface
             return;
         }
         $keys = $this->getKeys($transformer);
-        $formView = $collection->getView();
+        $formView = $context->getView();
 
         $primary = array_shift($keys);
         $primaryView = $formView->children[$primary];
@@ -86,14 +86,14 @@ class ValueToDuplicatesPass implements FormPassInterface
 
     private function getKeys($transformer)
     {
-        if ($this->keyReflCache === null) {
+        if ($this->keyReflectionCache === null) {
             // Using reflection since we want to support more then just the repeated form type.
-            $refl = new \ReflectionProperty(get_class($transformer), 'keys');
-            $refl->setAccessible(true);
-            $this->keyReflCache = $refl;
+            $reflection = new \ReflectionProperty(get_class($transformer), 'keys');
+            $reflection->setAccessible(true);
+            $this->keyReflectionCache = $reflection;
         }
 
-        return $this->keyReflCache->getValue($transformer);
+        return $this->keyReflectionCache->getValue($transformer);
     }
 
     private function getFieldSelector(FormView $view)

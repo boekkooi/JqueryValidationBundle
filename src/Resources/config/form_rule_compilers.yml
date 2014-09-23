@@ -1,0 +1,12 @@
+services:
+  boekkooi.jquery_validation.form.rule.group_null.compiler:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\GroupNullResolverPass
+    public: false
+    tags:
+     - { name: form_rule_compiler, priority: 10 }
+
+  boekkooi.jquery_validation.form.rule.reject_unused_rules.compiler:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RejectUnusedRulesPass
+    public: false
+    tags:
+     - { name: form_rule_compiler, priority: 0 }

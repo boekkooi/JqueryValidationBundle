@@ -4,7 +4,6 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\For
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>

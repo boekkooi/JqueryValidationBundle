@@ -1,14 +1,14 @@
 <?php
-namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class RequiredViewPass implements FormPassInterface
+class RequiredViewPass implements FormRuleProcessorInterface
 {
     protected static $requiredConstraintClasses = array(
         'Symfony\Component\Validator\Constraints\NotNull',
@@ -16,16 +16,17 @@ class RequiredViewPass implements FormPassInterface
         'Symfony\Component\Validator\Constraints\Required'
     );
 
-    public function process(FormRuleCollection $collection, FormContext $context)
+    public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)
     {
-        $view = $collection->getView();
+        $view = $processContext->getView();
         if (!isset($view->vars['required'])) {
             return;
         }
 
         // Check if the field is really required according to HTML validation
         // (aka the required for symfony form means it needs to be submitted but maybe null or "")
-        foreach ($context as $constraint) {
+        $constraints = $processContext->getConstraints();
+        foreach ($constraints as $constraint) {
             if (in_array(get_class($constraint), static::$requiredConstraintClasses, true)) {
                 $view->vars['required'] = true;
 
@@ -35,5 +36,4 @@ class RequiredViewPass implements FormPassInterface
 
         $view->vars['required'] = false;
     }
-
 }

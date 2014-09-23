@@ -81,16 +81,16 @@ class SimpleFormTest extends WebTestCase
         $this->assertEqualJs(
             '(function ($) {
                 var form = $("form[name=\"buttons\"]");
-                var groups = {"main": false, "Default": false};
+                var groups = {"Default": false, "main": false};
 
                 form.find("*[name=\"buttons\x5BdefaultValidation\x5D\"]").click(function () {
-                    groups = {"main": false, "Default": true};
+                    groups = {"Default": true, "main": false};
                 });
                 form.find("*[name=\"buttons\x5BmainValidation\x5D\"]").click(function () {
-                    groups = {"main": true, "Default": false};
+                    groups = {"Default": false, "main": true};
                 });
                 form.find("*[name=\"buttons\x5BmainAndDefaultValidation\x5D\"]").click(function () {
-                    groups = {"main": true, "Default": true};
+                    groups = {"Default": true, "main": true};
                 });
                 form.find("*[name=\"buttons\x5BnoValidation\x5D\"]").addClass("cancel");
 
@@ -171,6 +171,59 @@ class SimpleFormTest extends WebTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_render_collection_compound_row_javascript()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/collection_compound', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"collection_compound\"]");
+                form.validate({rules: {"collection_compound\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
+                    messages: {
+                        "collection_compound\x5Btitle\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
+                        }
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+
+        $elt = $client->getCrawler()->filterXPath('//div/@data-prototype-js');
+        $javascriptPrototype = $elt->html();
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"collection_compound\"]");
+                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bname\x5D\"]").rules("add", {
+                    "required": true,
+                    "minlength": 2,
+                    "messages": {
+                    "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                        "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more."
+                    }
+                });
+                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D\"]").rules("add", {
+                    "required": true,
+                    "messages": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
+                });
+                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bsecond\x5D\"]").rules("add", {
+                    "equalTo": "form[name=\"collection_compound\"] *[name=\"collection_compound[tags][__name__][password][first]\"]",
+                    "messages": {"equalTo": "WRONG\x21"}
+                });
+            })(jQuery);',
+            $javascriptPrototype
+        );
+    }
+
+
     protected function fetch_application_page_javascript($url, $client = null)
     {
         $client = $client ?: self::createClient();
@@ -181,6 +234,7 @@ class SimpleFormTest extends WebTestCase
         $elt = $crawler->filterXPath('//script[@id="validation_script"]');
 
         $this->assertEquals(1, $elt->count());
+
         return $elt->html();
     }
 

@@ -1,15 +1,14 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Extension;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\DataConstraintFinder;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\FormPassInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\ClickableIterator;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormDataConstraintFinder;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompilerInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\FormContext;
-use Boekkooi\Bundle\JqueryValidationBundle\Validator\GroupCollection;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,12 +20,7 @@ use Symfony\Component\Validator\Constraint;
 class FormTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @var FormPassInterface
-     */
-    private $ruleCollector;
-
-    /**
-     * @var DataConstraintFinder
+     * @var FormDataConstraintFinder
      */
     private $constraintFinder;
 
@@ -35,73 +29,90 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     private $defaultEnabled;
 
-    public function __construct(DataConstraintFinder $constraintFinder, FormPassInterface $ruleCollector, $enabled = true)
+    /**
+     * @var FormRuleCompilerInterface
+     */
+    private $formRuleCompiler;
+
+    /**
+     * @var FormRuleProcessorInterface
+     */
+    private $formRuleProcessor;
+
+    public function __construct(FormRuleProcessorInterface $formRuleProcessor, FormRuleCompilerInterface $formRuleCompiler, FormDataConstraintFinder $constraintFinder, $enabled = true)
     {
-        $this->ruleCollector = $ruleCollector;
         $this->constraintFinder = $constraintFinder;
         $this->defaultEnabled = $enabled;
+        $this->formRuleCompiler = $formRuleCompiler;
+        $this->formRuleProcessor = $formRuleProcessor;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if (!$this->isEnabled($view, $form, $options)) {
-            return;
-        }
-
-        $validation_groups = self::getValidationGroups($form);
-
-        // Handle the actual form root.
+        // Actual form root.
         if ($form->isRoot() && $view->parent === null) {
-            $view->vars['jquery_validation_rules'] = new FormRuleCollection($form, $view);
-            $view->vars['jquery_validation_groups'] = array();
+            if (!$options['jquery_validation']) {
+                return;
+            }
 
+            $validation_groups = FormHelper::getValidationGroups($form);
+
+            $contextBuilder = new FormRuleContextBuilder();
+            $view->vars['rule_builder'] = $contextBuilder;
             if ($validation_groups === null) {
                 $validation_groups = array(Constraint::DEFAULT_GROUP);
             }
+        } else {
+            $rootView = FormHelper::getViewRoot($view);
+            if (!$this->hasRuleBuilderContext($rootView)) {
+                return;
+            }
 
-            $this->addSubmitButtonData($view, $form);
+            $contextBuilder = $this->getRuleBuilder($rootView);
+            $validation_groups = FormHelper::getValidationGroups($form);
         }
 
         if ($validation_groups !== null) {
-            $rootView = self::getViewRoot($view);
-            $rootView->vars['jquery_validation_groups'][$view->vars['full_name']] = $validation_groups;
+            $contextBuilder->addGroup($view, $validation_groups);
         }
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if (!$this->isEnabled($view, $form, $options)) {
+        $rootView = FormHelper::getViewRoot($view);
+        if (!$this->hasRuleBuilderContext($rootView)) {
             return;
         }
 
-        $rootCollection = $this->getRuleCollection($view);
-
-        if ($form->isRoot() && $view->parent === null) {
-            $collection = $rootCollection;
-        } else {
-            $collection = new FormRuleCollection($form, $view, $rootCollection);
-        }
-
-        $context = new FormContext($this->findConstraints($form), new GroupCollection());
-
-        $this->ruleCollector->process(
-            $collection,
-            $context
+        $ruleBuilder = $this->getRuleBuilder($rootView);
+        $this->formRuleProcessor->process(
+            new FormRuleProcessorContext($view, $form, $this->findConstraints($form)),
+            $ruleBuilder
         );
 
-        if ($collection !== $rootCollection) {
-            $rootCollection->addCollection($collection);
+        if ($this->hasRuleBuilderContext($view)) {
+            /** @var FormRuleContextBuilder $ruleBuilder */
+            $ruleBuilder = $view->vars['rule_builder'];
+
+            $this->formRuleCompiler->compile($ruleBuilder);
+
+            $view->vars['rule_context'] = $ruleBuilder->getRuleContext();
+
+            // Clean up
+            unset($view->vars['rule_builder']);
         }
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(array('jquery_validation'));
+        $resolver->setDefaults(array(
+            'jquery_validation' => $this->defaultEnabled
+        ));
         $resolver->setAllowedTypes(array(
             'jquery_validation' => array('bool', 'null')
         ));
     }
-
 
     /**
      * {@inheritdoc}
@@ -111,47 +122,25 @@ class FormTypeExtension extends AbstractTypeExtension
         return 'form';
     }
 
-    protected function isEnabled(FormView $view, FormInterface $form, array $options)
-    {
-        $enabled = isset($options['jquery_validation']) && $options['jquery_validation'] === true || $this->defaultEnabled ? true : false;
-        if ($form->isRoot() && $view->parent === null) {
-            return $enabled;
-        }
-
-        $viewRoot = self::getViewRoot($view);
-
-        // The root has no validation data so it's disabled
-        if (!isset($viewRoot->vars['jquery_validation_rules'])) {
-            return false;
-        }
-        // The jquery_validation option is not set but validation is active to this is enabled
-        if (!isset($options['jquery_validation']) || $options['jquery_validation'] === null) {
-            return true;
-        }
-
-        // Options was specified to return it
-        return $enabled;
-    }
-
     /**
      * @param FormView $view
-     * @return FormRuleCollection
+     * @return FormRuleContextBuilder
      */
-    protected function getRuleCollection(FormView $view)
+    protected function getRuleBuilder(FormView $view)
     {
-        $viewRoot = self::getViewRoot($view);
-        if (!isset($viewRoot->vars['jquery_validation_rules'])) {
-            throw new \LogicException('getRuleCollection is called before it was set by buildView');
+        $viewRoot = FormHelper::getViewRoot($view);
+        if (!isset($viewRoot->vars['rule_builder'])) {
+            throw new \LogicException('getRuleBuilder is called before it was set by buildView');
         }
 
-        return $viewRoot->vars['jquery_validation_rules'];
+        return $viewRoot->vars['rule_builder'];
     }
 
     /**
      * Find all constraints for the given FormInterface.
      *
      * @param FormInterface $form
-     * @return array
+     * @return ConstraintCollection
      */
     protected function findConstraints(FormInterface $form)
     {
@@ -179,69 +168,8 @@ class FormTypeExtension extends AbstractTypeExtension
         return $constraints;
     }
 
-    protected function addSubmitButtonData(FormView $view, FormInterface $form)
+    protected function hasRuleBuilderContext(FormView $view)
     {
-        // We have to walk through the entire form and detect the submit buttons
-        $iterator = new ClickableIterator($form);
-        /** @var ClickableInterface|FormInterface $button */
-        foreach ($iterator as $button) {
-            // Create the button name since the button view has not been created yet
-            $name = array($button->getName());
-            for ($i = $iterator->getDepth()-1; $i >= 0; $i--) {
-                $name[] = $iterator->getSubIterator($i)->current()->getName();
-            }
-            $parentFullName = $view->vars['full_name'];
-            if ($parentFullName === '') {
-                $parentFullName = array_shift($name);
-            }
-            $name = sprintf('%s[%s]', $parentFullName, implode('][', $name));
-
-            // Add button to the button list
-            if (!isset($view->vars['jquery_validation_buttons'])) {
-                $view->vars['jquery_validation_buttons'] = array();
-            }
-            $view->vars['jquery_validation_buttons'][] = $name;
-
-            // Add button to the validation groups list
-            if (!isset($view->vars['jquery_validation_groups'])) {
-                $view->vars['jquery_validation_groups'] = array();
-            }
-            $view->vars['jquery_validation_groups'][$name] = self::getValidationGroups($button);
-        }
-    }
-
-    private static function getValidationGroups(FormInterface $form)
-    {
-        $cfg = $form->getConfig();
-
-        if ($cfg->hasOption('jquery_validation_groups')) {
-            $groups = $cfg->getOption('jquery_validation_groups');
-        } else {
-            $groups = $cfg->getOption('validation_groups');
-        }
-
-        if ($groups === null || $groups === false) {
-            return $groups;
-        }
-
-        if (!is_string($groups) && is_callable($groups)) {
-            throw new \RuntimeException('Callable validation_groups are not supported. Disable jquery_validation or set jquery_validation_groups');
-        }
-
-        return (array) $groups;
-    }
-
-    /**
-     * @param FormView $view
-     * @return FormView
-     */
-    private static function getViewRoot(FormView $view)
-    {
-        $root = $view;
-        while ($root->parent !== null) {
-            $root = $root->parent;
-        }
-
-        return $root;
+        return isset($view->vars['rule_builder']) && $view->vars['rule_builder'] instanceof FormRuleContextBuilder;
     }
 }

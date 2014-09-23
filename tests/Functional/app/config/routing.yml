@@ -17,3 +17,8 @@ form_collection:
   path:  '/collection'
   defaults:
     _controller: TestBundle:Form:collection
+
+form_collection_compound:
+  path:  '/collection_compound'
+  defaults:
+    _controller: TestBundle:Form:collectionCompound
