@@ -8,3 +8,12 @@ form_simple_data:
   defaults:
     _controller: TestBundle:Form:simpleData
 
+form_buttons:
+  path:  '/buttons'
+  defaults:
+    _controller: TestBundle:Form:buttons
+
+form_collection:
+  path:  '/collection'
+  defaults:
+    _controller: TestBundle:Form:collection

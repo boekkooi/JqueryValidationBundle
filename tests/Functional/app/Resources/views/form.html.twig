@@ -10,11 +10,18 @@
     <ul>
         <li><a href="{{ path('form_simple') }}">Simple Form</a></li>
         <li><a href="{{ path('form_simple_data') }}">Simple Data Form</a></li>
+        <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
+        <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
     </ul>
+
+    {% form_theme form _self %}
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit">
+
+        {% if button is not defined or not button %}
+            <input type="submit">
+        {% endif %}
     {{ form_end(form) }}
 
     <script id="validation_script">
@@ -22,3 +29,10 @@
     </script>
 </body>
 </html>
+
+{% block collection_widget -%}
+    {% if prototype is defined %}
+        {%- set attr = attr|merge({'data-prototype-js': form_jquery_validation(form)}) -%}
+    {% endif %}
+    {{- block('form_widget') -}}
+{%- endblock collection_widget %}

@@ -72,9 +72,105 @@ class SimpleFormTest extends WebTestCase
         );
     }
 
-    protected function fetch_application_page_javascript($url)
+    /**
+     * @test
+     */
+    public function it_should_render_valid_javascript_for_a_form_with_buttons()
+    {
+        $javascript = $this->fetch_application_page_javascript('/buttons');
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"buttons\"]");
+                var groups = {"main": false, "Default": false};
+
+                form.find("*[name=\"buttons\x5BdefaultValidation\x5D\"]").click(function () {
+                    groups = {"main": false, "Default": true};
+                });
+                form.find("*[name=\"buttons\x5BmainValidation\x5D\"]").click(function () {
+                    groups = {"main": true, "Default": false};
+                });
+                form.find("*[name=\"buttons\x5BnoValidation\x5D\"]").addClass("cancel");
+
+                form.validate({
+                    rules: {
+                        "buttons\x5Btitle\x5D": {
+                            "required": {
+                                depends: function () {
+                                    return groups["main"] || groups["Default"];
+                                }
+                            }, "minlength": {
+                                param: 8, depends: function () {
+                                    return groups["main"];
+                                }
+                            }, "maxlength": {
+                                param: 200, depends: function () {
+                                    return groups["main"];
+                                }
+                            }
+                        }, "buttons\x5Bcontent\x5D": {
+                            "required": {
+                                depends: function () {
+                                    return groups["Default"];
+                                }
+                            }
+                        }
+                    },
+                    messages: {
+                        "buttons\x5Btitle\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
+                        }, "buttons\x5Bcontent\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_render_collection_row_javascript()
     {
         $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/collection', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"collection\"]");
+                form.validate({rules: {"collection\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
+                    messages: {
+                        "collection\x5Btitle\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
+                        }
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+
+        $elt = $client->getCrawler()->filterXPath('//div/@data-prototype-js');
+        $javascriptPrototype = $elt->html();
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"collection\"]");
+                form.find("*[name=\"collection\x5Btags\x5D\x5Btag__name__\x5D\"]").rules("add", {
+                    "required": true,
+                    "messages": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
+                });
+            })(jQuery);',
+            $javascriptPrototype
+        );
+    }
+
+    protected function fetch_application_page_javascript($url, $client = null)
+    {
+        $client = $client ?: self::createClient();
 
         $crawler = $client->request('GET', $url);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
