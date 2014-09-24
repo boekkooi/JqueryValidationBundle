@@ -21,7 +21,7 @@ class ButtonTypeExtension extends AbstractTypeExtension
         }
 
         $viewRoot = FormHelper::getViewRoot($view);
-        if (!$this->isRootEnabled($viewRoot, $options)) {
+        if (!$this->hasRuleBuilderContext($viewRoot)) {
             return;
         }
 
@@ -38,7 +38,7 @@ class ButtonTypeExtension extends AbstractTypeExtension
         return 'button';
     }
 
-    protected function isRootEnabled(FormView $view)
+    protected function hasRuleBuilderContext(FormView $view)
     {
         return isset($view->vars['rule_builder']) && $view->vars['rule_builder'] instanceof FormRuleContextBuilder;
     }
