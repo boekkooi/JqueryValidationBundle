@@ -22,3 +22,8 @@ form_collection_compound:
   path:  '/collection_compound'
   defaults:
     _controller: TestBundle:Form:collectionCompound
+
+form_child_data:
+  path:  '/child_data'
+  defaults:
+    _controller: TestBundle:Form:childData

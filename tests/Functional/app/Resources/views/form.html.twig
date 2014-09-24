@@ -14,9 +14,11 @@
             <ul class="nav nav-pills nav-stacked col-xs-5 col-sm-3">
                 <li><a href="{{ path('form_simple') }}">Simple Form</a></li>
                 <li><a href="{{ path('form_simple_data') }}">Simple Data Form</a></li>
+                <li><a href="{{ path('form_child_data') }}">Child Data Form</a></li>
                 <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
                 <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
                 <li><a href="{{ path('form_collection_compound') }}">Collection Compound Form</a></li>
+
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
@@ -31,7 +33,8 @@
                     {{ form_widget(form) }}
 
                     {% if button is not defined or not button %}
-                        <input type="submit">
+                        <input type="submit" value="Client Side" />
+                        <input type="submit" onclick="$('form').validate().cancelSubmit = true;" value="Server Side" />
                     {% endif %}
                 {{ form_end(form) }}
 

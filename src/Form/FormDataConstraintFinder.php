@@ -3,6 +3,8 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Mapping\CascadingStrategy;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
@@ -29,13 +31,25 @@ class FormDataConstraintFinder
 
         /** @var \Symfony\Component\Validator\Mapping\ClassMetadata $metadata */
         $metadata = $this->metadataFactory->getMetadataFor($class);
-        // TODO support sub forms
-        $v = $form->getPropertyPath()->getElement(0);
-        foreach ($metadata->getPropertyMetadata($v) as $metadata) {
-            return new ConstraintCollection($metadata->getConstraints());
+        $propertyPath = $form->getPropertyPath();
+        if ($propertyPath->getLength() != 1) {
+            throw new \RuntimeException('Not supported please submit a issue with the form that produces this error!');
         }
 
-        return new ConstraintCollection();
+        $property = $propertyPath->getElement(0);
+        $constraintCollection = new ConstraintCollection();
+        /** @var \Symfony\Component\Validator\Mapping\PropertyMetadata $propertyMetadata */
+        foreach ($metadata->getPropertyMetadata($property) as $propertyMetadata) {
+            $constraintCollection->addCollection(
+                new ConstraintCollection($propertyMetadata->getConstraints())
+            );
+            // For some reason Valid constraint is not in the list of constraints so we hack it in ....
+            if ($propertyMetadata->cascadingStrategy === CascadingStrategy::CASCADE) {
+                $constraintCollection->add(new Valid());
+            }
+        }
+
+        return $constraintCollection;
     }
 
     /**

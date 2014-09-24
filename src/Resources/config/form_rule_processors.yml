@@ -17,6 +17,12 @@ services:
     tags:
      - { name: form_rule_processor, priority: 0 }
 
+  boekkooi.jquery_validation.form.rule.processor.valid_constraint:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValidConstraintPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: -10 }
+
   boekkooi.jquery_validation.form.rule.processor.constraint_mapper:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ConstraintMappingPass
     public: false
