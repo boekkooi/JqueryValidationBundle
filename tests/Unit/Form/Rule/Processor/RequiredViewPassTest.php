@@ -5,7 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\RequiredViewPass;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\RequiredViewPass
+ * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\RequiredViewPass
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
 class RequiredViewPassTest extends BaseProcessorTest

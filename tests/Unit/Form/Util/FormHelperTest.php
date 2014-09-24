@@ -12,7 +12,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_true_if_a_type_is_the_same()
+    public function isType_should_return_true_if_a_type_is_the_same()
     {
         $typeMock = $this->given_form_type_with_parents('text');
 
@@ -22,7 +22,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_true_if_one_of_the_parents_is_the_same()
+    public function isType_should_return_true_if_one_of_the_parents_is_the_same()
     {
         $this->assertTrue(
             FormHelper::isType(
@@ -42,7 +42,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_false_if_the_type_is_not_found()
+    public function isType_should_return_false_if_the_type_is_not_found()
     {
         $this->assertFalse(
             FormHelper::isType(
@@ -86,7 +86,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provide_valid_form_names
      */
-    public function it_should_return_the_form_full_name($view, $expected)
+    public function getFormName_should_return_the_form_full_name($view, $expected)
     {
         $this->assertEquals(
             FormHelper::getFormName($view),
@@ -110,7 +110,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provide_invalid_form_names
      */
-    public function it_should_throw_a_exception_when_provided_with_a_invalid_type($view)
+    public function getFormName_should_throw_a_exception_when_provided_with_a_invalid_type($view)
     {
         $this->setExpectedException('InvalidArgumentException');
 
@@ -124,4 +124,88 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
             array($this->getMock('Symfony\Component\Form\FormView'))
         );
     }
+
+    /**
+     * @test
+     */
+    public function getValidationGroups_should_return_the_jquery_validation_groups_option()
+    {
+        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(true);
+        $formConfig->expects($this->any())->method('getOption')->with('jquery_validation_groups')->willReturn('my_group');
+
+        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
+
+        $this->assertEquals(
+            array('my_group'),
+            FormHelper::getValidationGroups($form)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getValidationGroups_should_return_validation_groups_option_when_query_validation_groups_is_not_set()
+    {
+        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
+        $formConfig->expects($this->any())->method('getOption')->with('validation_groups')->willReturn('my_val_group');
+
+        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
+
+        $this->assertEquals(
+            array('my_val_group'),
+            FormHelper::getValidationGroups($form)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider provide_getValidationGroups_valid_return_values
+     */
+    public function getValidationGroups_should_return($value)
+    {
+        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
+        $formConfig->expects($this->any())->method('getOption')->with('validation_groups')->willReturn($value);
+
+        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
+
+        $this->assertEquals(
+            $value,
+            FormHelper::getValidationGroups($form)
+        );
+    }
+
+    public function provide_getValidationGroups_valid_return_values()
+    {
+        return array(
+            array(null),
+            array(false),
+            array(array('my', 'valid', 'groups'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getViewRoot_should_return_the_root_view()
+    {
+        $rootView = $this->getMock('Symfony\Component\Form\FormView');
+        $this->assertEquals(
+            $rootView,
+            FormHelper::getViewRoot($rootView)
+        );
+
+        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView->parent = $rootView;
+        $this->assertEquals(
+            $rootView,
+            FormHelper::getViewRoot($formView)
+        );
+    }
+
 }
