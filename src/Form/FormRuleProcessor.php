@@ -9,24 +9,24 @@ class FormRuleProcessor implements FormRuleProcessorInterface
     /**
      * @var FormRuleProcessorInterface[]
      */
-    protected $resolvers = array();
+    protected $processors = array();
 
-    public function __construct(array $resolvers)
+    public function __construct(array $processors)
     {
-        foreach ($resolvers as $resolver) {
-            $this->addResolver($resolver);
+        foreach ($processors as $processor) {
+            $this->addProcessor($processor);
         }
     }
 
-    public function addResolver(FormRuleProcessorInterface $resolver)
+    public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)
     {
-        $this->resolvers[] = $resolver;
+        foreach ($this->processors as $processor) {
+            $processor->process($processContext, $formRuleContext);
+        }
     }
 
-    public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRulesCollection)
+    private function addProcessor(FormRuleProcessorInterface $processor)
     {
-        foreach ($this->resolvers as $resolver) {
-            $resolver->process($processContext, $formRulesCollection);
-        }
+        $this->processors[] = $processor;
     }
 }

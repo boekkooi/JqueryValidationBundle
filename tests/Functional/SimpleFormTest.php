@@ -223,6 +223,44 @@ class SimpleFormTest extends WebTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_render_child_validation_javascript()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/child_data', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"root_form\"]");
+                form.validate({
+                    rules: {
+                        "root_form\x5Broot\x5D": {"email": true},
+                        "root_form\x5Bchild\x5D\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"root_form\"] *[name=\"root_form[child][password][first]\"]"}
+                    },
+                    messages: {
+                        "root_form\x5Broot\x5D": {"email": "This\x20value\x20is\x20not\x20a\x20valid\x20email\x20address."},
+                        "root_form\x5Bchild\x5D\x5Bname\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        },
+                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        },
+                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
 
     protected function fetch_application_page_javascript($url, $client = null)
     {

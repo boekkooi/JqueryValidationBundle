@@ -18,11 +18,6 @@ class FormRuleCompiler implements FormRuleCompilerInterface
         }
     }
 
-    public function addCompiler(FormRuleCompilerInterface $compiler)
-    {
-        $this->compilers[] = $compiler;
-    }
-
     /**
      * @param FormRuleContextBuilder $formRuleContext
      */
@@ -31,5 +26,10 @@ class FormRuleCompiler implements FormRuleCompilerInterface
         foreach ($this->compilers as $compiler) {
             $compiler->compile($formRuleContext);
         }
+    }
+
+    private function addCompiler(FormRuleCompilerInterface $compiler)
+    {
+        $this->compilers[] = $compiler;
     }
 }
