@@ -6,6 +6,43 @@
     <link href='http://ajax.aspnetcdn.com/ajax/bootstrap/3.2.0/css/bootstrap.min.css' rel="stylesheet" type="text/css" media="all" />
     <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.11.1.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+    <script>
+        (function($){
+            $.fn.formCollection = function(options) {
+                var container = $(this);
+                var rmBtn = '<a href="#" class="collection-rm">Remove</a>';
+
+                // Add
+                var addBtn = $('<a href="#" class="collection-add">Add</a>');
+                addBtn.click(function(event){
+                    event.preventDefault();
+
+                    var prototype = container.attr('data-prototype');
+                    var regex = new RegExp(options.name, 'g');
+                    var replaceVal = options.count;
+                    options.count++;
+
+                    var newItem = $(prototype.replace(regex, replaceVal));
+                    newItem.appendTo(container);
+
+                    setTimeout(options.js.replace(regex, replaceVal), 100);
+
+                    $(rmBtn).appendTo(newItem);
+                });
+                addBtn.insertAfter(container);
+
+                // Remove
+                container.on('click', '.collection-rm', function(event) {
+                    event.preventDefault();
+
+                    $(this).parent().remove();
+                });
+                container.children().each(function(){
+                    $(this).append(rmBtn);
+                });
+            };
+        })(jQuery);
+    </script>
 </head>
 <body class="container" style="margin-top: 15px">
     <div class="panel panel-default">
@@ -51,8 +88,24 @@
     {% if prototype is defined %}
         {%- set attr = attr|merge({'data-prototype-js': form_jquery_validation(form)}) -%}
     {% endif %}
+
     {% if prototype is defined %}
-        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) ~ '<script>'}) -%}
     {% endif %}
+
     {{- block('form_widget') -}}
+
+    {% if prototype is defined %}
+    <script>
+        (function($){
+            $(document).ready(function() {
+                $("#{{ form.vars.id }}").formCollection({
+                    name: "{% autoescape 'js' %}{{ form.vars.prototype.vars.name }}{% endautoescape %}",
+                    count: {{ form.children|length }},
+                    js: "{{ form_jquery_validation(form)|e('js') }}"
+                });
+            });
+        })(jQuery);
+    </script>
+    {% endif %}
 {%- endblock collection_widget %}
