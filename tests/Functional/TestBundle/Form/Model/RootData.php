@@ -16,16 +16,12 @@ class RootData
     public $root;
 
     /**
-     * Plain password.
-     *
      * @var SimpleData
      * @Assert\Valid()
      */
     public $child;
 
     /**
-     * Plain password.
-     *
      * @var SimpleData
      */
     public $childNoValidation;

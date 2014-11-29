@@ -4,6 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 
 /**
@@ -18,7 +19,8 @@ class ValidConstraintPass implements FormRuleProcessorInterface
         $form = $processContext->getForm();
         $view = $processContext->getView();
 
-        if ($form->isRoot() || !$form->getConfig()->getCompound() || $form->getConfig()->getDataClass() === null) {
+        $formConfig = $form->getConfig();
+        if ($form->isRoot() || !$formConfig->getCompound() || $formConfig->getDataClass() === null) {
             return;
         }
 
@@ -37,7 +39,23 @@ class ValidConstraintPass implements FormRuleProcessorInterface
             if (isset($childView->vars['required'])) {
                 $childView->vars['required'] = false;
             }
-            $formRuleContext->remove($childView);
+
+            $rules = $formRuleContext->get($childView);
+            if ($rules === null) {
+                continue;
+            }
+
+            // Don't remove transformer rules!
+            foreach($rules as $name => $rule) {
+                if ($rule instanceof TransformerRule) {
+                    continue;
+                }
+                $rules->remove($name);
+            }
+
+            if (empty($rules)) {
+                $formRuleContext->remove($childView);
+            }
         }
     }
 }

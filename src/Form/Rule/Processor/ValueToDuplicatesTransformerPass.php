@@ -2,11 +2,11 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -58,7 +58,7 @@ class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
             $childCollection = new RuleCollection();
             $childCollection->set(
                 'equalTo',
-                new Rule(
+                new TransformerRule(
                     'equalTo',
                     $this->getFieldSelector($primaryView),
                     $invalidMessage
