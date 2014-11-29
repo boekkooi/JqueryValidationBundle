@@ -20,12 +20,18 @@ class UrlRule implements ConstraintMapperInterface
      */
     public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection)
     {
+        /** @var \Symfony\Component\Validator\Constraints\Url $constraint */
         if (!$this->supports($constraint, $form)) {
             throw new \LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Url $constraint */
-        // TODO use custom pattern when protocols is not https, http, sftp, ftp
+        // jquery validate only validates https, http, ftp
+        // So don't add the rule if there is some other protocol
+        $diff = array_diff($constraint->protocols, array('http', 'https', 'ftp'));
+        if (!empty($diff)) {
+            return;
+        }
+
         $collection->set(
             self::RULE_NAME,
             new Rule(
