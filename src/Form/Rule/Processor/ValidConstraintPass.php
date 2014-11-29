@@ -20,7 +20,7 @@ class ValidConstraintPass implements FormRuleProcessorInterface
         $view = $processContext->getView();
 
         $formConfig = $form->getConfig();
-        if ($form->isRoot() || !$formConfig->getCompound() || $formConfig->getDataClass() === null) {
+        if ($form->isRoot() || !$formConfig->getCompound() || $formConfig->getDataClass() === null || !$formConfig->getMapped()) {
             return;
         }
 

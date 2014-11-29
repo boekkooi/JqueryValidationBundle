@@ -265,6 +265,51 @@ class SimpleFormTest extends WebTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_validate_sub_forms_witch_are_not_mapped()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/include_simple_data', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                var form = $("form[name=\"include_simple_form_data\"]");
+                form.validate({
+                    rules: {
+                        "include_simple_form_data\x5Buser\x5D\x5Bname\x5D": {
+                            "required": true,
+                            "minlength": "2",
+                            "maxlength": "255"
+                        },
+                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                            "required": true,
+                            "minlength": "2",
+                            "maxlength": "255"
+                        },
+                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"include_simple_form_data\"] *[name=\"include_simple_form_data[user][password][first]\"]"}
+                    },
+                    messages: {
+                        "include_simple_form_data\x5Buser\x5D\x5Bname\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        },
+                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        },
+                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
+
     protected function fetch_application_page_javascript($url, $client = null)
     {
         $client = $client ?: self::createClient();
