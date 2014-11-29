@@ -49,7 +49,7 @@
     {%- if includeGroupDeps|default(false) -%}
         {
             {%- if rule.options is not sameas(true) -%}
-                param: {{- rule.options|json_encode() -}},
+                param: {{- rule.options|json_encode()|raw -}},
             {%- endif -%}
 
             depends: function() {
