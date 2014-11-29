@@ -6,6 +6,9 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -17,20 +20,11 @@ class ValidConstraintPass implements FormRuleProcessorInterface
     public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)
     {
         $form = $processContext->getForm();
-        $view = $processContext->getView();
-
-        $formConfig = $form->getConfig();
-        if ($form->isRoot() || !$formConfig->getCompound() || $formConfig->getDataClass() === null || !$formConfig->getMapped()) {
+        if (!$this->requiresValidConstraint($form) || $this->hasValidConstraint($processContext->getConstraints())) {
             return;
         }
 
-        $constraints = $processContext->getConstraints();
-        foreach ($constraints as $constraint) {
-            if (get_class($constraint) === self::VALID_CONSTRAINT_CLASS) {
-                return;
-            }
-        }
-
+        $view = $processContext->getView();
         $it = new \RecursiveIteratorIterator(
             new FormViewRecursiveIterator($view->getIterator()),
             \RecursiveIteratorIterator::SELF_FIRST
@@ -40,22 +34,49 @@ class ValidConstraintPass implements FormRuleProcessorInterface
                 $childView->vars['required'] = false;
             }
 
-            $rules = $formRuleContext->get($childView);
-            if ($rules === null) {
+            $this->cleanChildRules($childView, $formRuleContext);
+        }
+    }
+
+    private function requiresValidConstraint(FormInterface $form)
+    {
+        $formConfig = $form->getConfig();
+
+        return !$form->isRoot() &&
+            $formConfig->getCompound() &&
+            $formConfig->getMapped() &&
+            $formConfig->getDataClass() !== null
+        ;
+    }
+
+    private function hasValidConstraint(ConstraintCollection $constraints)
+    {
+        foreach ($constraints as $constraint) {
+            if (get_class($constraint) === self::VALID_CONSTRAINT_CLASS) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function cleanChildRules(FormView $childView, FormRuleContextBuilder $formRuleContext)
+    {
+        $rules = $formRuleContext->get($childView);
+        if ($rules === null) {
+            return;
+        }
+
+        // Don't remove transformer rules!
+        foreach ($rules as $name => $rule) {
+            if ($rule instanceof TransformerRule) {
                 continue;
             }
+            $rules->remove($name);
+        }
 
-            // Don't remove transformer rules!
-            foreach ($rules as $name => $rule) {
-                if ($rule instanceof TransformerRule) {
-                    continue;
-                }
-                $rules->remove($name);
-            }
-
-            if (empty($rules)) {
-                $formRuleContext->remove($childView);
-            }
+        if (empty($rules)) {
+            $formRuleContext->remove($childView);
         }
     }
 }
