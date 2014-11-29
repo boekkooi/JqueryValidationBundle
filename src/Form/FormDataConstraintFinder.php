@@ -35,7 +35,7 @@ class FormDataConstraintFinder
         if ($propertyPath->getLength() != 1) {
             throw new \RuntimeException('Not supported please submit a issue with the form that produces this error!');
         }
-        
+
         $property = $propertyPath->getElement(0);
         $constraintCollection = new ConstraintCollection();
         if (!$metadata->hasPropertyMetadata($property)) {

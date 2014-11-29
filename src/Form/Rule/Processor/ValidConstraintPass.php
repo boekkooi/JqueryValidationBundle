@@ -46,7 +46,7 @@ class ValidConstraintPass implements FormRuleProcessorInterface
             }
 
             // Don't remove transformer rules!
-            foreach($rules as $name => $rule) {
+            foreach ($rules as $name => $rule) {
                 if ($rule instanceof TransformerRule) {
                     continue;
                 }

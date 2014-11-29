@@ -7,5 +7,6 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
  *
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class TransformerRule extends Rule {
+class TransformerRule extends Rule
+{
 }
