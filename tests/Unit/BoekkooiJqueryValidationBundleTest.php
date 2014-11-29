@@ -14,16 +14,16 @@ class BoekkooiJqueryValidationBundleTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_add_the_extension_pass()
     {
-        if (!class_exists('PHPUnit_Runner_Version') || version_compare('4.4', \PHPUnit_Runner_Version::id(), '<')) {
-            $this->markTestSkipped('Need phpunit >= 4.4 to run this test');
+        try {
+            $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+            $container->expects($this->once())
+                ->method('addCompilerPass')
+                ->with($this->isInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\DependencyInjection\Compiler\ExtensionPass'));
+
+            $SUT = new BoekkooiJqueryValidationBundle();
+            $SUT->build($container);
+        } catch (\PHPUnit_Framework_MockObject_RuntimeException $e) {
+            $this->markTestSkipped($e->getMessage());
         }
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $container->expects($this->once())
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\DependencyInjection\Compiler\ExtensionPass'));
-
-        $SUT = new BoekkooiJqueryValidationBundle();
-        $SUT->build($container);
     }
 }
