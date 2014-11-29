@@ -1,6 +1,8 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -21,11 +23,11 @@ class RuleCollection extends ArrayCollection
 
     /**
      * {@inheritdoc}
-     * @throw \LogicException
+     * @throw LogicException
      */
     public function add($value)
     {
-        throw new \LogicException('RuleCollection must be used as a dictionary');
+        throw new LogicException('RuleCollection must be used as a dictionary');
     }
 
     /**
@@ -44,7 +46,7 @@ class RuleCollection extends ArrayCollection
     private function assertRuleInstance($value)
     {
         if (!$value instanceof Rule) {
-            throw new \InvalidArgumentException('Expected a "\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule" instance');
+            throw new InvalidArgumentException('Expected a "\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule" instance');
         }
     }
 }

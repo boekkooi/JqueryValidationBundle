@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Extension;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormDataConstraintFinder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompilerInterface;
@@ -130,7 +131,7 @@ class FormTypeExtension extends AbstractTypeExtension
     {
         $viewRoot = FormHelper::getViewRoot($view);
         if (!isset($viewRoot->vars['rule_builder'])) {
-            throw new \LogicException('getRuleBuilder is called before it was set by buildView');
+            throw new LogicException('getRuleBuilder is called before it was set by buildView');
         }
 
         return $viewRoot->vars['rule_builder'];

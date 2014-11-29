@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Validator;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraint;
 
@@ -52,7 +53,7 @@ class ConstraintCollection extends ArrayCollection
     private function assertConstraintInstance($value)
     {
         if (!$value instanceof Constraint) {
-            throw new \InvalidArgumentException('Expected a "\Symfony\Component\Validator\Constraint" instance');
+            throw new InvalidArgumentException('Expected a "\Symfony\Component\Validator\Constraint" instance');
         }
     }
 }

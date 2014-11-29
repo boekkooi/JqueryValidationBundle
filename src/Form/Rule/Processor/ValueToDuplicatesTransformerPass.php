@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
@@ -118,7 +119,6 @@ class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
             return trim(sprintf('%s *[name="%s"]', $formSelector, $vars['full_name']));
         }
 
-        // TODO use bundle exception
-        throw new \RuntimeException();
+        throw new LogicException();
     }
 }

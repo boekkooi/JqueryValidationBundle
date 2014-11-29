@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
@@ -47,7 +48,7 @@ class MaxRule implements ConstraintMapperInterface
                 $constraint->groups
             );
         } else {
-            throw new \LogicException();
+            throw new LogicException();
         }
 
         $collection->set(

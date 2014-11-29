@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
@@ -22,7 +23,7 @@ class MinLengthRule implements ConstraintMapperInterface
     public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection)
     {
         if (!$this->supports($constraint, $form)) {
-            throw new \LogicException();
+            throw new LogicException();
         }
 
         /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */

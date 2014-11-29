@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
@@ -22,7 +23,7 @@ class UrlRule implements ConstraintMapperInterface
     {
         /** @var \Symfony\Component\Validator\Constraints\Url $constraint */
         if (!$this->supports($constraint, $form)) {
-            throw new \LogicException();
+            throw new LogicException();
         }
 
         // jquery validate only validates https, http, ftp

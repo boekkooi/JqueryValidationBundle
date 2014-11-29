@@ -1,6 +1,8 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
@@ -35,7 +37,7 @@ final class FormHelper
             return $form;
         }
 
-        throw new \InvalidArgumentException();
+        throw new InvalidArgumentException('Expected form to be a string or instance of FormView with a full_name.');
     }
 
     /**
@@ -73,7 +75,7 @@ final class FormHelper
         }
 
         if (!is_string($groups) && is_callable($groups)) {
-            throw new \RuntimeException('Callable validation_groups are not supported. Disable jquery_validation or set jquery_validation_groups');
+            throw new UnsupportedException('Callable validation_groups are not supported. Disable jquery_validation or set jquery_validation_groups');
         }
 
         return (array) $groups;

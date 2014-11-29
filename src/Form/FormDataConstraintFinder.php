@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -33,7 +34,7 @@ class FormDataConstraintFinder
         $metadata = $this->metadataFactory->getMetadataFor($class);
         $propertyPath = $form->getPropertyPath();
         if ($propertyPath->getLength() != 1) {
-            throw new \RuntimeException('Not supported please submit a issue with the form that produces this error!');
+            throw new UnsupportedException('Not supported please submit a issue with the form that produces this error!');
         }
 
         $property = $propertyPath->getElement(0);

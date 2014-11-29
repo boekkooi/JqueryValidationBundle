@@ -1,5 +1,6 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -26,7 +27,7 @@ class FormRuleContext
         foreach ($groups as $formGroups) {
             $validGroups = array_filter($formGroups, array($this, 'isValidGroup'));
             if (count($validGroups) !== count($formGroups)) {
-                throw new \InvalidArgumentException('Invalid groups given.');
+                throw new InvalidArgumentException('Invalid groups given.');
             }
         }
 

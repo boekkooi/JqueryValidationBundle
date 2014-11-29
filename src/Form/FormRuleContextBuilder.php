@@ -1,6 +1,7 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Symfony\Component\Form\FormView;
 
@@ -90,14 +91,14 @@ class FormRuleContextBuilder extends FormRuleContext
         }
 
         if (!is_array($groups) && !$groups instanceof \Traversable) {
-            throw new \InvalidArgumentException('A group must be a string, int, callable or FALSE.');
+            throw new InvalidArgumentException('A group must be a string, int, callable or FALSE.');
         }
 
         foreach ($groups as $group) {
             if ($this->isValidGroup($group)) {
                 continue;
             }
-            throw new \InvalidArgumentException('A group must be a string, int, callable or FALSE.');
+            throw new InvalidArgumentException('A group must be a string, int, callable or FALSE.');
         }
 
         return $groups;
