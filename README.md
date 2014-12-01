@@ -15,17 +15,11 @@ Some of the things that the bundle support:
 
 Now let's go to the [documentation](doc/index.md) and get started.
 
-
-Warning
--------------
-This bundle is currently **NOT** stable and you probably don't want to use it in production.
-But please try it! I really need some feedback and help to make this a stable and complete bundle.
-
 [Install and configure](doc/install.md)
 -------------
 `composer require boekkooi/jquery-validation-bundle dev-master`
 
-All the installation instructions are located in the [documentation]](doc/install.md).
+All the installation instructions are located in the [documentation](doc/install.md).
 
 
 Demo
