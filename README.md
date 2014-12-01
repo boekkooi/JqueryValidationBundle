@@ -52,3 +52,8 @@ About
 -----
 This bundle is created and maintained by Warnar Boekkooi.
 Special thanks go to the [Symfony](http://symfony.com/) community and [Jörn Zaefferer](http://jqueryvalidation.org/).
+
+Alternatives
+-----
+If for some reason you don't like this bundle and you are looking for a alternative you may take a look at [FpJsFormValidatorBundle](https://packagist.org/packages/fp/jsformvalidator-bundle). 
+It would also be appreciate if you create a issue telling why you don't like this bundle and what could be added/changed to make it more to your liking. 
