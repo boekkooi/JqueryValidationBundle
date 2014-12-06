@@ -30,14 +30,13 @@ class CollectionPrototypePass implements FormRuleProcessorInterface
         $prototypeView = $view->vars['prototype'];
 
         // Extract the prototype rules from the default rules
-        $prototypeContext = $this->extractRules($formRuleContext, $prototype, $prototypeView);
+        $prototypeContext = $this->extractRules(
+            $formRuleContext,
+            $prototype,
+            $prototypeView
+        );
         if (count($prototypeContext->all()) === 0) {
             return;
-        }
-
-        // Add root groups
-        foreach ($formRuleContext->getGroups() as $name => $groups) {
-            $prototypeContext->addGroup($name, $groups);
         }
 
         // Register builder

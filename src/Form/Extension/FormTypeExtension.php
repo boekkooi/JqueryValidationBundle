@@ -60,6 +60,7 @@ class FormTypeExtension extends AbstractTypeExtension
 
             $contextBuilder = new FormRuleContextBuilder();
             $view->vars['rule_builder'] = $contextBuilder;
+            $view->vars['rule_builder_children'] = array();
             if ($validation_groups === null) {
                 $validation_groups = array(Constraint::DEFAULT_GROUP);
             }
@@ -91,18 +92,22 @@ class FormTypeExtension extends AbstractTypeExtension
             $ruleBuilder
         );
 
-        if ($this->hasRuleBuilderContext($view)) {
-            /** @var FormRuleContextBuilder $ruleBuilder */
-            $ruleBuilder = $view->vars['rule_builder'];
-
-            $this->formRuleCompiler->compile($ruleBuilder);
-
-            $view->vars['rule_context'] = $ruleBuilder->getRuleContext();
-
-            // Clean up
-            unset($view->vars['rule_builder']);
+        if (!$this->hasRuleBuilderContext($view)) {
+            return;
         }
 
+        // Only compile to context when we are finishing the root form
+        if ($rootView === $view) {
+            $this->compile($view);
+            return;
+        }
+
+        // Store child builders to be later compiled
+        $rootView->vars['rule_builder_children'][] = array(
+            'view' => $view,
+            'builder' => $view->vars['rule_builder']
+        );
+        unset($view->vars['rule_builder']);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -172,5 +177,37 @@ class FormTypeExtension extends AbstractTypeExtension
     protected function hasRuleBuilderContext(FormView $view)
     {
         return isset($view->vars['rule_builder']) && $view->vars['rule_builder'] instanceof FormRuleContextBuilder;
+    }
+
+    protected function compile($view)
+    {
+        /** @var FormRuleContextBuilder $ruleBuilder */
+        $ruleBuilder = $view->vars['rule_builder'];
+        unset($view->vars['rule_builder']);
+
+        $this->compileChildContexts($view, $ruleBuilder);
+        $this->compileContext($view, $ruleBuilder);
+    }
+
+    private function compileContext(FormView $view, FormRuleContextBuilder $ruleBuilder)
+    {
+        $this->formRuleCompiler->compile($ruleBuilder);
+        $view->vars['rule_context'] = $ruleBuilder->getRuleContext();
+    }
+
+    protected function compileChildContexts(FormView $rootView, FormRuleContextBuilder $rootRuleBuilder)
+    {
+        $children = $rootView->vars['rule_builder_children'];
+        unset($rootView->vars['rule_builder_children']);
+
+        foreach ($children as $child) {
+            /** @var FormRuleContextBuilder $builder */
+            $builder = $child['builder'];
+            foreach ($rootRuleBuilder->getGroups() as $name => $groups) {
+                $builder->addGroup($name, $groups);
+            }
+
+            $this->compileContext($child['view'], $builder);
+        }
     }
 }
