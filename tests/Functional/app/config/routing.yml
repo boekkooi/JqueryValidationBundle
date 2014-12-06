@@ -23,6 +23,11 @@ form_collection_compound:
   defaults:
     _controller: TestBundle:Form:collectionCompound
 
+form_collection_groups:
+  path:  '/collection_groups'
+  defaults:
+    _controller: TestBundle:Form:collectionWithGroup
+
 form_child_data:
   path:  '/child_data'
   defaults:

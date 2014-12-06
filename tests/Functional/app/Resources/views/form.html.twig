@@ -55,8 +55,8 @@
                 <li><a href="{{ path('form_include_simple_data') }}">Include Simple Data Form</a></li>
                 <li><a href="{{ path('form_buttons') }}">Buttons Form</a></li>
                 <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
+                <li><a href="{{ path('form_collection_groups') }}">Collection with groups Form</a></li>
                 <li><a href="{{ path('form_collection_compound') }}">Collection Compound Form</a></li>
-
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
@@ -71,10 +71,15 @@
                     {{ form_widget(form) }}
 
                     {% if button is not defined or not button %}
-                        <input type="submit" value="Client Side" />
-                        <input type="submit" onclick="$('form').validate().cancelSubmit = true;" value="Server Side" />
+                        <input type="submit" value="submit" />
                     {% endif %}
                 {{ form_end(form) }}
+                <div>
+                    <label>
+                        <input type="checkbox" onclick="$('form').validate().cancelSubmit = $(this).is(':checked');">
+                        Server side validation
+                    </label>
+                </div>
 
                 <script id="validation_script">
                     {{ form_jquery_validation(form) }}
