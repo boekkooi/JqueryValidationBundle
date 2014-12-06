@@ -66,11 +66,10 @@ class FormRuleContextBuilder extends FormRuleContext
 
     public function addButton(FormView $view, $groups = null)
     {
-        $groups = $this->normalizeGroups($groups);
-
         $name = FormHelper::getFormName($view);
+
+        $this->addGroup($name, $groups);
         $this->buttons[] = $name;
-        $this->groups[$name] = $groups;
     }
 
     public function addGroup($view, $groups)
