@@ -435,6 +435,7 @@ class SimpleFormTest extends WebTestCase
     protected function stripWhiteSpace($js)
     {
         $js = str_replace(array(',', '{', '}', ':', ';', 'function'), array(', ', ' { ', ' } ', ' : ', '; ', ' function ') , trim($js));
+
         return preg_replace('/(\s+|\n)/', ' ' , trim($js));
     }
 }

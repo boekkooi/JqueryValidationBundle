@@ -68,6 +68,7 @@ class JqueryValidationExtension extends Twig_Extension
         }
 
         $js = $twig->render($template, $templateVars);
+
         return preg_replace('/\s+/', ' ' , $js);
     }
 

@@ -99,6 +99,7 @@ class FormTypeExtension extends AbstractTypeExtension
         // Only compile to context when we are finishing the root form
         if ($rootView === $view) {
             $this->compile($view);
+
             return;
         }
 
