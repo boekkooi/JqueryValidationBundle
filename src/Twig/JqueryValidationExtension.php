@@ -39,29 +39,35 @@ class JqueryValidationExtension extends Twig_Extension
         if (!isset($view->vars['rule_context'])) {
             return '';
         }
+        /** @var \Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContext $rootContext */
+        $template = 'BoekkooiJqueryValidationBundle:Form:form_validate.js.twig';
+        $rootContext = $context = $view->vars['rule_context'];
+        $rootView = $view;
 
-        /** @var \Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContext $context */
-        $context = $view->vars['rule_context'];
-
+        // The given view is not the root form
         if ($view->parent !== null) {
+            $template = 'BoekkooiJqueryValidationBundle:Form:dynamic_validate.js.twig';
             $rootView = FormHelper::getViewRoot($view);
-
-            $js = $twig->render('BoekkooiJqueryValidationBundle:Form:dynamic_validate.js.twig', array(
-                'form' => $rootView,
-                'fields' => $this->fieldRulesViewData($context),
-                'validation_groups' => $this->validationGroupsViewData($context),
-                'enforce_validation_groups' => count($context->getButtons()) > 0
-            ));
-        } else {
-            $js = $twig->render('BoekkooiJqueryValidationBundle:Form:form_validate.js.twig', array(
-                'form' => $view,
-                'fields' => $this->fieldRulesViewData($context),
-                'buttons' => $this->buttonsViewData($context),
-                'validation_groups' => $this->validationGroupsViewData($context),
-                'enforce_validation_groups' => count($context->getButtons()) > 0
-            ));
+            $rootContext = $rootView->vars['rule_context'];
         }
 
+        // Create template variables
+        $templateVars = array(
+            'form' => $rootView,
+            'fields' => $this->fieldRulesViewData($context),
+            'validation_groups' => $this->validationGroupsViewData($rootContext),
+        );
+        $templateVars['enforce_validation_groups'] = (
+            count($rootContext->getButtons()) > 0 &&
+            count($templateVars['validation_groups']) > 1
+        );
+
+        // Only add buttons from the root form
+        if ($view->parent === null) {
+            $templateVars['buttons'] = $this->buttonsViewData($context);
+        }
+
+        $js = $twig->render($template, $templateVars);
         return preg_replace('/\s+/', ' ' , $js);
     }
 
