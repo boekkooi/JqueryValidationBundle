@@ -2,7 +2,9 @@
 
 {%- autoescape false -%}
 (function($) {
+    "use strict";
     var form = $("{{- gen.form_jquery_selector(form) -}}");
+    var validator = form.validate();
 
     {%- for field in fields -%}
         {%- if field.rules|length > 0 -%}

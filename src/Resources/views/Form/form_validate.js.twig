@@ -2,23 +2,9 @@
 
 {%- autoescape false -%}
 (function($) {
+    "use strict";
     var form = $("{{- gen.form_jquery_selector(form) -}}");
-
-    {%- if enforce_validation_groups and validation_groups|length > 0 -%}
-        var groups = { {{- gen.validation_groups(validation_groups) -}} };
-    {%- endif -%}
-
-    {%- for button in buttons -%}
-        {%- if button.cancel -%}
-            form.find("*[name=\"{{ button.name|e('js') }}\"]").addClass("cancel");
-        {%- else -%}
-            form.find("*[name=\"{{ button.name|e('js') }}\"]").click(function() {
-                groups = { {{- gen.validation_groups(validation_groups, button.validation_groups) -}} };
-            });
-        {%- endif -%}
-    {%- endfor %}
-
-    form.validate({
+    var validator = form.validate({
         rules: {
             {{- gen.form_rules(fields, enforce_validation_groups) -}}
         },
@@ -26,5 +12,19 @@
             {{- gen.form_messages(fields) -}}
         }
     });
+
+    {%- if enforce_validation_groups -%}
+        validator.settings.validation_groups = { {{- gen.validation_groups(validation_groups) -}} };
+    {%- endif -%}
+
+    {%- for button in buttons -%}
+        {%- if button.cancel -%}
+            form.find("*[name=\"{{ button.name|e('js') }}\"]").addClass("cancel");
+        {%- elseif enforce_validation_groups -%}
+            form.find("*[name=\"{{ button.name|e('js') }}\"]").click(function() {
+                validator.settings.validation_groups = { {{- gen.validation_groups(validation_groups, button.validation_groups) -}} };
+            });
+        {%- endif -%}
+    {%- endfor %}
 })(jQuery);
 {%- endautoescape -%}

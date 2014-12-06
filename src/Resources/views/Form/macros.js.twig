@@ -54,7 +54,7 @@
 
             depends: function() {
                 return {% for group in rule.groups -%}
-                    groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
+                    validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
                 {%- endfor -%};
             }
         }
