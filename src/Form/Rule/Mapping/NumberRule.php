@@ -8,6 +8,8 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -25,13 +27,18 @@ class NumberRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
+        $message = null;
+        if ($constraint instanceof Range) {
+            $message = new RuleMessage($constraint->invalidMessage);
+        } elseif ($constraint instanceof Type)  {
+            $message = new RuleMessage($constraint->message, array('{{ type }}' => $constraint->type));
+        }
         $collection->set(
             self::RULE_NAME,
             new Rule(
                 self::RULE_NAME,
                 true,
-                new RuleMessage($constraint->invalidMessage),
+                $message,
                 $constraint->groups
             )
         );
@@ -39,6 +46,10 @@ class NumberRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return get_class($constraint) === 'Symfony\Component\Validator\Constraints\Range';
+        $class = get_class($constraint);
+        return $class === 'Symfony\Component\Validator\Constraints\Range' || (
+            $class === 'Symfony\Component\Validator\Constraints\Type' &&
+            in_array(strtolower($constraint->type), array('int', 'integer', 'float', 'double'), true)
+        );
     }
 }
