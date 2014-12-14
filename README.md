@@ -32,10 +32,12 @@ cd JqueryValidationBundle
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 
-php -S 0.0.0.0:8000 tests/Functional/app/web.php
+php -S 0.0.0.0:8000 -t tests/Functional/web/
 ```
 Now you can see the functional test pages, these should give you a good idea of what is possible.
 
+
+TODO fix validation groups and collections
 
 License
 -------------

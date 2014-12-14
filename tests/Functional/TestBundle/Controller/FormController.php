@@ -8,6 +8,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionWithGroupsFormType;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\DateTimeFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\RootDataFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleDataFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType;
@@ -29,6 +30,14 @@ class FormController extends Controller
     public function simpleDataAction(Request $request)
     {
         $form = $this->createForm(new SimpleDataFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
+
+    public function dateTimeAction(Request $request)
+    {
+        $form = $this->createForm(new DateTimeFormType());
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
