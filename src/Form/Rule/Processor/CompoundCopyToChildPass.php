@@ -5,9 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
-use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -36,7 +34,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
             return;
         }
 
-        $this->registerRulesForChildren($formRuleContext, $formView, $this->getFormRuleMessage($formConfig));
+        $this->registerRulesForChildren($formRuleContext, $formView);
     }
 
     protected function requiresCopy(FormInterface $form)
@@ -46,7 +44,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
         return in_array($type, static::$copyForTypes, true);
     }
 
-    private function registerRulesForChildren(FormRuleContextBuilder $formRuleContext, FormView $view, RuleMessage $message)
+    private function registerRulesForChildren(FormRuleContextBuilder $formRuleContext, FormView $view)
     {
         // Copy parent rules to the children
         $rules = $formRuleContext->get($view);
@@ -61,7 +59,6 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
         foreach ($rules as $name => $baseRule) {
             // Prepare a new rule
             $rule = clone $baseRule;
-            $rule->message = $message;
 
             $it->rewind();
             foreach ($it as $childView) {
@@ -77,16 +74,5 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
 
         // Clear rules since it's a compound field
         $formRuleContext->remove($view);
-    }
-
-    protected function getFormRuleMessage(FormConfigInterface $config)
-    {
-        // Get correct error message if one is set.
-        if ($config->hasOption('invalid_message')) {
-            // TODO support invalid_message_parameters
-            return new RuleMessage($config->getOption('invalid_message'));
-        }
-
-        return null;
     }
 }
