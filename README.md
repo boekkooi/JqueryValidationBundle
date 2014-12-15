@@ -21,7 +21,6 @@ Now let's go to the [documentation](doc/index.md) and get started.
 
 All the installation instructions are located in the [documentation](doc/install.md).
 
-
 Demo
 -------------
 Yeah so .... nope there is no real demo **but** what you can do is the following:
@@ -34,15 +33,11 @@ php composer.phar install
 
 php -S 0.0.0.0:8000 -t tests/Functional/web/
 ```
-Now you can see the functional test pages, these should give you a good idea of what is possible.
-
-
-TODO fix validation groups and collections
+Now you can see the functional test pages on http://127.0.0.1:8000/, these should give you a good idea of what is possible.
 
 License
 -------------
 This bundle is under the MIT license.
-
 
 About
 -----
