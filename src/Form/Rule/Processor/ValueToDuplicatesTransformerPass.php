@@ -4,17 +4,14 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
+class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
 {
     /**
      * @var null|\ReflectionProperty
@@ -24,11 +21,12 @@ class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
     public function process(FormRuleProcessorContext $context, FormRuleContextBuilder $collection)
     {
         $form = $context->getForm();
-        if (!$form->getConfig()->getCompound()) {
+        $formConfig = $form->getConfig();
+        if (!$formConfig->getCompound()) {
             return;
         }
 
-        $transformer = $this->findTransformer($form);
+        $transformer = $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\ValueToDuplicatesTransformer');
         if ($transformer === null) {
             return;
         }
@@ -49,10 +47,7 @@ class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
         $collection->remove($formView);
 
         // Get correct error message if one is set.
-        $invalidMessage = null;
-        if ($form->getConfig()->hasOption('invalid_message')) {
-            $invalidMessage = new RuleMessage($form->getConfig()->getOption('invalid_message'));
-        }
+        $invalidMessage = $this->getFormRuleMessage($formConfig);
 
         // Create equalTo rules for all other fields
         foreach ($keys as $childName) {
@@ -71,18 +66,6 @@ class ValueToDuplicatesTransformerPass implements FormRuleProcessorInterface
                 $childCollection
             );
         }
-    }
-
-    private function findTransformer(FormInterface $form)
-    {
-        $transformers = $form->getConfig()->getViewTransformers();
-        foreach ($transformers as $transformer) {
-            if (get_class($transformer) === 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\ValueToDuplicatesTransformer') {
-                return $transformer;
-            }
-        }
-
-        return null;
     }
 
     private function getKeys($transformer)

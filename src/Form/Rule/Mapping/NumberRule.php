@@ -30,7 +30,7 @@ class NumberRule implements ConstraintMapperInterface
         $message = null;
         if ($constraint instanceof Range) {
             $message = new RuleMessage($constraint->invalidMessage);
-        } elseif ($constraint instanceof Type)  {
+        } elseif ($constraint instanceof Type) {
             $message = new RuleMessage($constraint->message, array('{{ type }}' => $constraint->type));
         }
         $collection->set(
@@ -47,6 +47,7 @@ class NumberRule implements ConstraintMapperInterface
     public function supports(Constraint $constraint, FormInterface $form)
     {
         $class = get_class($constraint);
+
         return $class === 'Symfony\Component\Validator\Constraints\Range' || (
             $class === 'Symfony\Component\Validator\Constraints\Type' &&
             in_array(strtolower($constraint->type), array('int', 'integer', 'float', 'double'), true)

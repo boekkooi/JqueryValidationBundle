@@ -8,6 +8,11 @@ form_simple_data:
   defaults:
     _controller: TestBundle:Form:simpleData
 
+form_date_time:
+  path:  '/date_time'
+  defaults:
+    _controller: TestBundle:Form:dateTime
+
 form_buttons:
   path:  '/buttons'
   defaults:

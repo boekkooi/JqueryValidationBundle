@@ -46,16 +46,35 @@
 {% macro rule(rule, includeGroupDeps) %}
     {%- import _self as gen -%}
 
-    {%- if includeGroupDeps|default(false) -%}
-        {
-            {%- if rule.options is not sameas(true) -%}
-                param: {{- rule.options|json_encode()|raw -}},
-            {%- endif -%}
+    {%- set hasGroups = includeGroupDeps|default(false) -%}
+    {%- set hasDepends = (rule.depends is not empty) -%}
 
+    {%- if hasGroups or hasDepends -%}
+        {%- set hasParams = rule.options is not sameas(true) -%}
+
+        {
+        {%- if hasParams -%}
+            param: {{- rule.options|json_encode()|raw -}},
+        {%- endif -%}
             depends: function() {
-                return {% for group in rule.groups -%}
-                    validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
-                {%- endfor -%};
+                return
+                {%- if hasGroups %} (
+                    {%- for group in rule.groups -%}
+                        validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
+                    {%- endfor -%}
+                )
+                {%- endif -%}
+
+                {%- if hasGroups and hasDepends %} && {% endif -%}
+
+                {%- if hasDepends %} !(
+                    {%- for selector in rule.depends -%}
+                        "{{ selector|e('js') }}" in validator.errorMap ||
+                        "{{ selector|e('js') }}" in validator.invalid {%- if not loop.last %} || {% endif -%}
+                    {%- endfor -%}
+                    )
+                {%- endif -%}
+                ;
             }
         }
     {%- else -%}

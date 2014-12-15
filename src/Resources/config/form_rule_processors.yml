@@ -11,17 +11,35 @@ services:
     tags:
       - { name: form_rule_processor, priority: 0 }
 
-  boekkooi.jquery_validation.form.rule.processor.value_duplicates_transformer:
-    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass
+  boekkooi.jquery_validation.form.rule.processor.compound_copy_to_children:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\CompoundCopyToChildPass
     public: false
     tags:
-     - { name: form_rule_processor, priority: 0 }
+      - { name: form_rule_processor, priority: 10 }
 
   boekkooi.jquery_validation.form.rule.processor.valid_constraint:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValidConstraintPass
     public: false
     tags:
      - { name: form_rule_processor, priority: -10 }
+
+  boekkooi.jquery_validation.form.rule.processor.value_duplicates_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 50 }
+
+  boekkooi.jquery_validation.form.rule.processor.datetime_array_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\DateTimeToArrayTransformerPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 50 }
+
+  boekkooi.jquery_validation.form.rule.processor.datetime_string_transformer:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\DateTimeToStringTransformerPass
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: 50 }
 
   boekkooi.jquery_validation.form.rule.processor.constraint_mapper:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ConstraintMappingPass

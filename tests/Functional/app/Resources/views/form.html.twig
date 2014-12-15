@@ -7,6 +7,7 @@
     <script src="/js/jquery-1.11.1.js"></script>
     <script src="/js/jquery.validate.js"></script>
     <script src="/js/jquery.validate.defaults.js"></script>
+    <script src="/js/additional-methods.js"></script>
     <script>
         (function($){
             $.fn.formCollection = function(options) {
@@ -58,6 +59,7 @@
                 <li><a href="{{ path('form_collection') }}">Collection Form</a></li>
                 <li><a href="{{ path('form_collection_groups') }}">Collection with groups Form</a></li>
                 <li><a href="{{ path('form_collection_compound') }}">Collection Compound Form</a></li>
+                <li><a href="{{ path('form_date_time') }}">DataTime Form</a></li>
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
