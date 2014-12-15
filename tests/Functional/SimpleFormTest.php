@@ -617,22 +617,22 @@ class SimpleFormTest extends WebTestCase
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D": {
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
+                            "required": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bminute\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
@@ -641,12 +641,12 @@ class SimpleFormTest extends WebTestCase
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Bday\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
@@ -655,23 +655,25 @@ class SimpleFormTest extends WebTestCase
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Bday\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
-                        "date_time_form\x5Bdate_single_text\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."},
+                        "date_time_form\x5Bdate_single_text\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
+                        },
                         "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D": {
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid.",
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Btime_choice\x5D\x5Bminute\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
@@ -681,7 +683,7 @@ class SimpleFormTest extends WebTestCase
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Btime_text\x5D\x5Bminute\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
@@ -753,7 +755,7 @@ class SimpleFormTest extends WebTestCase
                             "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "view_transform_rules_form\x5Btime_text\x5D\x5Bminute\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "required": "This\x20value\x20is\x20not\x20valid.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
