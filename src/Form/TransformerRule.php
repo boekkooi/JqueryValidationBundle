@@ -1,6 +1,5 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * A class for transformer rules.

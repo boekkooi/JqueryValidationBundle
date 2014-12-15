@@ -12,7 +12,6 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -42,9 +41,15 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
 
         $depends = array();
         foreach ($it as $childView) {
+            $childRules = $formRuleContext->get($childView);
+            if ($childRules === null) {
+                $childRules = new RuleCollection();
+                $formRuleContext->add($childView, $childRules);
+            }
+
             $this->addNumberCheck(
                 $childView,
-                $formRuleContext->get($childView),
+                $childRules,
                 $invalidMessage,
                 $depends
             );
@@ -52,7 +57,7 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
         }
     }
 
-    private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message, array $depends)
+    private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message = null, array $depends)
     {
         if (count($depends) > 0) {
             $rules->set(
