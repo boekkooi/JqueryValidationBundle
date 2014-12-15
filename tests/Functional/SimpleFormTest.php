@@ -433,6 +433,12 @@ class SimpleFormTest extends WebTestCase
                             "required": true
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
@@ -442,14 +448,15 @@ class SimpleFormTest extends WebTestCase
                                 param: 12, depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
                                 }
-                            },
-                            "required": {
-                                depends: function () {
-                                    return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
-                                }
                             }
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
@@ -457,11 +464,6 @@ class SimpleFormTest extends WebTestCase
                             },
                             "max": {
                                 param: 31, depends: function () {
-                                    return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
-                                }
-                            },
-                            "required": {
-                                depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
                                 }
                             }
@@ -471,11 +473,18 @@ class SimpleFormTest extends WebTestCase
                             "max": 23,
                             "required": {
                                 depends: function () {
-                                    return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid);
+                                    var dep = form.find("[name=\"date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid);
                                 }
                             }
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bminute\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 0, depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
@@ -485,15 +494,16 @@ class SimpleFormTest extends WebTestCase
                                 param: 59, depends: function () {
                                     return !("date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
                                 }
-                            },
-                            "required": {
-                                depends: function () {
-                                    return !("date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
-                                }
                             }
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D": {"number": true, "required": true},
                         "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdate_choice\x5D\x5Byear\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid);
@@ -503,14 +513,15 @@ class SimpleFormTest extends WebTestCase
                                 param: 12, depends: function () {
                                     return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid);
                                 }
-                            },
-                            "required": {
-                                depends: function () {
-                                    return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid);
-                                }
                             }
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Bday\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.invalid);
@@ -518,17 +529,18 @@ class SimpleFormTest extends WebTestCase
                             },
                             "max": {
                                 param: 31, depends: function () {
-                                    return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.invalid);
-                                }
-                            },
-                            "required": {
-                                depends: function () {
                                     return !("date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D" in validator.invalid);
                                 }
                             }
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Byear\x5D": {"number": true, "required": true},
                         "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdate_text\x5D\x5Byear\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid);
@@ -538,14 +550,15 @@ class SimpleFormTest extends WebTestCase
                                 param: 12, depends: function () {
                                     return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid);
                                 }
-                            },
-                            "required": {
-                                depends: function () {
-                                    return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid);
-                                }
                             }
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Bday\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 1, depends: function () {
                                     return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.invalid);
@@ -553,11 +566,6 @@ class SimpleFormTest extends WebTestCase
                             },
                             "max": {
                                 param: 31, depends: function () {
-                                    return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.invalid);
-                                }
-                            },
-                            "required": {
-                                depends: function () {
                                     return !("date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Byear\x5D" in validator.invalid || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.errorMap || "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D" in validator.invalid);
                                 }
                             }
@@ -565,6 +573,12 @@ class SimpleFormTest extends WebTestCase
                         "date_time_form\x5Bdate_single_text\x5D": {"required": true},
                         "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D": {"min": 0, "max": 23, "required": true},
                         "date_time_form\x5Btime_choice\x5D\x5Bminute\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Btime_choice\x5D\x5Bhour\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 0, depends: function () {
                                     return !("date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.invalid);
@@ -572,17 +586,18 @@ class SimpleFormTest extends WebTestCase
                             },
                             "max": {
                                 param: 59, depends: function () {
-                                    return !("date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.invalid);
-                                }
-                            },
-                            "required": {
-                                depends: function () {
                                     return !("date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D" in validator.invalid);
                                 }
                             }
                         },
                         "date_time_form\x5Btime_text\x5D\x5Bhour\x5D": {"min": 0, "max": 23, "required": true},
                         "date_time_form\x5Btime_text\x5D\x5Bminute\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"date_time_form\x5Btime_text\x5D\x5Bhour\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            },
                             "min": {
                                 param: 0, depends: function () {
                                     return !("date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
@@ -590,11 +605,6 @@ class SimpleFormTest extends WebTestCase
                             },
                             "max": {
                                 param: 59, depends: function () {
-                                    return !("date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
-                                }
-                            },
-                            "required": {
-                                depends: function () {
                                     return !("date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "date_time_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
                                 }
                             }
@@ -604,82 +614,159 @@ class SimpleFormTest extends WebTestCase
                     messages: {
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D": {
                             "number": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bmonth\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Bday\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bhour\x5D": {
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdatetime_choice\x5D\x5Btime\x5D\x5Bminute\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Byear\x5D": {
                             "number": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Bmonth\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_choice\x5D\x5Bday\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Byear\x5D": {
                             "number": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Bmonth\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_text\x5D\x5Bday\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Bdate_single_text\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."},
                         "date_time_form\x5Btime_choice\x5D\x5Bhour\x5D": {
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Btime_choice\x5D\x5Bminute\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Btime_text\x5D\x5Bhour\x5D": {
                             "min": "This\x20value\x20is\x20not\x20valid.",
                             "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         },
                         "date_time_form\x5Btime_text\x5D\x5Bminute\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "min": "This\x20value\x20is\x20not\x20valid.",
-                            "max": "This\x20value\x20is\x20not\x20valid.",
-                            "required": "This\x20value\x20is\x20not\x20valid."
+                            "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Btime_single_text\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "time": "This\x20value\x20is\x20not\x20valid."
                         }
                     }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_render_groups_for_view_transformer_rules_javascript()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/view_transform', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"view_transform_rules_form\"]");
+                var validator = form.validate({
+                    rules: {
+                        "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D": {
+                            "min": 0,
+                            "max": 23,
+                            "required": {
+                                depends: function () {
+                                    return (validator.settings.validation_groups["Default"]);
+                                }
+                            }
+                        },
+                        "view_transform_rules_form\x5Btime_text\x5D\x5Bminute\x5D": {
+                            "required": {
+                                depends: function () {
+                                    var dep = form.find("[name=\"view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D\"]")[0];
+                                    return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            },
+                            "min": {
+                                param: 0, depends: function () {
+                                    return !("view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            }, "max": {
+                                param: 59, depends: function () {
+                                    return !("view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.errorMap || "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D" in validator.invalid);
+                                }
+                            }
+                        },
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D": {
+                            "required": {
+                                depends: function () {
+                                    return (validator.settings.validation_groups["main"]);
+                                }
+                            }
+                        },
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"view_transform_rules_form\"] *[name=\"view_transform_rules_form[equals][first]\"]"}
+                    },
+                    messages: {
+                        "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D": {
+                            "min": "This\x20value\x20is\x20not\x20valid.",
+                            "max": "This\x20value\x20is\x20not\x20valid.",
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
+                        },
+                        "view_transform_rules_form\x5Btime_text\x5D\x5Bminute\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "min": "This\x20value\x20is\x20not\x20valid.",
+                            "max": "This\x20value\x20is\x20not\x20valid."
+                        },
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."},
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {"equalTo": "Oops\x20they\x20don\x27t\x20match"}
+                    }
+                });
+                validator.settings.validation_groups = {"Default": false, "main": false};
+                form.find("*[name=\"view_transform_rules_form\x5BdefaultValidation\x5D\"]").click(function () {
+                    validator.settings.validation_groups = {"Default": true, "main": false};
+                });
+                form.find("*[name=\"view_transform_rules_form\x5BmainValidation\x5D\"]").click(function () {
+                    validator.settings.validation_groups = {"Default": false, "main": true};
                 });
             })(jQuery);',
             $javascript

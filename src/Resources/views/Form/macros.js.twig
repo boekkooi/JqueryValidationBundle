@@ -46,7 +46,7 @@
 {% macro rule(rule, includeGroupDeps) %}
     {%- import _self as gen -%}
 
-    {%- set hasGroups = includeGroupDeps|default(false) -%}
+    {%- set hasGroups = includeGroupDeps|default(false) and rule.groups|length > 0 -%}
     {%- set hasDepends = (rule.depends is not empty) -%}
 
     {%- if hasGroups or hasDepends -%}
@@ -57,6 +57,10 @@
             param: {{- rule.options|json_encode()|raw -}},
         {%- endif -%}
             depends: function() {
+                {%- if hasDepends and rule.name is same as('required') %}
+                    var dep = form.find("[name=\"{{ rule.depends|e('js')|last }}\"]")[0];
+                {% endif %}
+
                 return
                 {%- if hasGroups %} (
                     {%- for group in rule.groups -%}
@@ -67,7 +71,12 @@
 
                 {%- if hasGroups and hasDepends %} && {% endif -%}
 
-                {%- if hasDepends %} !(
+                {%- if hasDepends %}
+                    {% if rule.name is same as('required') %}
+                        $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) &&
+                    {% endif %}
+
+                    !(
                     {%- for selector in rule.depends -%}
                         "{{ selector|e('js') }}" in validator.errorMap ||
                         "{{ selector|e('js') }}" in validator.invalid {%- if not loop.last %} || {% endif -%}

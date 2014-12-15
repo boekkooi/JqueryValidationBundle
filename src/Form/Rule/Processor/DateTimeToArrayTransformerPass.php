@@ -6,6 +6,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
@@ -53,6 +54,18 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
 
     private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message, array $depends)
     {
+        if (count($depends) > 0) {
+            $rules->set(
+                RequiredRule::RULE_NAME,
+                new TransformerRule(
+                    RequiredRule::RULE_NAME,
+                    true,
+                    $message
+                ),
+                $depends
+            );
+        }
+
         // Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer
         switch ($view->vars['name']) {
             case 'year':
@@ -63,8 +76,7 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
                         true,
                         $message
                     ),
-                    array(Constraint::DEFAULT_GROUP)
-                    , $depends
+                    $depends
                 );
 
                 return;
@@ -90,11 +102,11 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
         }
         $rules->set(
             MinRule::RULE_NAME,
-            new TransformerRule( MinRule::RULE_NAME, $min, $message, array(Constraint::DEFAULT_GROUP), $depends )
+            new TransformerRule( MinRule::RULE_NAME, $min, $message, $depends )
         );
         $rules->set(
             MaxRule::RULE_NAME,
-            new TransformerRule( MaxRule::RULE_NAME, $max, $message, array(Constraint::DEFAULT_GROUP), $depends )
+            new TransformerRule( MaxRule::RULE_NAME, $max, $message, $depends )
         );
     }
 }

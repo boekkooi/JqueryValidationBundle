@@ -42,3 +42,8 @@ form_include_simple_data:
   path:  '/include_simple_data'
   defaults:
     _controller: TestBundle:Form:includeSimpleData
+
+form_view_transform:
+  path:  '/view_transform'
+  defaults:
+    _controller: TestBundle:Form:viewTransform

@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -62,10 +63,20 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
 
             $it->rewind();
             foreach ($it as $childView) {
-                $collection = new RuleCollection();
-                $collection->set($name, $rule);
+                $collection = $formRuleContext->get($childView) ?: new RuleCollection();
 
-                $formRuleContext->add($childView, $collection);
+                if ($collection->containsKey($name)) {
+                    $childRule = $collection[$name];
+                    $childRule->message = $rule->message;
+                    $childRule->depends = $rule->depends;
+                    if (!$childRule instanceof TransformerRule) {
+                        $childRule->groups = array_unique(
+                            array_merge($childRule->groups, $rule->groups)
+                        );
+                    }
+                } else {
+                    $collection->set($name, $rule);
+                }
 
                 $rule = clone $rule;
                 $rule->depends[] = $childView->vars['full_name'];
