@@ -65,9 +65,9 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
                 new TransformerRule(
                     RequiredRule::RULE_NAME,
                     true,
-                    $message
-                ),
-                $depends
+                    $message,
+                    $depends
+                )
             );
         }
 
@@ -79,9 +79,9 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
                     new TransformerRule(
                         NumberRule::RULE_NAME,
                         true,
-                        $message
-                    ),
-                    $depends
+                        $message,
+                        $depends
+                    )
                 );
 
                 return;
