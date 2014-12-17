@@ -47,3 +47,8 @@ form_view_transform:
   path:  '/view_transform'
   defaults:
     _controller: TestBundle:Form:viewTransform
+
+form_collection_datetime:
+  path:  '/collection_datetime'
+  defaults:
+    _controller: TestBundle:Form:collectionDateTime

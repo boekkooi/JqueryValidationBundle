@@ -327,6 +327,140 @@ class SimpleFormTest extends WebTestCase
     /**
      * @test
      */
+    public function it_should_render_collection_datetime_row_javascript()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/collection_datetime', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"collection_date_time\"]");
+                var validator = form.validate({rules: {}, messages: {}});
+                validator.settings.validation_groups = {"Default": false, "main": false};
+                form.find("*[name=\"collection_date_time\x5BdefaultValidation\x5D\"]").click(function () {
+                    validator.settings.validation_groups = {"Default": true, "main": false};
+                });
+                form.find("*[name=\"collection_date_time\x5BmainValidation\x5D\"]").click(function () {
+                    validator.settings.validation_groups = {"Default": false, "main": true};
+                });
+            })(jQuery);',
+            $javascript
+        );
+
+        $elt = $client->getCrawler()->filterXPath('//div/@data-prototype-js');
+        $javascriptPrototype = $elt->text();
+
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"collection_date_time\"]");
+                var validator = form.validate();
+                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]").rules("add", {
+                    "number": true,
+                    "required": {
+                        depends: function () {
+                            return (validator.settings.validation_groups["Default"]);
+                        }
+                    },
+                    "messages": {
+                        "number": "This\x20value\x20is\x20not\x20valid.",
+                        "required": "This\x20value\x20should\x20not\x20be\x20blank."
+                    }
+                });
+                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]").rules("add", {
+                    "required": {
+                        depends: function () {
+                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                            return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
+                        }
+                    },
+                    "min": {
+                        param: 1, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
+                        }
+                    },
+                    "max": {
+                        param: 12, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid);
+                        }
+                    },
+                    "messages": {
+                        "required": "This\x20value\x20is\x20not\x20valid.",
+                        "min": "This\x20value\x20is\x20not\x20valid.",
+                        "max": "This\x20value\x20is\x20not\x20valid."
+                    }
+                });
+                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]").rules("add", {
+                    "required": {
+                        depends: function () {
+                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
+                            return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
+                        }
+                    },
+                    "min": {
+                        param: 1, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
+                        }
+                    },
+                    "max": {
+                        param: 31, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid);
+                        }
+                    },
+                    "messages": {
+                        "required": "This\x20value\x20is\x20not\x20valid.",
+                        "min": "This\x20value\x20is\x20not\x20valid.",
+                        "max": "This\x20value\x20is\x20not\x20valid."
+                    }
+                });
+                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]").rules("add", {
+                    "min": 0,
+                    "max": 23,
+                    "required": {
+                        depends: function () {
+                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
+                            return (validator.settings.validation_groups["Default"]) && $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid);
+                        }
+                    },
+                    "messages": {
+                        "min": "This\x20value\x20is\x20not\x20valid.",
+                        "max": "This\x20value\x20is\x20not\x20valid.",
+                        "required": "This\x20value\x20is\x20not\x20valid."
+                    }
+                });
+                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bminute\x5D\"]").rules("add", {
+                    "required": {
+                        depends: function () {
+                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]")[0];
+                            return $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) && !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
+                        }
+                    },
+                    "min": {
+                        param: 0, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
+                        }
+                    },
+                    "max": {
+                        param: 59, depends: function () {
+                            return !("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid);
+                        }
+                    },
+                    "messages": {
+                        "required": "This\x20value\x20is\x20not\x20valid.",
+                        "min": "This\x20value\x20is\x20not\x20valid.",
+                        "max": "This\x20value\x20is\x20not\x20valid."
+                    }
+                });
+            })(jQuery);',
+            $javascriptPrototype
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_render_child_validation_javascript()
     {
         $client = self::createClient();

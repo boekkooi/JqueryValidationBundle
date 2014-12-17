@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ButtonsFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionDateTimeFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionWithGroupsFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\DateTimeFormType;
@@ -95,6 +96,14 @@ class FormController extends Controller
     public function viewTransformAction(Request $request)
     {
         $form = $this->createForm(new ViewTransformRulesFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
+    }
+
+    public function collectionDateTimeAction(Request $request)
+    {
+        $form = $this->createForm(new CollectionDateTimeFormType());
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
