@@ -100,6 +100,11 @@ class FormTypeExtension extends AbstractTypeExtension
         if ($rootView === $view) {
             $this->compile($view);
 
+            // The extension requires a form to have a name
+            if (!isset($view->vars['attr']['name'])) {
+                $view->vars['attr']['name'] = $view->vars['full_name'];
+            }
+
             return;
         }
 
