@@ -47,6 +47,7 @@ class BoekkooiJqueryValidationExtension  extends Extension
     private function configureForm(ContainerBuilder $container, array $config, LoaderInterface $loader)
     {
         $container->setParameter('boekkooi.jquery_validation.enabled', $config['form']['enabled']);
+        $container->setParameter('boekkooi.jquery_validation.additional_enabled', $config['form']['additionals']);
 
         $loader->load('form_rule_processors.yml');
         $loader->load('form_rule_mappers.yml');

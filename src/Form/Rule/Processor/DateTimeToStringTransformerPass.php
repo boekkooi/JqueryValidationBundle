@@ -16,6 +16,16 @@ use Symfony\Component\Form\FormView;
  */
 class DateTimeToStringTransformerPass extends ViewTransformerProcessor
 {
+    /**
+     * @var bool
+     */
+    private $includeAdditionalRules;
+
+    public function __construct($includeAdditionalRules = false)
+    {
+        $this->includeAdditionalRules = $includeAdditionalRules;
+    }
+
     public function process(FormRuleProcessorContext $context, FormRuleContextBuilder $formRuleContext)
     {
         $form = $context->getForm();
@@ -58,14 +68,17 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
 
         $rules = new RuleCollection();
         if ($config->getOption('with_minutes')) {
-            $rules->set(
-                'time',
-                new TransformerRule(
+            // Only add time rule if additional rules are enabled
+            if ($this->includeAdditionalRules) {
+                $rules->set(
                     'time',
-                    true,
-                    $this->getFormRuleMessage($config)
-                )
-            );
+                    new TransformerRule(
+                        'time',
+                        true,
+                        $this->getFormRuleMessage($config)
+                    )
+                );
+            }
         } else {
             $rules->set(
                 MinRule::RULE_NAME,

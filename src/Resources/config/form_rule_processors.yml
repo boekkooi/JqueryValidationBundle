@@ -37,6 +37,7 @@ services:
 
   boekkooi.jquery_validation.form.rule.processor.datetime_string_transformer:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\DateTimeToStringTransformerPass
+    arguments: [ %boekkooi.jquery_validation.additional_enabled% ]
     public: false
     tags:
      - { name: form_rule_processor, priority: 50 }

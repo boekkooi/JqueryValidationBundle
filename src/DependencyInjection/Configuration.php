@@ -29,11 +29,18 @@ class Configuration implements ConfigurationInterface
 
         $node = $treeBuilder->root('form');
         $node
-            ->treatTrueLike(array('enabled' => true))
-            ->treatFalseLike(array('enabled' => true))
+            ->treatTrueLike(array('enabled' => true, 'additionals' => false))
+            ->treatFalseLike(array('enabled' => false, 'additionals' => false))
             ->addDefaultsIfNotSet()
             ->children()
-                ->booleanNode('enabled')->defaultTrue()->end()
+                ->booleanNode('enabled')
+                    ->info('Set to false to disable the form constraints being parsed/converted by default')
+                    ->defaultTrue()
+                ->end()
+                ->booleanNode('additionals')
+                    ->info('Set to true if jquery validate additional-method.js is included')
+                    ->defaultFalse()
+                ->end()
             ->end();
 
         return $node;

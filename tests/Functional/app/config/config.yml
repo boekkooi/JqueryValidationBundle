@@ -11,3 +11,7 @@ framework:
     collect: false
   session:
     storage_id: session.storage.mock_file
+
+boekkooi_jquery_validation:
+  form:
+    additionals: true
