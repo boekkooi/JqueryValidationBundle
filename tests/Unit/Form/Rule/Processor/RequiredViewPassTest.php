@@ -73,7 +73,7 @@ class RequiredViewPassTest extends BaseProcessorTest
             array('Symfony\Component\Validator\Constraints\NotBlank'),
             array('Symfony\Component\Validator\Constraints\Required'),
 
-            array( 'Symfony\Component\Validator\Constraints\Uuid', 'Symfony\Component\Validator\Constraints\NotNull'),
+            array( 'Symfony\Component\Validator\Constraints\Currency', 'Symfony\Component\Validator\Constraints\NotNull'),
             array( 'Symfony\Component\Validator\Constraints\Time', 'Symfony\Component\Validator\Constraints\NotBlank'),
             array( 'Symfony\Component\Validator\Constraints\Locale', 'Symfony\Component\Validator\Constraints\Required'),
         );
@@ -83,7 +83,7 @@ class RequiredViewPassTest extends BaseProcessorTest
     {
         return array(
             array(
-                'Symfony\Component\Validator\Constraints\Uuid',
+                'Symfony\Component\Validator\Constraints\Currency',
                 'Symfony\Component\Validator\Constraints\Time',
                 'Symfony\Component\Validator\Constraints\Locale'
             ),

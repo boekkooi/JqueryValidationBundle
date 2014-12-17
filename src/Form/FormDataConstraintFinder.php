@@ -5,8 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\Valid;
-use Symfony\Component\Validator\Mapping\CascadingStrategy;
-use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -48,8 +47,9 @@ class FormDataConstraintFinder
             $constraintCollection->addCollection(
                 new ConstraintCollection($propertyMetadata->getConstraints())
             );
+
             // For some reason Valid constraint is not in the list of constraints so we hack it in ....
-            if ($propertyMetadata->cascadingStrategy === CascadingStrategy::CASCADE) {
+            if ($propertyMetadata->isCollectionCascaded()) {
                 $constraintCollection->add(new Valid());
             }
         }
