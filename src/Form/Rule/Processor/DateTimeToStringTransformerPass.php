@@ -62,10 +62,6 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
 
     private function processTime(FormView $view, FormConfigInterface $config, FormRuleContextBuilder $context)
     {
-        if ($config->getOption('with_seconds')) {
-            return;
-        }
-
         $rules = new RuleCollection();
         if ($config->getOption('with_minutes')) {
             // Only add time rule if additional rules are enabled
