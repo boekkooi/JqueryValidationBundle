@@ -1,0 +1,17 @@
+services:
+  boekkooi.jquery_validation.mapper.iban:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IbanRule
+    arguments: [ %boekkooi.jquery_validation.additional.iban% ]
+    public: false
+    tags:
+     - { name: form_rule_constraint_mapper }
+
+  boekkooi.jquery_validation.mapper.ip:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IpRule
+    arguments:
+      - %boekkooi.jquery_validation.additional.ipv4%
+      - %boekkooi.jquery_validation.additional.ipv6%
+      - %boekkooi.jquery_validation.additional.one_or_other%
+    public: false
+    tags:
+     - { name: form_rule_constraint_mapper }

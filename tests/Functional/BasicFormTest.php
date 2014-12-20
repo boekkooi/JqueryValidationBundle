@@ -1,14 +1,20 @@
 <?php
-namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Integration;
-
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional;
 
 /**
  * @coversNothing
+ * @runTestsInSeparateProcesses
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class SimpleFormTest extends WebTestCase
+class BasicFormTest extends FormTestCase
 {
+    protected static function getSymfonyOptions()
+    {
+        return array(
+            'enable_additionals' => false
+        );
+    }
+
     /**
      * @test
      */
@@ -743,7 +749,7 @@ class SimpleFormTest extends WebTestCase
                                 }
                             }
                         },
-                        "date_time_form\x5Btime_single_text\x5D": {"required": true, "time": true}
+                        "date_time_form\x5Btime_single_text\x5D": {"required": true}
                     },
                     messages: {
                         "date_time_form\x5Bdatetime_choice\x5D\x5Bdate\x5D\x5Byear\x5D": {
@@ -822,8 +828,7 @@ class SimpleFormTest extends WebTestCase
                             "max": "This\x20value\x20is\x20not\x20valid."
                         },
                         "date_time_form\x5Btime_single_text\x5D": {
-                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
-                            "time": "This\x20value\x20is\x20not\x20valid."
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank."
                         }
                     }
                 });
@@ -909,32 +914,22 @@ class SimpleFormTest extends WebTestCase
         );
     }
 
-    protected function fetch_application_page_javascript($url, $client = null)
+    /**
+     * @test
+     */
+    public function it_should_not_render_additional_rules()
     {
-        $client = $client ?: self::createClient();
+        $client = self::createClient();
 
-        $crawler = $client->request('GET', $url);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $javascript = $this->fetch_application_page_javascript('/additional_rules', $client);
 
-        $elt = $crawler->filterXPath('//script[@id="validation_script"]');
-
-        $this->assertEquals(1, $elt->count());
-
-        return $elt->html();
-    }
-
-    protected function assertEqualJs($excepted, $actual)
-    {
-        $this->assertEquals(
-            $this->stripWhiteSpace($excepted),
-            $this->stripWhiteSpace($actual)
+        $this->assertEqualJs('
+            (function ($) {
+                "use strict";
+                var form = $("form[name=\"additional_rules\"]");
+                var validator = form.validate({ rules: {}, messages: {}});
+            })(jQuery);',
+            $javascript
         );
-    }
-
-    protected function stripWhiteSpace($js)
-    {
-        $js = str_replace(array(',', '{', '}', ':', ';', 'function'), array(', ', ' { ', ' } ', ' : ', '; ', ' function ') , trim($js));
-
-        return preg_replace('/(\s+|\n)/', ' ' , trim($js));
     }
 }

@@ -52,3 +52,8 @@ form_collection_datetime:
   path:  '/collection_datetime'
   defaults:
     _controller: TestBundle:Form:collectionDateTime
+
+form_additional_rules:
+  path:  '/additional_rules'
+  defaults:
+    _controller: TestBundle:Form:additionalRules

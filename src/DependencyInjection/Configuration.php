@@ -29,17 +29,35 @@ class Configuration implements ConfigurationInterface
 
         $node = $treeBuilder->root('form');
         $node
-            ->treatTrueLike(array('enabled' => true, 'additionals' => false))
-            ->treatFalseLike(array('enabled' => false, 'additionals' => false))
+            ->treatTrueLike(array('enabled' => true, 'additional' => true))
+            ->treatFalseLike(array('enabled' => false))
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('enabled')
                     ->info('Set to false to disable the form constraints being parsed/converted by default')
                     ->defaultTrue()
                 ->end()
-                ->booleanNode('additionals')
-                    ->info('Set to true if jquery validate additional-method.js is included')
-                    ->defaultFalse()
+                ->arrayNode('additionals')
+                    ->treatTrueLike(array(
+                        'ipv4' => true,
+                        'ipv6' => true,
+                        'iban' => true,
+                        'pattern' => true,
+                        'time' => true,
+                        'one_or_other' => true,
+                        'required_group' => true
+                    ))
+                    ->treatFalseLike(array())
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('ipv4')->defaultFalse()->end()
+                        ->booleanNode('ipv6')->defaultFalse()->end()
+                        ->booleanNode('iban')->defaultFalse()->end()
+                        ->booleanNode('pattern')->defaultFalse()->end()
+                        ->booleanNode('time')->defaultFalse()->end()
+                        ->booleanNode('one_or_other')->defaultFalse()->end()
+                        ->booleanNode('required_group')->defaultFalse()->end()
+                    ->end()
                 ->end()
             ->end();
 
@@ -52,8 +70,8 @@ class Configuration implements ConfigurationInterface
 
         $node = $treeBuilder->root('twig');
         $node
-            ->treatTrueLike(array('enabled' => true))
-            ->treatFalseLike(array('enabled' => true))
+            ->treatTrueLike(array())
+            ->treatFalseLike(array())
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('enabled')->defaultTrue()->end()

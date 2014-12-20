@@ -19,11 +19,11 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
     /**
      * @var bool
      */
-    private $includeAdditionalRules;
+    private $useTime;
 
-    public function __construct($includeAdditionalRules = false)
+    public function __construct($useTimeRule = false)
     {
-        $this->includeAdditionalRules = $includeAdditionalRules;
+        $this->useTime = $useTimeRule;
     }
 
     public function process(FormRuleProcessorContext $context, FormRuleContextBuilder $formRuleContext)
@@ -65,7 +65,7 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
         $rules = new RuleCollection();
         if ($config->getOption('with_minutes')) {
             // Only add time rule if additional rules are enabled
-            if ($this->includeAdditionalRules) {
+            if ($this->useTime) {
                 $rules->set(
                     'time',
                     new TransformerRule(

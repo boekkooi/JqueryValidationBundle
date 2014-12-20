@@ -18,6 +18,16 @@ use Symfony\Component\Form\FormView;
  */
 class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
 {
+    /**
+     * @var bool
+     */
+    private $useGroupRule;
+
+    public function __construct($useGroupRule = false)
+    {
+        $this->useGroupRule = $useGroupRule;
+    }
+
     public function process(FormRuleProcessorContext $context, FormRuleContextBuilder $formRuleContext)
     {
         $form = $context->getForm();
@@ -43,8 +53,8 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
         foreach ($it as $childView) {
             $childRules = $formRuleContext->get($childView);
             if ($childRules === null) {
-                $childRules = new RuleCollection();
-                $formRuleContext->add($childView, $childRules);
+                $formRuleContext->add($childView, new RuleCollection());
+                $childRules = $formRuleContext->get($childView);
             }
 
             $this->addNumberCheck(
@@ -55,11 +65,19 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
             );
             $depends[] = $childView->vars['full_name'];
         }
+
+        if ($this->useGroupRule && count($depends) > 1) {
+            $rules = $formRuleContext->get(array_shift($depends));
+            $rules->set(
+                CompoundCopyToChildPass::RULE_NAME_GROUP_REQUIRED,
+                new TransformerRule(CompoundCopyToChildPass::RULE_NAME_GROUP_REQUIRED, $depends, $invalidMessage)
+            );
+        }
     }
 
     private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message = null, array $depends)
     {
-        if (count($depends) > 0) {
+        if (!$this->useGroupRule && count($depends) > 0) {
             $rules->set(
                 RequiredRule::RULE_NAME,
                 new TransformerRule(

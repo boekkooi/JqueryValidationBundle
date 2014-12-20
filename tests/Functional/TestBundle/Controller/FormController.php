@@ -4,6 +4,7 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Con
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\AdditionalRulesFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ButtonsFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionDateTimeFormType;
@@ -107,6 +108,14 @@ class FormController extends Controller
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
+    }
+
+    public function additionalRulesAction(Request $request)
+    {
+        $form = $this->createForm(new AdditionalRulesFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
 
     private function handleForm(Request $request, FormInterface $form)
