@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('additionals')
                     ->treatTrueLike(array(
+                        'accept' => true,
                         'ipv4' => true,
                         'ipv6' => true,
                         'iban' => true,
@@ -50,6 +51,7 @@ class Configuration implements ConfigurationInterface
                     ->treatFalseLike(array())
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->booleanNode('accept')->defaultFalse()->end()
                         ->booleanNode('ipv4')->defaultFalse()->end()
                         ->booleanNode('ipv6')->defaultFalse()->end()
                         ->booleanNode('iban')->defaultFalse()->end()

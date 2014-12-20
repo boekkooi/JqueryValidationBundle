@@ -454,13 +454,15 @@ class TotalFormTest extends FormTestCase
                         "additional_rules\x5Bipv4\x5D": {"ipv4": true},
                         "additional_rules\x5Bipv6\x5D": {"ipv6": true},
                         "additional_rules\x5Bipv4_ipv6\x5D": {"one_or_other": {"ipv4": true, "ipv6": true}},
-                        "additional_rules\x5Biban\x5D": {"iban": true}
+                        "additional_rules\x5Biban\x5D": {"iban": true},
+                        "additional_rules\x5Bfile\x5D": {"accept": "text\/plain,application\/pdf"}
                     },
                     messages: {
                         "additional_rules\x5Bipv4\x5D": {"ipv4": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
                         "additional_rules\x5Bipv6\x5D": {"ipv6": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
                         "additional_rules\x5Bipv4_ipv6\x5D": {"one_or_other": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
-                        "additional_rules\x5Biban\x5D": {"iban": "This\x20is\x20not\x20a\x20valid\x20International\x20Bank\x20Account\x20Number\x20\x28IBAN\x29."}
+                        "additional_rules\x5Biban\x5D": {"iban": "This\x20is\x20not\x20a\x20valid\x20International\x20Bank\x20Account\x20Number\x20\x28IBAN\x29."},
+                        "additional_rules\x5Bfile\x5D": {"accept": "The\x20mime\x20type\x20of\x20the\x20file\x20is\x20invalid\x20\x28\x7B\x7B\x20type\x20\x7D\x7D\x29.\x20Allowed\x20mime\x20types\x20are\x20text\x2Fplain,\x20application\x2Fpdf."}
                     }
                 });
             })(jQuery);',

@@ -40,6 +40,14 @@ class AdditionalRulesFormType extends AbstractType
                     new Constraints\Iban()
                 )
             ))
+
+            ->add('file', 'file', array(
+                'constraints' => array(
+                    new Constraints\File(array(
+                        'mimeTypes' => array('text/plain', 'application/pdf')
+                    ))
+                )
+            ))
         ;
     }
 

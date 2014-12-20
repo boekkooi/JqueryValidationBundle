@@ -15,3 +15,10 @@ services:
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
+
+  boekkooi.jquery_validation.mapper.file:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\FileRule
+    arguments: [ %boekkooi.jquery_validation.additional.accept% ]
+    public: false
+    tags:
+     - { name: form_rule_constraint_mapper }
