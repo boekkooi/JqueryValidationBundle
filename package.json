@@ -1,0 +1,34 @@
+{
+  "name": "symfony-jquery-validation-bundle",
+  "description": "Javascript related to the JqueryValidationBundle project",
+  "homepage": "https://github.com/boekkooi/JqueryValidationBundle/",
+  "bugs": "https://github.com/boekkooi/JqueryValidationBundle/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:boekkooi/JqueryValidationBundle.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mit-license.org/"
+    }
+  ],
+  "author": {
+    "name": "Warnar Boekkooi",
+    "web": "http://boekkooi.net"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "dependencies": { },
+  "devDependencies": {
+    "jquery-validation": "~1.13",
+    "qunit": "~0.5.15",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-qunit": "~0.2.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.4.0",
+    "qunitjs": "~1.11.0"
+  }
+}

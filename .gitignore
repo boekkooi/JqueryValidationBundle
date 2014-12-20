@@ -34,3 +34,7 @@ composer.lock
 ### PHPUnit ###
 ###############
 phpunit.xml
+
+### NodeJS ###
+##############
+node_modules/

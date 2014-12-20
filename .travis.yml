@@ -16,6 +16,10 @@ matrix:
   allow_failures:
   - { php: hhvm }
 
+install:
+  - npm install grunt-cli -g
+  - npm install
+
 before_script:
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
   - sh -c 'if [ "$TWIG_VERSION" != "" ]; then composer require --no-update twig/twig=$TWIG_VERSION; fi;'
@@ -25,6 +29,7 @@ before_script:
 
 script:
   - php phpunit.phar --coverage-text --coverage-clover=coverage.clover
+  - grunt test
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
