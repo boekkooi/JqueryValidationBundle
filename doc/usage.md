@@ -15,6 +15,23 @@ It's really simple just open a twig template that has a form and add the followi
 ```
 Now go to you page and enjoy.
 
+Additional rules
+-------------
+To get the best result and most client side validations you can enable the additional-methods provided by the bundle.
+To enable addition-methods you need to enable it in your `config.yml` by adding:
+```YAML
+boekkooi_jquery_validation:
+    form:
+        ...
+        additionals: true
+```
+After this you will need to include the `additional-methods.min.js` within your twig template after `jquery.validate.js`.
+```twig
+{% javascripts '@BoekkooiJqueryValidationBundle/Resources/public/additional-methods.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```
+
 Collection prototype
 -------------
 O no you have a form with a collection that has `allow_add` set..... Now you need to do more work!

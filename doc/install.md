@@ -26,7 +26,16 @@ Default configuration:
 boekkooi_jquery_validation:
     form:
         enabled: true # Set to false to disable the form constraints being parsed/converted by default
-        additionals: false # Set to true if jquery validate additional-method.js is included
+        additionals: # Set to true if jquery validate additional-method.js is included
+            accept: false
+            ipv4: false
+            ipv6: false
+            iban: false
+            luhn: false
+            pattern: false
+            time: false
+            one_or_other: false
+            required_group: false
     twig:
         enabled: true # Register the twig extension
 ```
