@@ -41,6 +41,12 @@ class AdditionalRulesFormType extends AbstractType
                 )
             ))
 
+            ->add('luhn', null, array(
+                'constraints' => array(
+                    new Constraints\Luhn()
+                )
+            ))
+
             ->add('file', 'file', array(
                 'constraints' => array(
                     new Constraints\File(array(

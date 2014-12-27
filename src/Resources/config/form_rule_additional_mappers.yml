@@ -6,6 +6,13 @@ services:
     tags:
      - { name: form_rule_constraint_mapper }
 
+  boekkooi.jquery_validation.mapper.luhn:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\LuhnRule
+    arguments: [ %boekkooi.jquery_validation.additional.luhn% ]
+    public: false
+    tags:
+     - { name: form_rule_constraint_mapper }
+
   boekkooi.jquery_validation.mapper.ip:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IpRule
     arguments:

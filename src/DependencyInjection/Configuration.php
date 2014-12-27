@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
                         'ipv4' => true,
                         'ipv6' => true,
                         'iban' => true,
+                        'luhn' => true,
                         'pattern' => true,
                         'time' => true,
                         'one_or_other' => true,
@@ -55,6 +56,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('ipv4')->defaultFalse()->end()
                         ->booleanNode('ipv6')->defaultFalse()->end()
                         ->booleanNode('iban')->defaultFalse()->end()
+                        ->booleanNode('luhn')->defaultFalse()->end()
                         ->booleanNode('pattern')->defaultFalse()->end()
                         ->booleanNode('time')->defaultFalse()->end()
                         ->booleanNode('one_or_other')->defaultFalse()->end()

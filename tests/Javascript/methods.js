@@ -189,4 +189,30 @@
         ok( method( "AE07 0331 2345 6789 0123 456"), "Valid IBAN - AE");
         ok( method( "GB29 NWBK 6016 1331 9268 19"), "Valid IBAN - GB");
     });
+
+    test("luhn", function() {
+        var method = methodTest("luhn");
+        ok( method("42424242424242424242"), "Valid LUHN");
+        ok( method("378282246310005"), "Valid LUHN");
+        ok( method("371449635398431"), "Valid LUHN");
+        ok( method("378734493671000"), "Valid LUHN");
+        ok( method("5610591081018250"), "Valid LUHN");
+        ok( method("30569309025904"), "Valid LUHN");
+        ok( method("38520000023237"), "Valid LUHN");
+        ok( method("6011111111111117"), "Valid LUHN");
+        ok( method("6011000990139424"), "Valid LUHN");
+        ok( method("3530111333300000"), "Valid LUHN");
+        ok( method("3566002020360505"), "Valid LUHN");
+        ok( method("5555555555554444"), "Valid LUHN");
+        ok( method("5105105105105100"), "Valid LUHN");
+        ok( method("4111111111111111"), "Valid LUHN");
+        ok( method("4012888888881881"), "Valid LUHN");
+        ok( method("4222222222222"), "Valid LUHN");
+        ok( method("5019717010103742"), "Valid LUHN");
+        ok( method("6331101999990016"), "Valid LUHN");
+
+        ok(!method("1234567812345678"), "Invalid LUHN");
+        ok(!method("4222222222222222"), "Invalid LUHN");
+        ok(!method("0000000000000000"), "Invalid LUHN");
+    });
 })(jQuery);
