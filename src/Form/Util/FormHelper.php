@@ -2,6 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
+use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -79,5 +80,29 @@ final class FormHelper
         }
 
         return (array) $groups;
+    }
+
+    public static function generateCssSelector(FormView $view)
+    {
+        $vars = $view->vars;
+        if (!empty($vars['attr']['id'])) {
+            return trim(sprintf('#%s', $vars['attr']['id']));
+        }
+        if (!empty($vars['full_name'])) {
+            $root = $view;
+            while ($root->parent !== null) {
+                $root = $root->parent;
+            }
+
+            if ($view === $root) {
+                return sprintf('form[name="%s"]', $vars['full_name']);
+            }
+
+            $formSelector = self::generateCssSelector($root);
+
+            return trim(sprintf('%s *[name="%s"]', $formSelector, $vars['full_name']));
+        }
+
+        throw new LogicException();
     }
 }

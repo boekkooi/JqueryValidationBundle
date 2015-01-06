@@ -1,12 +1,11 @@
 <?php
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
-use Symfony\Component\Form\FormView;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -26,13 +25,22 @@ class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
             return;
         }
 
-        $transformer = $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\ValueToDuplicatesTransformer');
+        $transformer = $this->findTransformer(
+            $formConfig,
+            'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\ValueToDuplicatesTransformer'
+        );
         if ($transformer === null) {
             return;
         }
+
         $keys = $this->getKeys($transformer);
+        if (empty($keys)) {
+            return;
+        }
+
         $formView = $context->getView();
 
+        // Use children here since we need the full_name
         $primary = array_shift($keys);
         $primaryView = $formView->children[$primary];
 
@@ -56,7 +64,7 @@ class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
                 'equalTo',
                 new TransformerRule(
                     'equalTo',
-                    $this->getFieldSelector($primaryView),
+                    FormHelper::generateCssSelector($primaryView),
                     $invalidMessage
                 )
             );
@@ -78,30 +86,5 @@ class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
         }
 
         return $this->keyReflectionCache->getValue($transformer);
-    }
-
-    private function getFieldSelector(FormView $view)
-    {
-        // TODO move method to a selector class or something
-        $vars = $view->vars;
-        if (!empty($vars['attr']['id'])) {
-            return trim(sprintf('#%s', $vars['attr']['id']));
-        }
-        if (!empty($vars['full_name'])) {
-            $root = $view;
-            while ($root->parent !== null) {
-                $root = $root->parent;
-            }
-
-            if ($view === $root) {
-                return sprintf('form[name="%s"]', $vars['full_name']);
-            }
-
-            $formSelector = $this->getFieldSelector($root);
-
-            return trim(sprintf('%s *[name="%s"]', $formSelector, $vars['full_name']));
-        }
-
-        throw new LogicException();
     }
 }

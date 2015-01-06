@@ -12,6 +12,11 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
     protected $form;
 
     /**
+     * @var \Symfony\Component\Form\FormConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $formConfig;
+
+    /**
      * @var \Symfony\Component\Form\FormView | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $formView;
@@ -52,7 +57,17 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->formRuleContext = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder', null);
+        $this->formRuleContext = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder');
+
+        $this->setUpFormConfig();
+    }
+
+    protected function setUpFormConfig()
+    {
+        $this->formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $this->form->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($this->formConfig);
     }
 
     /**
