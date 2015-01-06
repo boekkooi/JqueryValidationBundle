@@ -23,6 +23,7 @@ matrix:
 install:
   - npm install grunt-cli -g
   - npm install
+  - composer self-update
 
 before_script:
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
