@@ -25,6 +25,7 @@ class BoekkooiJqueryValidationExtension  extends Extension
         $config = $processor->processConfiguration(new Configuration(), $config);
 
         $this->configureForm($container, $config, $loader);
+        $this->configureFormAdditionals($container, $config, $loader);
         $this->configureTwig($config, $loader);
     }
 
@@ -42,12 +43,24 @@ class BoekkooiJqueryValidationExtension  extends Extension
     /**
      * @param array $config
      * @param ContainerBuilder $container
-     * @param $loader
+     * @param LoaderInterface $loader
      */
     private function configureForm(ContainerBuilder $container, array $config, LoaderInterface $loader)
     {
         $container->setParameter('boekkooi.jquery_validation.enabled', $config['form']['enabled']);
 
+        $loader->load('form_rule_processors.yml');
+        $loader->load('form_rule_mappers.yml');
+        $loader->load('form_rule_compilers.yml');
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     * @param LoaderInterface $loader
+     */
+    private function configureFormAdditionals(ContainerBuilder $container, array $config, LoaderInterface $loader)
+    {
         $includeAdditional = false;
         foreach ($config['form']['additionals'] as $name => $active) {
             $container->setParameter(
@@ -57,13 +70,8 @@ class BoekkooiJqueryValidationExtension  extends Extension
             $includeAdditional = $includeAdditional || $active;
         }
 
-        $loader->load('form_rule_processors.yml');
-        $loader->load('form_rule_mappers.yml');
-        $loader->load('form_rule_compilers.yml');
         if ($includeAdditional) {
             $loader->load('form_rule_additional_mappers.yml');
         }
-
-        $this->configureTwig($config, $loader);
     }
 }
