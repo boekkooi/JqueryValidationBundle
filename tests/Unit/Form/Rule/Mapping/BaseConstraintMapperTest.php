@@ -61,14 +61,17 @@ abstract class BaseConstraintMapperTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provide_constraint_rule_expectation
      */
-    public function it_should_add_a_rule_for(Constraint $constraint, Rule $rule)
+    public function it_should_add_a_rule_for(Constraint $constraint, Rule $rule, $ruleName = null)
     {
+        $ruleName = $ruleName !== null ? $ruleName : $rule->name;
+
         $this->setUpBaseTest();
 
         $this->execute_resolve($constraint);
 
         $this->assertCount(1, $this->ruleCollection);
-        $this->assertSameRule($rule, $this->ruleCollection->get($rule->name));
+        $this->assertNotNull($this->ruleCollection->get($ruleName));
+        $this->assertSameRule($rule, $this->ruleCollection->get($ruleName));
     }
 
     abstract public function provide_constraint_rule_expectation();
@@ -101,9 +104,9 @@ abstract class BaseConstraintMapperTest extends \PHPUnit_Framework_TestCase
 
     protected function assertSameRule(Rule $expectedRule, Rule $rule)
     {
-        $this->assertEquals($expectedRule->name, $rule->name);
-        $this->assertEquals($expectedRule->groups, $rule->groups);
-        $this->assertEquals($expectedRule->options, $rule->options);
+        $this->assertEquals($expectedRule->name, $rule->name, 'Invalid rule name');
+        $this->assertEquals($expectedRule->groups, $rule->groups, 'Invalid rule groups');
+        $this->assertEquals($expectedRule->options, $rule->options, 'Invalid rule options');
 
         if ($expectedRule->message === null) {
             $this->assertNull($rule->message);

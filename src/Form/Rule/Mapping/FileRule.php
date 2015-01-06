@@ -54,6 +54,6 @@ class FileRule  implements ConstraintMapperInterface
         /** @var \Symfony\Component\Validator\Constraints\File $constraint */
         return $this->active &&
             get_class($constraint) === 'Symfony\Component\Validator\Constraints\File' &&
-            $constraint->mimeTypes;
+            !empty($constraint->mimeTypes);
     }
 }
