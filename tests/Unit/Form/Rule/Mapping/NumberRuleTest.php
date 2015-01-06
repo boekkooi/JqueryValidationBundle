@@ -24,6 +24,10 @@ class NumberRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\Range(array('min' => 1))),
+            array(new Constraints\Type(array('type' => 'Int'))),
+            array(new Constraints\Type(array('type' => 'integer'))),
+            array(new Constraints\Type(array('type' => 'float'))),
+            array(new Constraints\Type(array('type' => 'double'))),
         );
     }
 
@@ -33,6 +37,10 @@ class NumberRuleTest extends BaseConstraintMapperTest
             array(
                 new Constraints\Range(array('invalidMessage' => 'msg', 'min' => 1)),
                 new Rule('number', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP))
+            ),
+            array(
+                new Constraints\Type(array('message' => 'msg', 'type' => 'double')),
+                new Rule('number', true, new RuleMessage('msg', array('{{ type }}' => 'double')), array(Constraint::DEFAULT_GROUP))
             )
         );
     }
