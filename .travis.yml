@@ -27,7 +27,7 @@ install:
 
 before_script:
   - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
-  - sh -c 'if [ "$COMPOSER_LOWEST_VERSION" != "" ]; then composer install --dev --prefer-lowest; else composer install --dev; fi;'
+  - sh -c 'if [ "$COMPOSER_LOWEST_VERSION" != "" ]; then composer update --prefer-lowest --prefer-stable --dev; else composer install --dev; fi;'
   - mkdir -p build/logs
   - wget https://phar.phpunit.de/phpunit.phar
 
