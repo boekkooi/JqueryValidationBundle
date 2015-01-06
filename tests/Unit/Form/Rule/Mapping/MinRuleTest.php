@@ -23,8 +23,8 @@ class MinRuleTest extends BaseConstraintMapperTest
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\GreaterThan(1)),
-            array(new Constraints\GreaterThanOrEqual(1)),
+            array(new Constraints\GreaterThan(array('value' => 1))),
+            array(new Constraints\GreaterThanOrEqual(array('value' => 1))),
             array(new Constraints\Range(array('min' => 1)))
         );
     }

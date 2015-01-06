@@ -57,7 +57,7 @@
             param: {{- rule.options|json_encode()|raw -}},
         {%- endif -%}
             depends: function() {
-                {%- if hasDepends and rule.name is same as('required') %}
+                {%- if hasDepends and rule.name is sameas('required') %}
                     var dep = form.find("[name=\"{{ rule.depends|e('js')|last }}\"]")[0];
                 {% endif %}
 
@@ -72,7 +72,7 @@
                 {%- if hasGroups and hasDepends %} && {% endif -%}
 
                 {%- if hasDepends %}
-                    {% if rule.name is same as('required') %}
+                    {% if rule.name is sameas('required') %}
                         $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) &&
                     {% endif %}
 

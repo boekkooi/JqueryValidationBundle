@@ -24,8 +24,8 @@ class MaxRuleTest extends BaseConstraintMapperTest
     public function provide_supported_constraints()
     {
         return array(
-            array(new Constraints\LessThan(1)),
-            array(new Constraints\LessThanOrEqual(1)),
+            array(new Constraints\LessThan(array('value' => 1))),
+            array(new Constraints\LessThanOrEqual(array('value' => 1))),
             array(new Constraints\Range(array('max' => 1)))
         );
     }
