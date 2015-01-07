@@ -29,7 +29,6 @@ $RECYCLE.BIN/
 ################
 vendor/*
 composer.phar
-composer.lock
 
 ### PHPUnit ###
 ###############
