@@ -14,8 +14,7 @@ $.validator.addMethod("one_or_other", function(value, element, param) {
     var valid = false;
     $.each(param, function(ruleMethod, ruleParams) {
         try {
-
-            result = $.validator.methods[ ruleMethod ].call( validator, value, element, ruleParams );
+            var result = $.validator.methods[ ruleMethod ].call( validator, value, element, ruleParams );
             if ( !!result ) {
                 valid = true;
                 return false;

@@ -3,7 +3,7 @@
  *
  * https://github.com/boekkooi/JqueryValidationBundle/
  *
- * Copyright (c) 2014 Warnar Boekkooi
+ * Copyright (c) 2015 Warnar Boekkooi
  * Released under the MIT license
  */
 (function( factory ) {
@@ -221,6 +221,7 @@ $.validator.addMethod("luhn", function(value, element) {
 
     // trim spaces
     var digits = $.trim(value);
+
     if (!(/^[0-9]+$/.test(digits))) {
         return false;
     }
@@ -271,8 +272,7 @@ $.validator.addMethod("one_or_other", function(value, element, param) {
     var valid = false;
     $.each(param, function(ruleMethod, ruleParams) {
         try {
-
-            result = $.validator.methods[ ruleMethod ].call( validator, value, element, ruleParams );
+            var result = $.validator.methods[ ruleMethod ].call( validator, value, element, ruleParams );
             if ( !!result ) {
                 valid = true;
                 return false;
