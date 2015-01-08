@@ -41,7 +41,7 @@ This bundle is under the MIT license.
 
 About
 -----
-This bundle is created and maintained by Warnar Boekkooi.
+This bundle is created and maintained by [Warnar Boekkooi](http://boekkooi.net/).
 Special thanks go to the [Symfony](http://symfony.com/) community and [Jörn Zaefferer](http://jqueryvalidation.org/).
 
 Alternatives
