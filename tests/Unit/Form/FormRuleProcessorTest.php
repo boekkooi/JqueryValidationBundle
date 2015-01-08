@@ -32,7 +32,7 @@ class FormRuleProcessorTest extends \PHPUnit_Framework_TestCase
             array(array(new \stdClass())),
             array(array(false)),
             array(array(null)),
-            array(array('string'))
+            array(array('string')),
         );
     }
 
@@ -53,7 +53,7 @@ class FormRuleProcessorTest extends \PHPUnit_Framework_TestCase
 
         $SUT = new FormRuleProcessor(array(
             $processor1,
-            $processor2
+            $processor2,
         ));
 
         $SUT->process($processContext, $formRuleContext);

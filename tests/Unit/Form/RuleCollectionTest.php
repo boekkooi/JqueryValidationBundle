@@ -60,7 +60,7 @@ class RuleCollectionTest extends \PHPUnit_Framework_TestCase
             array(
                 'rule' => $rule,
                 'rule1' => $rule1,
-                'rule2' => $rule2
+                'rule2' => $rule2,
             ),
             $this->SUT->toArray()
         );
@@ -84,7 +84,7 @@ class RuleCollectionTest extends \PHPUnit_Framework_TestCase
             array(new \stdClass()),
             array(null),
             array(1),
-            array(true)
+            array(true),
         );
     }
 

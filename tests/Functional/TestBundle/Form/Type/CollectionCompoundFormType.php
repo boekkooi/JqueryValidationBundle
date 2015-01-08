@@ -19,8 +19,8 @@ class CollectionCompoundFormType extends AbstractType
                         new Constraints\Length(array(
                             'min' => 8,
                             'max' => 200,
-                        ))
-                    )
+                        )),
+                    ),
                 ))
             ->add('tags', 'collection', array(
                     'type' => new SimpleFormType(),

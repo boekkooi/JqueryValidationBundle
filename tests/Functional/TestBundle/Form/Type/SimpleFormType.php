@@ -17,13 +17,13 @@ class SimpleFormType extends AbstractType
                 'label' => 'Name',
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 2))
-                )
+                    new Constraints\Length(array('min' => 2)),
+                ),
             ))
             ->add('password', 'repeated', array(
                 'type' => 'password',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
                 'first_options' => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),

@@ -17,15 +17,15 @@ class ViewTransformRulesFormType extends AbstractType
                 'widget' => 'text',
                 'label' => 'Time text',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
             ->add('equals', 'repeated', array(
                 'type' => 'text',
                 'constraints' => array(
                     new Constraints\NotBlank(array(
-                        'groups' => 'main'
-                    ))
+                        'groups' => 'main',
+                    )),
                 ),
                 'first_options' => array('label' => 'Text'),
                 'second_options' => array('label' => 'Repeat'),

@@ -32,7 +32,7 @@ class FormRuleCompilerTest extends \PHPUnit_Framework_TestCase
             array(array(new \stdClass())),
             array(array(false)),
             array(array(null)),
-            array(array('string'))
+            array(array('string')),
         );
     }
 
@@ -51,10 +51,9 @@ class FormRuleCompilerTest extends \PHPUnit_Framework_TestCase
 
         $SUT = new FormRuleCompiler(array(
             $compiler1,
-            $compiler2
+            $compiler2,
         ));
 
         $SUT->compile($formRuleContext);
     }
-
 }

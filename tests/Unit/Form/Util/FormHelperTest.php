@@ -102,7 +102,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
 
         return array(
             array('string_name', 'string_name'),
-            array($view, 'form_name')
+            array($view, 'form_name'),
         );
     }
 
@@ -121,7 +121,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(false),
-            array($this->getMock('Symfony\Component\Form\FormView'))
+            array($this->getMock('Symfony\Component\Form\FormView')),
         );
     }
 
@@ -185,7 +185,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
         return array(
             array(null),
             array(false),
-            array(array('my', 'valid', 'groups'))
+            array(array('my', 'valid', 'groups')),
         );
     }
 
@@ -207,5 +207,4 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
             FormHelper::getViewRoot($formView)
         );
     }
-
 }

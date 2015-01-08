@@ -19,17 +19,17 @@ class CollectionWithGroupsFormType extends AbstractType
                         new Constraints\Length(array(
                             'min' => 8,
                             'max' => 200,
-                            'groups' => 'main'
-                        ))
-                    )
+                            'groups' => 'main',
+                        )),
+                    ),
                 ))
             ->add('tags', 'collection', array(
                     'type' => 'text',
                     'constraints' => array(
                         new Constraints\Count(array(
                             'min' => 1,
-                            'max' => 5
-                        ))
+                            'max' => 5,
+                        )),
                     ),
 
                     'allow_add' => true,
@@ -43,10 +43,10 @@ class CollectionWithGroupsFormType extends AbstractType
                             new Constraints\Length(array(
                                 'min' => 8,
                                 'max' => 200,
-                                'groups' => 'main'
-                            ))
-                        )
-                    )
+                                'groups' => 'main',
+                            )),
+                        ),
+                    ),
                 ))
             ->add('defaultValidation', 'submit')
             ->add('mainValidation', 'submit', array(

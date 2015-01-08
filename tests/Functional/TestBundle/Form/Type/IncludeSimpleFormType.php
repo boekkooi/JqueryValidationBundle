@@ -21,9 +21,9 @@ class IncludeSimpleFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'validation_groups' => array(
-                'Default', 'userBasicEntity'
+                'Default', 'userBasicEntity',
             ),
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData'
+            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData',
         ));
     }
 

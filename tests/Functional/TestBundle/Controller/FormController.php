@@ -122,9 +122,9 @@ class FormController extends Controller
     {
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->addNotice(date('H:i:s') . ': Valid');
+            $this->addNotice(date('H:i:s').': Valid');
         } elseif ($request->isMethod('POST')) {
-            $this->addNotice( date('H:i:s') . ': Invalid');
+            $this->addNotice(date('H:i:s').': Invalid');
         }
     }
 

@@ -27,6 +27,7 @@ abstract class ViewTransformerProcessor implements FormRuleProcessorInterface
         // Get correct error message if one is set.
         if ($config->hasOption('invalid_message')) {
             $params = $config->getOption('invalid_message_parameters');
+
             return new RuleMessage(
                 $config->getOption('invalid_message'),
                 is_array($params) ? $params : array()

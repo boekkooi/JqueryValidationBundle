@@ -11,7 +11,7 @@ class BasicFormTest extends FormTestCase
     protected static function getSymfonyOptions()
     {
         return array(
-            'enable_additionals' => false
+            'enable_additionals' => false,
         );
     }
 

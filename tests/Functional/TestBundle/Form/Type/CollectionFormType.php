@@ -19,16 +19,16 @@ class CollectionFormType extends AbstractType
                         new Constraints\Length(array(
                             'min' => 8,
                             'max' => 200,
-                        ))
-                    )
+                        )),
+                    ),
                 ))
             ->add('tags', 'collection', array(
                     'type' => 'text',
                     'constraints' => array(
                         new Constraints\Count(array(
                             'min' => 1,
-                            'max' => 5
-                        ))
+                            'max' => 5,
+                        )),
                     ),
 
                     'allow_add' => true,
@@ -38,9 +38,9 @@ class CollectionFormType extends AbstractType
                     'prototype_name' => 'tag__name__',
                     'options' => array(
                         'constraints' => array(
-                            new Constraints\NotBlank()
-                        )
-                    )
+                            new Constraints\NotBlank(),
+                        ),
+                    ),
                 ))
         ;
     }

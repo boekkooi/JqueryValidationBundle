@@ -16,43 +16,43 @@ class AdditionalRulesFormType extends AbstractType
             ->add('ipv4', null, array(
                 'constraints' => array(
                     new Constraints\Ip(array(
-                        'version' => Constraints\Ip::V4
-                    ))
-                )
+                        'version' => Constraints\Ip::V4,
+                    )),
+                ),
             ))
             ->add('ipv6', null, array(
                 'constraints' => array(
                     new Constraints\Ip(array(
-                        'version' => Constraints\Ip::V6
-                    ))
-                )
+                        'version' => Constraints\Ip::V6,
+                    )),
+                ),
             ))
             ->add('ipv4_ipv6', null, array(
                 'constraints' => array(
                     new Constraints\Ip(array(
-                        'version' => Constraints\Ip::ALL
-                    ))
-                )
+                        'version' => Constraints\Ip::ALL,
+                    )),
+                ),
             ))
 
             ->add('iban', null, array(
                 'constraints' => array(
-                    new Constraints\Iban()
-                )
+                    new Constraints\Iban(),
+                ),
             ))
 
             ->add('luhn', null, array(
                 'constraints' => array(
-                    new Constraints\Luhn()
-                )
+                    new Constraints\Luhn(),
+                ),
             ))
 
             ->add('file', 'file', array(
                 'constraints' => array(
                     new Constraints\File(array(
-                        'mimeTypes' => array('text/plain', 'application/pdf')
-                    ))
-                )
+                        'mimeTypes' => array('text/plain', 'application/pdf'),
+                    )),
+                ),
             ))
         ;
     }

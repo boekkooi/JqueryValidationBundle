@@ -22,7 +22,7 @@ class JqueryValidationExtension extends Twig_Extension
                 'form_jquery_validation',
                 array($this, 'renderJavascript'),
                 array('needs_environment' => true, 'pre_escape' => array('html', 'js'), 'is_safe' => array('html', 'js'))
-            )
+            ),
         );
     }
 
@@ -69,7 +69,7 @@ class JqueryValidationExtension extends Twig_Extension
 
         $js = $twig->render($template, $templateVars);
 
-        return preg_replace('/\s+/', ' ' , $js);
+        return preg_replace('/\s+/', ' ', $js);
     }
 
     protected function validationGroupsViewData(FormRuleContext $context)
@@ -98,13 +98,12 @@ class JqueryValidationExtension extends Twig_Extension
             $buttons[] = array(
                 'name' => $name,
                 'cancel' => count($groups) === 0,
-                'validation_groups' => $groups
+                'validation_groups' => $groups,
             );
         }
 
         return $buttons;
     }
-
 
     protected function fieldRulesViewData(FormRuleContext $context)
     {
@@ -112,7 +111,7 @@ class JqueryValidationExtension extends Twig_Extension
         foreach ($context->all() as $name => $rules) {
             $fields[] = array(
                 'name' => $name,
-                'rules' => $rules
+                'rules' => $rules,
             );
         }
 

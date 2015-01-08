@@ -111,7 +111,7 @@ class FormTypeExtension extends AbstractTypeExtension
         // Store child builders to be later compiled
         $rootView->vars['rule_builder_children'][] = array(
             'view' => $view,
-            'builder' => $view->vars['rule_builder']
+            'builder' => $view->vars['rule_builder'],
         );
         unset($view->vars['rule_builder']);
     }
@@ -119,10 +119,10 @@ class FormTypeExtension extends AbstractTypeExtension
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'jquery_validation' => $this->defaultEnabled
+            'jquery_validation' => $this->defaultEnabled,
         ));
         $resolver->setAllowedTypes(array(
-            'jquery_validation' => array('bool', 'null')
+            'jquery_validation' => array('bool', 'null'),
         ));
     }
 

@@ -47,7 +47,7 @@ class Configuration implements ConfigurationInterface
                         'pattern' => true,
                         'time' => true,
                         'one_or_other' => true,
-                        'required_group' => true
+                        'required_group' => true,
                     ))
                     ->treatFalseLike(array())
                     ->addDefaultsIfNotSet()

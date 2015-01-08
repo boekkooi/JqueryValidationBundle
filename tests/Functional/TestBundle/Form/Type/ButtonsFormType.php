@@ -19,9 +19,9 @@ class ButtonsFormType extends AbstractType
                     new Constraints\Length(array(
                         'min' => 8,
                         'max' => 200,
-                        'groups' => 'main'
-                    ))
-                )
+                        'groups' => 'main',
+                    )),
+                ),
             ))
             ->add('content', 'textarea', array(
                 'constraints' => array(
@@ -29,9 +29,9 @@ class ButtonsFormType extends AbstractType
                     new Constraints\Length(array(
                         'min' => 8,
                         'max' => 200,
-                        'groups' => 'never_used'
-                    ))
-                )
+                        'groups' => 'never_used',
+                    )),
+                ),
             ))
             ->add('defaultValidation', 'submit')
             ->add('mainValidation', 'submit', array(

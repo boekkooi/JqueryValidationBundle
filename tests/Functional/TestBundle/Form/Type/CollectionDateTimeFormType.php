@@ -18,8 +18,8 @@ class CollectionDateTimeFormType extends AbstractType
                 'constraints' => array(
                     new Constraints\Count(array(
                         'min' => 1,
-                        'max' => 5
-                    ))
+                        'max' => 5,
+                    )),
                 ),
 
                 'allow_add' => true,
@@ -29,9 +29,9 @@ class CollectionDateTimeFormType extends AbstractType
                 'options' => array(
                     'widget' => 'text',
                     'constraints' => array(
-                        new Constraints\NotBlank()
-                    )
-                )
+                        new Constraints\NotBlank(),
+                    ),
+                ),
             ))
             ->add('defaultValidation', 'submit')
             ->add('mainValidation', 'submit', array(

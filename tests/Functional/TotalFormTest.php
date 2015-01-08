@@ -11,7 +11,7 @@ class TotalFormTest extends FormTestCase
     protected static function getSymfonyOptions()
     {
         return array(
-            'enable_additionals' => true
+            'enable_additionals' => true,
         );
     }
 

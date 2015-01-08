@@ -15,7 +15,7 @@ abstract class FormTestCase extends WebTestCase
         parent::setUpBeforeClass();
 
         foreach (static::getSymfonyOptions() as $option => $value) {
-            $_SERVER['SYMFONY__' . $option] = $value;
+            $_SERVER['SYMFONY__'.$option] = $value;
         }
     }
 
@@ -30,7 +30,8 @@ abstract class FormTestCase extends WebTestCase
         static::$kernel = null;
     }
 
-    protected static function getSymfonyOptions() {
+    protected static function getSymfonyOptions()
+    {
         return array();
     }
 
@@ -63,7 +64,7 @@ abstract class FormTestCase extends WebTestCase
             array(', ', ' { ', ' } ', ' : ', '; ', ' function '),
             trim($js)
         );
-        return preg_replace('/(\s+|\n)/', ' ' , trim($js));
-    }
 
+        return preg_replace('/(\s+|\n)/', ' ', trim($js));
+    }
 }

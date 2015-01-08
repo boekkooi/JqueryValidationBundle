@@ -13,7 +13,7 @@ class AppKernel extends Kernel
 
             new Boekkooi\Bundle\JqueryValidationBundle\BoekkooiJqueryValidationBundle(),
 
-            new Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\TestBundle()
+            new Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\TestBundle(),
         );
 
         return $bundles;
@@ -22,10 +22,11 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         if ($this->getEnvironment() === 'test') {
-            $loader->load(__DIR__ . '/config/config_test.yml');
+            $loader->load(__DIR__.'/config/config_test.yml');
+
             return;
         }
-        $loader->load(__DIR__ . '/config/config.yml');
+        $loader->load(__DIR__.'/config/config.yml');
     }
 
     /**

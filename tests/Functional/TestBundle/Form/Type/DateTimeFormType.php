@@ -17,29 +17,29 @@ class DateTimeFormType extends AbstractType
                 'label' => 'DateTime choice',
                 'required' => false,
                 'constraints' => array(
-                    new Constraints\NotBlank()
-                )
+                    new Constraints\NotBlank(),
+                ),
             ))
 
             ->add('date_choice', 'date', array(
                 'label' => 'Date choice',
                 'required' => false,
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
             ->add('date_text', 'date', array(
                 'widget' => 'text',
                 'label' => 'Date text',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
             ->add('date_single_text', 'date', array(
                 'widget' => 'single_text',
                 'label' => 'Date single text',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
 
@@ -48,21 +48,21 @@ class DateTimeFormType extends AbstractType
                 'label' => 'Time choice',
                 'required' => false,
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
             ->add('time_text', 'time', array(
                 'widget' => 'text',
                 'label' => 'Time text',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
             ->add('time_single_text', 'time', array(
                 'widget' => 'single_text',
                 'label' => 'Time single text',
                 'constraints' => array(
-                    new Constraints\NotBlank()
+                    new Constraints\NotBlank(),
                 ),
             ))
         ;
