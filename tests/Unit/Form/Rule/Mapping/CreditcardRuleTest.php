@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\CreditcardRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -32,15 +32,15 @@ class CreditcardRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\CardScheme(array('message' => 'msg', 'schemes' => 'VISA')),
-                new Rule('creditcard', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('creditcard', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
     public function provide_unsupported_constraints()
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 }

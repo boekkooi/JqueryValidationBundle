@@ -1,12 +1,11 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinLengthRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
-
 
 /**
  * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinLengthRule
@@ -40,7 +39,7 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\Choice(array('choices' => array(), 'min' => 1))),
-            array(new Constraints\Length(array('min' => 1)))
+            array(new Constraints\Length(array('min' => 1))),
         );
     }
 
@@ -49,12 +48,12 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Length(array('min' => 3, 'minMessage' => 'Yo')),
-                new Rule('minlength', 3, new RuleMessage('Yo', array('{{ limit }}' => 3), 3), array(Constraint::DEFAULT_GROUP))
+                new ConstraintRule('minlength', 3, new RuleMessage('Yo', array('{{ limit }}' => 3), 3), array(Constraint::DEFAULT_GROUP)),
             ),
             array(
                 new Constraints\Choice(array('min' => 2, 'minMessage' => 'Choosy', 'choices' => array())),
-                new Rule('minlength', 2, new RuleMessage('Choosy', array('{{ limit }}' => 2), 2), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('minlength', 2, new RuleMessage('Choosy', array('{{ limit }}' => 2), 2), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
 
@@ -65,7 +64,7 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
             array(new Constraints\Length(array('min' => 1, 'max' => 1))),
 
             array(new Constraints\Choice(array('min' => 1, 'max' => 1, 'choices' => array()))),
-            array(new Constraints\Choice(array('max' => 1, 'choices' => array())))
+            array(new Constraints\Choice(array('max' => 1, 'choices' => array()))),
         );
     }
 

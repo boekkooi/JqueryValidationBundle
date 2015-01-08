@@ -9,7 +9,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Symfony\Component\Form\FormView;
 
@@ -125,11 +125,11 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
         }
         $rules->set(
             MinRule::RULE_NAME,
-            new TransformerRule( MinRule::RULE_NAME, $min, $message, $depends )
+            new TransformerRule(MinRule::RULE_NAME, $min, $message, $depends)
         );
         $rules->set(
             MaxRule::RULE_NAME,
-            new TransformerRule( MaxRule::RULE_NAME, $max, $message, $depends )
+            new TransformerRule(MaxRule::RULE_NAME, $max, $message, $depends)
         );
     }
 }

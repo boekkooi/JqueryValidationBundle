@@ -4,7 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 
 /**

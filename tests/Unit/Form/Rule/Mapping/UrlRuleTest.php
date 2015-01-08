@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\UrlRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -32,15 +32,15 @@ class UrlRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Url(array('message' => 'msg_url')),
-                new Rule('url', true, new RuleMessage('msg_url'), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('url', true, new RuleMessage('msg_url'), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
     public function provide_unsupported_constraints()
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 }

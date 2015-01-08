@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -24,7 +24,7 @@ class RequiredRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 
@@ -33,19 +33,19 @@ class RequiredRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\NotBlank(array('message' => 'msg_blank')),
-                new Rule('required', true, new RuleMessage('msg_blank', array()), array(Constraint::DEFAULT_GROUP))
+                new ConstraintRule('required', true, new RuleMessage('msg_blank', array()), array(Constraint::DEFAULT_GROUP)),
             ),
             array(
                 new Constraints\NotNull(array('message' => 'msg_null')),
-                new Rule('required', true, new RuleMessage('msg_null', array()), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('required', true, new RuleMessage('msg_null', array()), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
     public function provide_unsupported_constraints()
     {
         return array(
             array(new Constraints\Required()),
-            array(new Constraints\Range(array('max' => 1)))
+            array(new Constraints\Range(array('max' => 1))),
         );
     }
 }

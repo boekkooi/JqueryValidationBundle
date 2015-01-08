@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\LuhnRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -32,8 +32,8 @@ class LuhnRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Luhn(array('message' => 'msg', 'groups' => array('luhn_group'))),
-                new Rule('luhn', true, new RuleMessage('msg'), array('luhn_group'))
-            )
+                new ConstraintRule('luhn', true, new RuleMessage('msg'), array('luhn_group')),
+            ),
         );
     }
 
@@ -41,7 +41,7 @@ class LuhnRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 

@@ -4,7 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
@@ -69,7 +69,7 @@ class ValidConstraintPass implements FormRuleProcessorInterface
 
         // Don't remove transformer rules!
         foreach ($rules as $name => $rule) {
-            if ($rule instanceof TransformerRule) {
+            if (!$rule instanceof ConstraintRule) {
                 continue;
             }
             $rules->remove($name);

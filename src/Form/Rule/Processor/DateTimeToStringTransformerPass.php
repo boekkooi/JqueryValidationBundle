@@ -6,7 +6,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormView;

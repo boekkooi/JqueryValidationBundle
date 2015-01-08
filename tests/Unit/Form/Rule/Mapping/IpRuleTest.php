@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IpRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -33,55 +33,55 @@ class IpRuleTest extends BaseConstraintMapperTest
             // Ip v4 only
             array(
                 new Constraints\Ip(array('message' => 'msg')),
-                new Rule('ipv4', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv4', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V4, 'message' => 'msg', 'groups' => array('ip'))),
-                new Rule('ipv4', true, new RuleMessage('msg'), array('ip')),
-                'ip'
+                new ConstraintRule('ipv4', true, new RuleMessage('msg'), array('ip')),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V4_NO_PRIV, 'message' => 'msgv4')),
-                new Rule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V4_NO_RES, 'message' => 'msgv4')),
-                new Rule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V4_ONLY_PUBLIC, 'message' => 'msgv4')),
-                new Rule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv4', true, new RuleMessage('msgv4'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             // Ip v6 only
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V6, 'message' => 'msgv6', 'groups' => array('ip'))),
-                new Rule('ipv6', true, new RuleMessage('msgv6'), array('ip')),
-                'ip'
+                new ConstraintRule('ipv6', true, new RuleMessage('msgv6'), array('ip')),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V6_NO_PRIV, 'message' => 'msgv6')),
-                new Rule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V6_NO_RES, 'message' => 'msgv6')),
-                new Rule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::V6_ONLY_PUBLIC, 'message' => 'msgv6')),
-                new Rule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('ipv6', true, new RuleMessage('msgv6'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
             // Ip all only
             array(
                 new Constraints\Ip(array('version' => Constraints\Ip::ALL, 'message' => 'msg')),
-                new Rule('one_or_other', array('ipv4' => true, 'ipv6' => true), new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
-                'ip'
+                new ConstraintRule('one_or_other', array('ipv4' => true, 'ipv6' => true), new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
+                'ip',
             ),
         );
     }
@@ -90,7 +90,7 @@ class IpRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 
@@ -121,11 +121,11 @@ class IpRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new IpRule(false, true, true),
-                new Constraints\Ip(array('version' => Constraints\Ip::V4))
+                new Constraints\Ip(array('version' => Constraints\Ip::V4)),
             ),
             array(
                 new IpRule(true, false, true),
-                new Constraints\Ip(array('version' => Constraints\Ip::V6))
+                new Constraints\Ip(array('version' => Constraints\Ip::V6)),
             ),
             array(
                 new IpRule(false, true, true),

@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\EmailRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraints;
@@ -31,15 +31,15 @@ class EmailRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Email(array('message' => 'msg', 'groups' => array('email_group'))),
-                new Rule('email', true, new RuleMessage('msg'), array('email_group'))
-            )
+                new ConstraintRule('email', true, new RuleMessage('msg'), array('email_group')),
+            ),
         );
     }
     public function provide_unsupported_constraints()
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 }

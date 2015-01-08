@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\FileRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -32,12 +32,12 @@ class FileRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\File(array('mimeTypes' => array('abc'), 'mimeTypesMessage' => 'msg', 'groups' => array('group'))),
-                new Rule('accept', 'abc', new RuleMessage('msg', array('{{ types }}' => 'abc')), array('group'))
+                new ConstraintRule('accept', 'abc', new RuleMessage('msg', array('{{ types }}' => 'abc')), array('group')),
             ),
             array(
                 new Constraints\File(array('mimeTypes' => array('abc', 'xyz'), 'mimeTypesMessage' => 'msg')),
-                new Rule('accept', 'abc,xyz', new RuleMessage('msg', array('{{ types }}' => 'abc, xyz')), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('accept', 'abc,xyz', new RuleMessage('msg', array('{{ types }}' => 'abc, xyz')), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
 
@@ -47,7 +47,7 @@ class FileRuleTest extends BaseConstraintMapperTest
             array(new Constraints\File()),
             array(new Constraints\File(array('mimeTypes' => array()))),
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 

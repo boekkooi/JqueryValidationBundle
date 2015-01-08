@@ -2,7 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
@@ -28,7 +28,7 @@ class RequiredRule implements ConstraintMapperInterface
         /** @var \Symfony\Component\Validator\Constraints\NotBlank | \Symfony\Component\Validator\Constraints\NotNull $constraint */
         $collection->set(
             self::RULE_NAME,
-            new Rule(
+            new ConstraintRule(
                 self::RULE_NAME,
                 true,
                 new RuleMessage($constraint->message),
@@ -43,7 +43,7 @@ class RequiredRule implements ConstraintMapperInterface
             get_class($constraint),
             array(
                 'Symfony\Component\Validator\Constraints\NotBlank',
-                'Symfony\Component\Validator\Constraints\NotNull'
+                'Symfony\Component\Validator\Constraints\NotNull',
             ),
             true
         );

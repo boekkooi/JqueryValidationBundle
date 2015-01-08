@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IbanRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -32,8 +32,8 @@ class IbanRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Iban(array('message' => 'msg', 'groups' => array('iban_group'))),
-                new Rule('iban', true, new RuleMessage('msg'), array('iban_group'))
-            )
+                new ConstraintRule('iban', true, new RuleMessage('msg'), array('iban_group')),
+            ),
         );
     }
 
@@ -41,7 +41,7 @@ class IbanRuleTest extends BaseConstraintMapperTest
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 

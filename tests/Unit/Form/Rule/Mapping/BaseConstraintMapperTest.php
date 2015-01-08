@@ -2,6 +2,7 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -104,9 +105,14 @@ abstract class BaseConstraintMapperTest extends \PHPUnit_Framework_TestCase
 
     protected function assertSameRule(Rule $expectedRule, Rule $rule)
     {
+        $this->assertSame(get_class($expectedRule), get_class($rule));
+
         $this->assertEquals($expectedRule->name, $rule->name, 'Invalid rule name');
-        $this->assertEquals($expectedRule->groups, $rule->groups, 'Invalid rule groups');
         $this->assertEquals($expectedRule->options, $rule->options, 'Invalid rule options');
+
+        if ($expectedRule instanceof ConstraintRule && $rule instanceof ConstraintRule) {
+            $this->assertEquals($expectedRule->groups, $rule->groups, 'Invalid rule groups');
+        }
 
         if ($expectedRule->message === null) {
             $this->assertNull($rule->message);

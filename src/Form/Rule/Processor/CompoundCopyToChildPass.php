@@ -4,11 +4,11 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
@@ -24,7 +24,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
     protected static $copyForTypes = array(
         'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType',
         'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType',
-        'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType'
+        'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType',
     );
 
     /**
@@ -74,8 +74,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
 
         /* @var \Boekkooi\Bundle\JqueryValidationBundle\Form\Rule[] $rules */
         foreach ($rules as $name => $baseRule) {
-            if ($this->useGroupRule && $baseRule->name === RequiredRule::RULE_NAME)
-            {
+            if ($this->useGroupRule && $baseRule->name === RequiredRule::RULE_NAME) {
                 $firstView = null;
                 $fields = array();
                 foreach ($it as $childView) {
@@ -104,7 +103,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
                     $childRule = $collection[$name];
                     $childRule->message = $rule->message;
                     $childRule->depends = $rule->depends;
-                    if (!$childRule instanceof TransformerRule) {
+                    if ($childRule instanceof ConstraintRule && $rule instanceof ConstraintRule) {
                         $childRule->groups = array_unique(
                             array_merge($childRule->groups, $rule->groups)
                         );
@@ -146,6 +145,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
             return $collection;
         }
         $formRuleContext->add($view, new RuleCollection());
+
         return $formRuleContext->get($view);
     }
 }

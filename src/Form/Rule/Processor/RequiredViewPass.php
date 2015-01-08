@@ -13,7 +13,7 @@ class RequiredViewPass implements FormRuleProcessorInterface
     protected static $requiredConstraintClasses = array(
         'Symfony\Component\Validator\Constraints\NotNull',
         'Symfony\Component\Validator\Constraints\NotBlank',
-        'Symfony\Component\Validator\Constraints\Required'
+        'Symfony\Component\Validator\Constraints\Required',
     );
 
     public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)

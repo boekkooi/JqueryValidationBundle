@@ -3,7 +3,7 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form\Rule\Processor;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer;
 use Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\BaseProcessorTest;
 
@@ -27,7 +27,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
     {
         $this->prepare_form_config_compound();
         $this->prepare_form_config_view_transformers(array(
-            new ValueToDuplicatesTransformer(array('first', 'second'))
+            new ValueToDuplicatesTransformer(array('first', 'second')),
         ));
 
         $this->formView->vars['full_name'] = 'pwd';
@@ -65,7 +65,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
         $self = $this;
         $this->formRuleContext->expects($this->atLeast(2))
             ->method('add')
-            ->willReturnCallback(function($view, $collection) use ($self, $firstFormView, $formRuleCollection, $secondFormView, $secondCollection) {
+            ->willReturnCallback(function ($view, $collection) use ($self, $firstFormView, $formRuleCollection, $secondFormView, $secondCollection) {
                 if ($view === $firstFormView) {
                     $self->assertEquals($formRuleCollection, $collection, 'Primary rules');
                 } elseif ($view === $secondFormView) {
@@ -97,7 +97,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
     {
         $this->prepare_form_config_compound();
         $this->prepare_form_config_view_transformers(array(
-            $this->getMock('Symfony\Component\Form\DataTransformerInterface')
+            $this->getMock('Symfony\Component\Form\DataTransformerInterface'),
         ));
 
         $this->expect_no_form_rule_context_interaction();
@@ -112,7 +112,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
     {
         $this->prepare_form_config_compound();
         $this->prepare_form_config_view_transformers(array(
-            new ValueToDuplicatesTransformer(array())
+            new ValueToDuplicatesTransformer(array()),
         ));
 
         $this->expect_no_form_rule_context_interaction();

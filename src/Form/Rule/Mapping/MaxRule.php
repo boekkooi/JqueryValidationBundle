@@ -2,7 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
@@ -25,14 +25,14 @@ class MaxRule implements ConstraintMapperInterface
         /** @var \Symfony\Component\Validator\Constraints\AbstractComparison $constraint */
         $constraintClass = get_class($constraint);
         if ($constraintClass === 'Symfony\Component\Validator\Constraints\LessThan') {
-            $rule = new Rule(
+            $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->value - 1, // TODO support floats
                 new RuleMessage($constraint->message, array('{{ compared_value }}' => $constraint->value)),
                 $constraint->groups
             );
         } elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\LessThanOrEqual') {
-            $rule = new Rule(
+            $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->value,
                 new RuleMessage($constraint->message, array('{{ compared_value }}' => $constraint->value)),
@@ -41,7 +41,7 @@ class MaxRule implements ConstraintMapperInterface
         }
         /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
         elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->max !== null) {
-            $rule = new Rule(
+            $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->max,
                 new RuleMessage($constraint->maxMessage, array('{{ limit }}' => $constraint->max)),
@@ -64,7 +64,7 @@ class MaxRule implements ConstraintMapperInterface
         return
             in_array($constraintClass, array(
                 'Symfony\Component\Validator\Constraints\LessThan',
-                'Symfony\Component\Validator\Constraints\LessThanOrEqual'
+                'Symfony\Component\Validator\Constraints\LessThanOrEqual',
             ), true) ||
             $constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->max !== null
         ;

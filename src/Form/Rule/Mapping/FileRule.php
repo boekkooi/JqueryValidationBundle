@@ -5,7 +5,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Form\FormInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 
@@ -38,11 +38,11 @@ class FileRule  implements ConstraintMapperInterface
         /** @var \Symfony\Component\Validator\Constraints\File $constraint */
         $collection->set(
             self::RULE_NAME,
-            new Rule(
+            new ConstraintRule(
                 self::RULE_NAME,
                 implode(',', $constraint->mimeTypes),
                 new RuleMessage($constraint->mimeTypesMessage, array(
-                    '{{ types }}' => implode(', ', $constraint->mimeTypes)
+                    '{{ types }}' => implode(', ', $constraint->mimeTypes),
                 )),
                 $constraint->groups
             )

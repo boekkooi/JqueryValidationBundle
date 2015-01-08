@@ -53,7 +53,7 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
             array(
                 $this->formView,
                 $this->form,
-                $this->constraintCollection
+                $this->constraintCollection,
             )
         );
 

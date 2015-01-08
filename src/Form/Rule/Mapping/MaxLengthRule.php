@@ -2,7 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
@@ -29,7 +29,7 @@ class MaxLengthRule implements ConstraintMapperInterface
         /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
         $collection->set(
             self::RULE_NAME,
-            new Rule(
+            new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->max,
                 new RuleMessage($constraint->maxMessage, array('{{ limit }}' => $constraint->max), (int) $constraint->max),

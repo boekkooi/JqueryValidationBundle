@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
@@ -36,19 +36,19 @@ class NumberRuleTest extends BaseConstraintMapperTest
         return array(
             array(
                 new Constraints\Range(array('invalidMessage' => 'msg', 'min' => 1)),
-                new Rule('number', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP))
+                new ConstraintRule('number', true, new RuleMessage('msg'), array(Constraint::DEFAULT_GROUP)),
             ),
             array(
                 new Constraints\Type(array('message' => 'msg', 'type' => 'double')),
-                new Rule('number', true, new RuleMessage('msg', array('{{ type }}' => 'double')), array(Constraint::DEFAULT_GROUP))
-            )
+                new ConstraintRule('number', true, new RuleMessage('msg', array('{{ type }}' => 'double')), array(Constraint::DEFAULT_GROUP)),
+            ),
         );
     }
     public function provide_unsupported_constraints()
     {
         return array(
             array(new Constraints\NotBlank()),
-            array(new Constraints\NotNull())
+            array(new Constraints\NotNull()),
         );
     }
 }

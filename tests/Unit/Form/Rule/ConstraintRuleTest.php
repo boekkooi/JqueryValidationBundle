@@ -1,21 +1,20 @@
 <?php
-namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form;
+namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form\Rule;
 
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class RuleTest extends \PHPUnit_Framework_TestCase
+class ConstraintRuleTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function construct_should_set_default_values()
     {
-        $rule = new Rule('name');
+        $rule = new ConstraintRule('name');
 
         $this->assertEquals('name', $rule->name);
         $this->assertNull($rule->options);
@@ -34,7 +33,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
         $groups = array('Yep', 'We', 'Have', 'groups');
 
-        $rule = new Rule($name, $options, $message, $groups);
+        $rule = new ConstraintRule($name, $options, $message, $groups);
 
         $this->assertEquals($name, $rule->name);
         $this->assertEquals($options, $rule->options);
