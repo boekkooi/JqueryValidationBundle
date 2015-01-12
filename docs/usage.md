@@ -1,6 +1,6 @@
 Usage
 ============
-So your done [installing](doc/install.md). Time to get the validation to the client-side!
+So your done [installing](install.md). Time to get the validation to the client-side!
 
 It's really simple just open a twig template that has a form and add the following:
 ```twig

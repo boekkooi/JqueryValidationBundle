@@ -13,13 +13,13 @@ Some of the things that the bundle support:
 - Validation groups
 - Data class constraints
 
-Now let's go to the [documentation](doc/index.md) and get started.
+Now let's go to the [documentation](docs/index.md) and get started.
 
-[Install and configure](doc/install.md)
+[Install and configure](docs/install.md)
 -------------
 `composer require boekkooi/jquery-validation-bundle dev-master`
 
-All the installation instructions are located in the [documentation](doc/install.md).
+All the installation instructions are located in the [documentation](docs/install.md).
 
 Demo
 -------------
