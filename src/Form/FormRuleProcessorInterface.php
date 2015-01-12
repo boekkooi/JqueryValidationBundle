@@ -6,5 +6,10 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
  */
 interface FormRuleProcessorInterface
 {
+    /**
+     * @param FormRuleProcessorContext $processContext
+     * @param FormRuleContextBuilder $formRuleContext
+     * @return void
+     */
     public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext);
 }

@@ -71,7 +71,7 @@ class ExtensionPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
-     * @return array
+     * @return array|null
      */
     protected function registerRuleMappers(ContainerBuilder $container)
     {

@@ -12,7 +12,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class FileRule  implements ConstraintMapperInterface
+class FileRule implements ConstraintMapperInterface
 {
     const RULE_NAME = 'accept';
 

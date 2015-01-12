@@ -63,6 +63,10 @@ class FormRuleContext
         return $this->groups;
     }
 
+    /**
+     * @param $name
+     * @return null|array
+     */
     public function getGroup($name)
     {
         return isset($this->groups[$name]) ? $this->groups[$name] : null;

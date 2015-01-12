@@ -13,7 +13,6 @@ class RejectUnusedRulesPass implements FormRuleCompilerInterface
 {
     /**
      * @param FormRuleContextBuilder $context
-     * @return FormRuleContextBuilder
      */
     public function compile(FormRuleContextBuilder $context)
     {

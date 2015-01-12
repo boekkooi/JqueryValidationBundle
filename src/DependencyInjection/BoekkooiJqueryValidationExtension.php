@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
-class BoekkooiJqueryValidationExtension  extends Extension
+class BoekkooiJqueryValidationExtension extends Extension
 {
     /**
      * {@inheritdoc}

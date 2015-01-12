@@ -8,6 +8,7 @@ interface FormRuleCompilerInterface
 {
     /**
      * @param FormRuleContextBuilder $formRuleContext
+     * @return void
      */
     public function compile(FormRuleContextBuilder $formRuleContext);
 }

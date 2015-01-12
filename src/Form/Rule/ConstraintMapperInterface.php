@@ -14,7 +14,7 @@ interface ConstraintMapperInterface
      * @param Constraint $constraint
      * @param FormInterface $form
      * @param RuleCollection $collection
-     * @return
+     * @return void
      */
     public function resolve(Constraint $constraint, FormInterface $form, RuleCollection $collection);
 
