@@ -1,0 +1,16 @@
+{% macro field_dependency(condition, rule) %}
+    {%- set isRequired = rule.name is sameas('required') -%}
+
+    {%- if isRequired -%}
+        var dep = form.find("[name=\"{{ condition.field|e('js') }}\"]")[0];
+    {%- endif -%}
+
+    if (
+    {%- if condition.condition is sameas('!') -%}!{%- endif -%}
+    (
+        {%- if isRequired -%}
+            !$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || {% endif -%}
+        "{{ condition.field|e('js') }}" in validator.errorMap || "{{ condition.field|e('js') }}" in validator.invalid)) {
+        return false;
+    }
+{% endmacro %}

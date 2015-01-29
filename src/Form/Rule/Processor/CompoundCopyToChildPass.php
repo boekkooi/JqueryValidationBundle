@@ -4,6 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Condition\FieldDependency;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
@@ -102,7 +103,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
                 if ($collection->containsKey($name)) {
                     $childRule = $collection[$name];
                     $childRule->message = $rule->message;
-                    $childRule->depends = $rule->depends;
+                    $childRule->conditions = $rule->conditions;
                     if ($childRule instanceof ConstraintRule && $rule instanceof ConstraintRule) {
                         $childRule->groups = array_unique(
                             array_merge($childRule->groups, $rule->groups)
@@ -114,7 +115,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
 
                 $rule = clone $rule;
                 $rule->message = $message;
-                $rule->depends[] = $childView->vars['full_name'];
+                $rule->conditions[] = new FieldDependency($childView->vars['full_name']);
             }
         }
 

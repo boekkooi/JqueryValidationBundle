@@ -3,6 +3,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Condition\FieldDependency;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\NumberRule;
@@ -10,7 +11,8 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\RequiredRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
-use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
 use Symfony\Component\Form\FormView;
 
 /**
@@ -36,55 +38,58 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
             return;
         }
 
+        /** @var \Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer $transformer */
         $transformer = $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToArrayTransformer');
         if ($transformer === null) {
             return;
         }
         $view = $context->getView();
-
-        /** @var FormView[] $it */
-        $it = new \RecursiveIteratorIterator(
-            new FormViewRecursiveIterator($view->getIterator()),
-            \RecursiveIteratorIterator::LEAVES_ONLY
-        );
+        $fields = $this->getTransformerFields($transformer);
         $invalidMessage = $this->getFormRuleMessage($formConfig);
 
-        $depends = array();
-        foreach ($it as $childView) {
+        $views = array();
+        $conditions = array();
+        foreach ($fields as $fieldName) {
+            $childView = $view->children[$fieldName];
+
+            // Get child rules collection
             $childRules = $formRuleContext->get($childView);
             if ($childRules === null) {
                 $formRuleContext->add($childView, new RuleCollection());
                 $childRules = $formRuleContext->get($childView);
             }
 
+            // Register rules
             $this->addNumberCheck(
                 $childView,
                 $childRules,
                 $invalidMessage,
-                $depends
+                $conditions
             );
-            $depends[] = $childView->vars['full_name'];
+
+            $views[] = FormHelper::getFormName($childView);
+            $conditions[] = new FieldDependency($childView);
         }
 
-        if ($this->useGroupRule && count($depends) > 1) {
-            $rules = $formRuleContext->get(array_shift($depends));
+        if ($this->useGroupRule && count($views) > 1) {
+            $rules = $formRuleContext->get(array_shift($views));
             $rules->set(
                 CompoundCopyToChildPass::RULE_NAME_GROUP_REQUIRED,
-                new TransformerRule(CompoundCopyToChildPass::RULE_NAME_GROUP_REQUIRED, $depends, $invalidMessage)
+                new TransformerRule(CompoundCopyToChildPass::RULE_NAME_GROUP_REQUIRED, $views, $invalidMessage)
             );
         }
     }
 
-    private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message = null, array $depends = array())
+    private function addNumberCheck(FormView $view, RuleCollection $rules, RuleMessage $message = null, array $conditions = array())
     {
-        if (!$this->useGroupRule && count($depends) > 0) {
+        if (!$this->useGroupRule && count($conditions) > 0) {
             $rules->set(
                 RequiredRule::RULE_NAME,
                 new TransformerRule(
                     RequiredRule::RULE_NAME,
                     true,
                     $message,
-                    $depends
+                    $conditions
                 )
             );
         }
@@ -98,7 +103,7 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
                         NumberRule::RULE_NAME,
                         true,
                         $message,
-                        $depends
+                        $conditions
                     )
                 );
 
@@ -125,11 +130,22 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
         }
         $rules->set(
             MinRule::RULE_NAME,
-            new TransformerRule(MinRule::RULE_NAME, $min, $message, $depends)
+            new TransformerRule(MinRule::RULE_NAME, $min, $message, $conditions)
         );
         $rules->set(
             MaxRule::RULE_NAME,
-            new TransformerRule(MaxRule::RULE_NAME, $max, $message, $depends)
+            new TransformerRule(MaxRule::RULE_NAME, $max, $message, $conditions)
         );
+    }
+
+    private function getTransformerFields(DateTimeToArrayTransformer $transformer)
+    {
+        $property = new \ReflectionProperty(
+            'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToArrayTransformer',
+            'fields'
+        );
+        $property->setAccessible(true);
+
+        return $property->getValue($transformer);
     }
 }

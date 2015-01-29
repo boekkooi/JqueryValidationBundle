@@ -44,12 +44,12 @@
 
 {# Generate a rule #}
 {% macro rule(rule, includeGroupDeps) %}
-    {%- import _self as gen -%}
+    {% import "BoekkooiJqueryValidationBundle:Form:conditions.js.twig" as macro_conditions %}
 
     {%- set hasGroups = includeGroupDeps|default(false) and rule.groups|length > 0 -%}
-    {%- set hasDepends = (rule.depends is not empty) -%}
+    {%- set hasConditions = (rule.conditions is not empty) -%}
 
-    {%- if hasGroups or hasDepends -%}
+    {%- if hasGroups or hasConditions -%}
         {%- set hasParams = rule.options is not sameas(true) -%}
 
         {
@@ -57,33 +57,29 @@
             param: {{- rule.options|json_encode()|raw -}},
         {%- endif -%}
             depends: function() {
-                {%- if hasDepends and rule.name is sameas('required') %}
-                    var dep = form.find("[name=\"{{ rule.depends|e('js')|last }}\"]")[0];
-                {% endif %}
+                {%- if hasConditions %}
+                    {%- if hasGroups -%}
+                        if (!(
+                            {%- for group in rule.groups -%}
+                                validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
+                            {%- endfor -%}
+                        )) {
+                            return false;
+                        }
+                    {%- endif -%}
 
-                return
-                {%- if hasGroups %} (
-                    {%- for group in rule.groups -%}
-                        validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
+                    {%- for condition in rule.conditions -%}
+                        {{ attribute(macro_conditions, condition.macro, [condition, rule]) }}
                     {%- endfor -%}
-                )
+
+                    return true;
+                {% else %}
+                    return (
+                        {%- for group in rule.groups -%}
+                            validator.settings.validation_groups["{{ group|e('js') }}"] {%- if not loop.last %} || {% endif -%}
+                        {%- endfor -%}
+                    );
                 {%- endif -%}
-
-                {%- if hasGroups and hasDepends %} && {% endif -%}
-
-                {%- if hasDepends %}
-                    {% if rule.name is sameas('required') %}
-                        $.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) &&
-                    {% endif %}
-
-                    !(
-                    {%- for selector in rule.depends -%}
-                        "{{ selector|e('js') }}" in validator.errorMap ||
-                        "{{ selector|e('js') }}" in validator.invalid {%- if not loop.last %} || {% endif -%}
-                    {%- endfor -%}
-                    )
-                {%- endif -%}
-                ;
             }
         }
     {%- else -%}

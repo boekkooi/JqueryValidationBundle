@@ -68,7 +68,6 @@ class ExtensionPass implements CompilerPassInterface
         $container->getDefinition('boekkooi.jquery_validation.rule_compiler')->replaceArgument(0, $references);
     }
 
-
     /**
      * @param ContainerBuilder $container
      * @return array|null

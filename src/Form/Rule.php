@@ -24,16 +24,16 @@ abstract class Rule
     public $message;
 
     /**
-     * A list of field names that require to be valid before the rule is used
-     * @var array
+     * A list rule conditions.
+     * @var RuleCondition[]
      */
-    public $depends;
+    public $conditions;
 
-    public function __construct($name, $options = null, RuleMessage $message = null, array $depends = array())
+    public function __construct($name, $options = null, RuleMessage $message = null, array $conditions = array())
     {
         $this->name = $name;
         $this->options = $options;
         $this->message = $message;
-        $this->depends = $depends;
+        $this->conditions = $conditions;
     }
 }
