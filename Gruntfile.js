@@ -20,7 +20,7 @@ module.exports = function (grunt) {
     "}(function( $ ) {\n\n";
 
     var umdEnd = "\n}));";
-    var umdAdditionalDefine = "\t\tdefine( [\"jquery\", \"./jquery.validate\"], factory );\n";
+    var umdAdditionalDefine = "\t\tdefine( [\"jquery\", \"jquery.validate\"], factory );\n";
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
