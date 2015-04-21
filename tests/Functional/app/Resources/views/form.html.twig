@@ -43,6 +43,30 @@
                     $(this).append(rmBtn);
                 });
             };
+
+            $.validator.setDefaults({
+                errorElement: 'li',
+                errorPlacement: function(error, element) {
+                    var label = $('label[for="'+$(element).attr('id')+'"]');
+                    var container = label.next('ul');
+                    if (container.length === 1) {
+                        container.empty();
+                    } else {
+                        container = $('<ul></ul>').insertAfter(label);
+                    }
+                    container.append(error);
+                },
+                highlight: function(element) {
+                    $('label[for="'+$(element).attr('id')+'"] + ul').show();
+                },
+                unhighlight: function(element) {
+                    $('label[for="'+$(element).attr('id')+'"] + ul').hide();
+                },
+                ignore: function(idx, elt) {
+                    // Only validate a hidden field when it has a rule attached.
+                    return $(elt).is(':hidden') && $.isEmptyObject($( this ).rules());
+                }
+            });
         })(jQuery);
     </script>
 </head>
@@ -63,6 +87,7 @@
                 <li><a href="{{ path('form_view_transform') }}">View/Data transformers Form</a></li>
                 <li><a href="{{ path('form_collection_datetime') }}">Collection DateTime Form</a></li>
                 <li><a href="{{ path('form_additional_rules') }}">Additional Rules</a></li>
+                <li><a href="{{ path('form_issue_7') }}">Issue 7</a></li>
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}

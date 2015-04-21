@@ -16,6 +16,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IncludeSimpleFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ViewTransformRulesFormType;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -113,6 +114,24 @@ class FormController extends Controller
     public function additionalRulesAction(Request $request)
     {
         $form = $this->createForm(new AdditionalRulesFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
+
+    public function issue7Action(Request $request)
+    {
+        $resource = new Issue7\Model\Recourse();
+        $resource->setContents(array(
+            new Issue7\Model\Content(),
+            new Issue7\Model\Content()
+        ));
+        $resource->setInvalidContents(array(
+            new Issue7\Model\Content()
+        ));
+
+        $form = $this->createForm(new Issue7\Type\RecourseType());
+        $form->setData($resource);
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));

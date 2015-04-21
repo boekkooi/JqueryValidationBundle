@@ -57,3 +57,8 @@ form_additional_rules:
   path:  '/additional_rules'
   defaults:
     _controller: TestBundle:Form:additionalRules
+
+form_issue_7:
+  path:  '/issue/7'
+  defaults:
+    _controller: TestBundle:Form:issue7

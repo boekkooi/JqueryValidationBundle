@@ -1116,4 +1116,48 @@ class BasicFormTest extends FormTestCase
             $javascript
         );
     }
+
+    /**
+     * @test
+     */
+    public function issue_7_should_not_occur()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/issue/7', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"recourses\"]");
+                var validator = form.validate({
+                    rules: {
+                        "recourses\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
+                            "required": true,
+                            "minlength": 3,
+                            "maxlength": 8196
+                        },
+                        "recourses\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
+                            "required": true,
+                            "minlength": 3,
+                            "maxlength": 8196
+                        }
+                    },
+                    messages: {
+                        "recourses\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x203\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x208196\x20characters\x20or\x20less."
+                        },
+                        "recourses\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x203\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x208196\x20characters\x20or\x20less."
+                        }
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
 }
