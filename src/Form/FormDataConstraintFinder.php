@@ -57,9 +57,22 @@ class FormDataConstraintFinder
         $property = $propertyPath->getElement(0);
         $constraintCollection = new ConstraintCollection();
 
-        // Ensure that the property has metadata
+        /*
+         * The problem with ensuring that we get the constraints of a property is:
+         * - If the property is private, some method is used to set it but we can really know what property is set by a method
+         *  *also see PropertyAccessor::readProperty*
+         *
+         * To fix this (for now) we will check for the property using it's name and it's lower camel case name.
+         */
+
+        // Find the 'probable' property with the constraint metadata
         if (!$metadata->hasPropertyMetadata($property)) {
-            return $constraintCollection;
+            // If we can't find the property we will also check it's camelized version
+            $property = $this->camelize($property);
+
+            if (!$metadata->hasPropertyMetadata($property)) {
+                return $constraintCollection;
+            }
         }
 
         foreach ($metadata->getPropertyMetadata($property) as $propertyMetadata) {
@@ -121,7 +134,13 @@ class FormDataConstraintFinder
             return $this->getDataClass($form->getParent());
         }
 
+        // Now locate the root of the data
         for ($i = $propertyPath->getLength(); $i != 0; $i--) {
+            $dataForm = $dataForm->getParent();
+        }
+
+        // If the root inherits data, then grab the parent
+        if ($dataForm->getConfig()->getInheritData()) {
             $dataForm = $dataForm->getParent();
         }
 
@@ -139,5 +158,16 @@ class FormDataConstraintFinder
                 $constraintCollection->add(new Valid());
             }
         }
+    }
+
+    /**
+     * Returns the lowerCamelCase form of a string.
+     *
+     * @param string $string The string to camelize.
+     * @return string The camelized version of the string
+     */
+    private function camelize($string)
+    {
+        return lcfirst(strtr(ucwords(strtr($string, array('_' => ' '))), array(' ' => '')));
     }
 }
