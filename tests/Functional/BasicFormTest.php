@@ -1160,4 +1160,38 @@ class BasicFormTest extends FormTestCase
             $javascript
         );
     }
+
+    /**
+     * @test
+     */
+    public function issue_8_should_not_occur()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/issue/8', $client);
+
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"test_range\"]");
+                var validator = form.validate({
+                    rules: {
+                        "test_range\x5Bsize\x5D\x5Bmin_size\x5D": {"required": true, "min": 400},
+                        "test_range\x5Bsize\x5D\x5Bmax_size\x5D": {"required": true, "max": 2000}
+                    },
+                    messages: {
+                        "test_range\x5Bsize\x5D\x5Bmin_size\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "min": "This\x20value\x20should\x20be\x20greater\x20than\x20or\x20equal\x20to\x20400."
+                        },
+                        "test_range\x5Bsize\x5D\x5Bmax_size\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "max": "This\x20value\x20should\x20be\x20less\x20than\x20or\x20equal\x20to\x202000."
+                        }
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
 }

@@ -17,6 +17,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IncludeSimpleFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ViewTransformRulesFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -136,6 +137,18 @@ class FormController extends Controller
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
+
+    public function issue8Action(Request $request)
+    {
+        $resource = new Issue8\Model\TestRangeEntity();
+
+        $form = $this->createForm(new Issue8\Type\TestRangeType());
+        $form->setData($resource);
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
+
 
     private function handleForm(Request $request, FormInterface $form)
     {
