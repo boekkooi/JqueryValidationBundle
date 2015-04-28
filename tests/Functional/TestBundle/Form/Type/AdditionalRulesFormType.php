@@ -54,6 +54,12 @@ class AdditionalRulesFormType extends AbstractType
                     )),
                 ),
             ))
+
+            ->add('pattern', 'text', array(
+                'constraints' => array(
+                    new Constraints\Regex('/^[a-zA-Z]+$/'),
+                ),
+            ))
         ;
     }
 
