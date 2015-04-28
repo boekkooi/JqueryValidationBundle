@@ -45,59 +45,24 @@ class FormDataConstraintFinder
 
         // Find index property constraints
         if ($propertyPath->isIndex(0)) {
-            return $this->findIndexConstraints($form, $metadata);
+            return $this->findPropertyConstraints(
+                $metadata,
+                $form->getParent()->getPropertyPath(),
+                true
+            );
         }
 
         // Find property constraints
         return $this->findPropertyConstraints($metadata, $propertyPath);
     }
 
-    private function findPropertyConstraints(ClassMetadata $metadata, PropertyPathInterface $propertyPath)
+    private function findPropertyConstraints(ClassMetadata $metadata, PropertyPathInterface $propertyPath, $cascadingOnly = false)
     {
-        $property = $propertyPath->getElement(0);
+        $element = $propertyPath->getElement(0);
         $constraintCollection = new ConstraintCollection();
 
-        /*
-         * The problem with ensuring that we get the constraints of a property is:
-         * - If the property is private, some method is used to set it but we can really know what property is set by a method
-         *  *also see PropertyAccessor::readProperty*
-         *
-         * To fix this (for now) we will check for the property using it's name and it's lower camel case name.
-         */
-
-        // Find the 'probable' property with the constraint metadata
-        if (!$metadata->hasPropertyMetadata($property)) {
-            // If we can't find the property we will also check it's camelized version
-            $property = $this->camelize($property);
-
-            if (!$metadata->hasPropertyMetadata($property)) {
-                return $constraintCollection;
-            }
-        }
-
-        foreach ($metadata->getPropertyMetadata($property) as $propertyMetadata) {
-            if (!$propertyMetadata instanceof MemberMetadata) {
-                continue;
-            }
-
-            $constraintCollection->addCollection(
-                new ConstraintCollection($propertyMetadata->getConstraints())
-            );
-
-            // For some reason Valid constraint is not in the list of constraints so we hack it in ....
-            $this->addCascadingValidConstraint($propertyMetadata, $constraintCollection);
-        }
-
-        return $constraintCollection;
-    }
-
-    private function findIndexConstraints(FormInterface $form, ClassMetadata $metadata)
-    {
-        $property = $form->getParent()->getPropertyPath()->getElement(0);
-        $constraintCollection = new ConstraintCollection();
-
-        // Ensure that the property has metadata
-        if (!$metadata->hasPropertyMetadata($property)) {
+        $property = $this->guessProperty($metadata, $element);
+        if ($property === null) {
             return $constraintCollection;
         }
 
@@ -106,8 +71,16 @@ class FormDataConstraintFinder
                 continue;
             }
 
-            // Since the parent has a cascading the current index requires a Valid constraint
+            // For some reason Valid constraint is not in the list of constraints so we hack it in ....
             $this->addCascadingValidConstraint($propertyMetadata, $constraintCollection);
+            if ($cascadingOnly) {
+                continue;
+            }
+
+            // Add the actual constraints
+            $constraintCollection->addCollection(
+                new ConstraintCollection($propertyMetadata->getConstraints())
+            );
         }
 
         return $constraintCollection;
@@ -169,5 +142,28 @@ class FormDataConstraintFinder
     private function camelize($string)
     {
         return lcfirst(strtr(ucwords(strtr($string, array('_' => ' '))), array(' ' => '')));
+    }
+
+    /**
+     * Guess what property a given element belongs to.
+     *
+     * @param ClassMetadata $metadata
+     * @param string $element
+     * @return null|string
+     */
+    private function guessProperty(ClassMetadata $metadata, $element)
+    {
+        // Is it the element the actual property
+        if ($metadata->hasPropertyMetadata($element)) {
+            return $element;
+        }
+
+        // Is it a camelized property
+        $camelized = $this->camelize($element);
+        if ($metadata->hasPropertyMetadata($camelized)) {
+            return $camelized;
+        }
+
+        return null;
     }
 }
