@@ -118,12 +118,8 @@ class FormTypeExtension extends AbstractTypeExtension
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'jquery_validation' => $this->defaultEnabled,
-        ));
-        $resolver->setAllowedTypes(array(
-            'jquery_validation' => array('bool', 'null'),
-        ));
+        $resolver->setDefault('jquery_validation',$this->defaultEnabled);
+        $resolver->setAllowedTypes('jquery_validation',array('bool','null'));
     }
 
     /**
