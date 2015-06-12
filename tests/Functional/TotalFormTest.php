@@ -490,7 +490,17 @@ class TotalFormTest extends FormTestCase
                                 }
                             }
                         },
-                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"view_transform_rules_form\"] *[name=\"view_transform_rules_form[equals][first]\"]"}
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"view_transform_rules_form\"] *[name=\"view_transform_rules_form[equals][first]\"]",
+                                depends: function () {
+                                    if (("view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D" in validator.errorMap || "view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D": {

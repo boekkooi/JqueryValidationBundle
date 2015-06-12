@@ -2,6 +2,7 @@
 namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Condition\FieldDependency;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
@@ -58,16 +59,15 @@ class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
         $invalidMessage = $this->getFormRuleMessage($formConfig);
 
         // Create equalTo rules for all other fields
+        $equalToPrimaryRule = new TransformerRule(
+            'equalTo',
+            FormHelper::generateCssSelector($primaryView),
+            $invalidMessage,
+            array( new FieldDependency($primaryView) )
+        );
         foreach ($keys as $childName) {
             $childCollection = new RuleCollection();
-            $childCollection->set(
-                'equalTo',
-                new TransformerRule(
-                    'equalTo',
-                    FormHelper::generateCssSelector($primaryView),
-                    $invalidMessage
-                )
-            );
+            $childCollection->set('equalTo', $equalToPrimaryRule);
 
             $collection->add(
                 $formView->children[$childName],

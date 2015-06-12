@@ -29,7 +29,17 @@ class BasicFormTest extends FormTestCase
                     rules: {
                         "simple_form\x5Bname\x5D": {"required": true, "minlength": 2},
                         "simple_form\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true},
-                        "simple_form\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"simple_form\"] *[name=\"simple_form[password][first]\"]"}
+                        "simple_form\x5Bpassword\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"simple_form\"] *[name=\"simple_form[password][first]\"]",
+                                depends: function () {
+                                    if (("simple_form\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "simple_form\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "simple_form\x5Bname\x5D": {
@@ -59,7 +69,17 @@ class BasicFormTest extends FormTestCase
                     rules: {
                         "simple_form_data\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
                         "simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "simple_form_data\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"simple_form_data\"] *[name=\"simple_form_data[password][first]\"]"}
+                        "simple_form_data\x5Bpassword\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"simple_form_data\"] *[name=\"simple_form_data[password][first]\"]",
+                                depends: function () {
+                                    if (("simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "simple_form_data\x5Bname\x5D": {
@@ -322,7 +342,15 @@ class BasicFormTest extends FormTestCase
                     "messages": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
                 });
                 form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bsecond\x5D\"]").rules("add", {
-                    "equalTo": "form[name=\"collection_compound\"] *[name=\"collection_compound[tags][__name__][password][first]\"]",
+                    "equalTo": {
+                        param: "form[name=\"collection_compound\"] *[name=\"collection_compound[tags][__name__][password][first]\"]",
+                        depends: function () {
+                            if (("collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                return false;
+                            }
+                            return true;
+                        }
+                    },
                     "messages": {"equalTo": "WRONG\x21"}
                 });
             })(jQuery);',
@@ -545,8 +573,28 @@ class BasicFormTest extends FormTestCase
                         "root_form\x5Broot\x5D": {"email": true},
                         "root_form\x5Bchild\x5D\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
                         "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"root_form\"] *[name=\"root_form[child][password][first]\"]"},
-                        "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"root_form\"] *[name=\"root_form[childNoValidation][password][first]\"]"}
+                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"root_form\"] *[name=\"root_form[child][password][first]\"]",
+                                depends: function () {
+                                    if (("root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        },
+                        "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"root_form\"] *[name=\"root_form[childNoValidation][password][first]\"]",
+                                depends: function () {
+                                    if (("root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "root_form\x5Broot\x5D": {"email": "This\x20value\x20is\x20not\x20a\x20valid\x20email\x20address."},
@@ -595,7 +643,17 @@ class BasicFormTest extends FormTestCase
                             "minlength": "2",
                             "maxlength": "255"
                         },
-                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"include_simple_form_data\"] *[name=\"include_simple_form_data[user][password][first]\"]"}
+                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"include_simple_form_data\"] *[name=\"include_simple_form_data[user][password][first]\"]",
+                                depends: function () {
+                                    if (("include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "include_simple_form_data\x5Buser\x5D\x5Bname\x5D": {
@@ -1069,7 +1127,17 @@ class BasicFormTest extends FormTestCase
                                 }
                             }
                         },
-                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {"equalTo": "form[name=\"view_transform_rules_form\"] *[name=\"view_transform_rules_form[equals][first]\"]"}
+                        "view_transform_rules_form\x5Bequals\x5D\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"view_transform_rules_form\"] *[name=\"view_transform_rules_form[equals][first]\"]",
+                                depends: function () {
+                                    if (("view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D" in validator.errorMap || "view_transform_rules_form\x5Bequals\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
                     },
                     messages: {
                         "view_transform_rules_form\x5Btime_text\x5D\x5Bhour\x5D": {

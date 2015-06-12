@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form\Rule\Processor;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Condition\FieldDependency;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
@@ -23,7 +24,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
     /**
      * @test
      */
-    public function it_should_set_equal_rule()
+    public function it_should_set_equal_rule_with_a_condition()
     {
         $this->prepare_form_config_compound();
         $this->prepare_form_config_view_transformers(array(
@@ -58,7 +59,8 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
             new TransformerRule(
                 'equalTo',
                 '#pwdFirst',
-                null
+                null,
+                array( new FieldDependency($firstFormView) )
             )
         );
 
