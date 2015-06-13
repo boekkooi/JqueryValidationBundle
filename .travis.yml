@@ -1,36 +1,33 @@
 language: php
 
-php: [5.3.3, 5.3, 5.4, 5.5, 5.6]
+php: [5.3.3, 5.3, 5.4, 5.5, 5.6, hhvm]
 
 matrix:
-  fast_finish: true
   include:
   - { php: 5.3.3, env: "SYMFONY_VERSION=2.3.*" }
   - { php: 5.5,   env: "SYMFONY_VERSION=2.5.*" }
   - { php: 5.6,   env: "SYMFONY_VERSION=2.6.*" }
   - { php: 5.6,   env: "SYMFONY_VERSION=2.7.*" }
-  - { php: 5.3.3, env: "COMPOSER_LOWEST_VERSION=Y" }
-  - { php: 5.5,   env: "COMPOSER_LOWEST_VERSION=Y SYMFONY_VERSION=2.5.*" }
-  - { php: 5.6,   env: "COMPOSER_LOWEST_VERSION=Y SYMFONY_VERSION=2.6.*" }
-
-install:
-  - travis_retry npm install grunt-cli -g
-  - travis_retry npm install
-  - travis_retry composer self-update
+  - { php: 5.3.3, env: "COMPOSER_FLAGS='--prefer-stable --prefer-lowest' PHPUNIT_COVERAGE='--coverage-text --coverage-clover=coverage.clover'"}
+  allow_failures:
+  - { php: hhvm }
 
 before_script:
-  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then travis_retry composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
-  - sh -c 'if [ "$COMPOSER_LOWEST_VERSION" != "" ]; then travis_retry composer update --prefer-lowest --prefer-stable --dev; else composer update --dev; fi;'
-  - mkdir -p build/logs
-  - travis_retry wget https://phar.phpunit.de/phpunit.phar
+  # Install npm deps
+  - travis_retry npm install grunt-cli -g
+  - travis_retry npm install
+  # Update composer and deps
+  - travis_retry composer self-update
+  - sh -c 'if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update symfony/symfony=${SYMFONY_VERSION}; fi;'
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
-  - php phpunit.phar --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpunit ${PHPUNIT_COVERAGE}
   - grunt test
 
 after_script:
-  - travis_retry wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - if [[ "${PHPUNIT_COVERAGE}" != "" ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ "${PHPUNIT_COVERAGE}" != "" ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
 
 cache:
   directories:

@@ -2,11 +2,8 @@
 
 <phpunit colors="true" bootstrap="tests/bootstrap.php">
     <php>
+        <ini name="error_reporting" value="-1"/>
         <server name="KERNEL_DIR" value="tests/Functional/app" />
-
-        <!-- Disable E_USER_DEPRECATED -->
-        <!-- php -r 'echo -1 & ~E_USER_DEPRECATED;' -->
-        <ini name="error_reporting" value="-16385"/>
     </php>
 
     <testsuites>
