@@ -100,6 +100,7 @@ class FormDataConstraintFinder
         }
 
         $propertyPath = $form->getPropertyPath();
+        /** @var FormInterface $dataForm */
         $dataForm = $form;
 
         // If we have a index then we need to use it's parent

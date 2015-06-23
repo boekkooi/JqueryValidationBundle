@@ -12,6 +12,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraint;
 
@@ -116,8 +117,17 @@ class FormTypeExtension extends AbstractTypeExtension
         unset($view->vars['rule_builder']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        if ($resolver instanceof OptionsResolver && method_exists($resolver, 'setDefault')) {
+            $this->configureOptions($resolver);
+            return;
+        }
+
+        // BC
         $resolver->setDefaults(array(
             'jquery_validation' => $this->defaultEnabled,
         ));
@@ -127,7 +137,16 @@ class FormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('jquery_validation', $this->defaultEnabled);
+        $resolver->setAllowedTypes('jquery_validation', array('bool', 'null'));
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getExtendedType()
     {
