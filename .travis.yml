@@ -17,7 +17,6 @@ before_script:
   - travis_retry npm install grunt-cli -g
   - travis_retry npm install
   # Update composer and deps
-  - travis_retry composer self-update
   - sh -c 'if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update symfony/symfony=${SYMFONY_VERSION}; fi;'
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
