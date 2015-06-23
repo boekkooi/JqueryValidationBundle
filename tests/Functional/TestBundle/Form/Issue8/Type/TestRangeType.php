@@ -14,14 +14,8 @@ class TestRangeType  extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder->add('size', 'range', array(
-//            'virtual' => true, // <- VIRTUAL OPTION
-//            'min_name' => 'min_size',
-//            'max_name' => 'max_size'
-//        ));
         $builder->add('size', new RangeType(), array(
             'virtual' => true,
-            // 'inherit_data' => true,
             'min_name' => 'min_size',
             'max_name' => 'max_size'
         ));

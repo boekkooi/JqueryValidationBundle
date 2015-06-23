@@ -45,6 +45,6 @@ class RangeType extends AbstractType
 
     public function getName()
     {
-        return 'range';
+        return 'my_range';
     }
 }
