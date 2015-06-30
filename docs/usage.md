@@ -43,7 +43,7 @@ The simple way to enjoy client-side validation with collections is to open you t
 {% block collection_widget %}
     {% if prototype is defined %}
         {# The change here is that we add the javascript for a new row here #}
-        {%- set attr = attr|merge({'data-prototype': form_row(prototype) ~ '<script>' ~ form_jquery_validation(form) ~ '<script>'}) -%}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) ~ '<script>' ~ form_jquery_validation(form) ~ '</script>'}) -%}
     {% endif %}
     {{- block('form_widget') -}}
 {%- endblock collection_widget %}
