@@ -17,7 +17,7 @@ A example is:
 acme.form.rule.my_mapper:
     class: Acme\Form\Rule\MyRule
     tags:
-     - { name: validator.rule_mapper }
+     - { name: form_rule_constraint_mapper }
 ```
 
 After this you need to make sure you include your jquery validate rule into the page.
