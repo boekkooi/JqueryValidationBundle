@@ -2,6 +2,7 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper
@@ -134,6 +135,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
         $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(true);
         $formConfig->expects($this->any())->method('getOption')->with('jquery_validation_groups')->willReturn('my_group');
 
+        /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
         $form = $this->getMock('Symfony\Component\Form\FormInterface');
         $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
 
@@ -152,6 +154,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
         $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
         $formConfig->expects($this->any())->method('getOption')->with('validation_groups')->willReturn('my_val_group');
 
+        /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
         $form = $this->getMock('Symfony\Component\Form\FormInterface');
         $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
 
@@ -165,17 +168,18 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provide_getValidationGroups_valid_return_values
      */
-    public function getValidationGroups_should_return($value)
+    public function getValidationGroups_should_return($value, $return)
     {
         $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
         $formConfig->expects($this->any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
         $formConfig->expects($this->any())->method('getOption')->with('validation_groups')->willReturn($value);
 
+        /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
         $form = $this->getMock('Symfony\Component\Form\FormInterface');
         $form->expects($this->any())->method('getConfig')->willReturn($formConfig);
 
         $this->assertEquals(
-            $value,
+            $return,
             FormHelper::getValidationGroups($form)
         );
     }
@@ -183,9 +187,12 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     public function provide_getValidationGroups_valid_return_values()
     {
         return array(
-            array(null),
-            array(false),
-            array(array('my', 'valid', 'groups')),
+            array(null, array(Constraint::DEFAULT_GROUP)),
+            array(false, array()),
+            array(
+                array('my', 'valid', 'groups'),
+                array('my', 'valid', 'groups')
+            ),
         );
     }
 
@@ -194,12 +201,14 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function getViewRoot_should_return_the_root_view()
     {
+        /** @var \Symfony\Component\Form\FormView|\PHPUnit_Framework_MockObject_MockObject $rootView */
         $rootView = $this->getMock('Symfony\Component\Form\FormView');
         $this->assertEquals(
             $rootView,
             FormHelper::getViewRoot($rootView)
         );
 
+        /** @var \Symfony\Component\Form\FormView|\PHPUnit_Framework_MockObject_MockObject $formView */
         $formView = $this->getMock('Symfony\Component\Form\FormView');
         $formView->parent = $rootView;
         $this->assertEquals(
