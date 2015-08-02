@@ -1302,4 +1302,23 @@ class BasicFormTest extends FormTestCase
             $javascript
         );
     }
+
+    /**
+     * @test
+     */
+    public function issue_18_avoid_null_validation_group_exception()
+    {
+        $javascript = $this->fetch_application_page_javascript('/issue/18');
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"\"]");
+                var validator = form.validate({
+                    rules: { },
+                    messages: { }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
 }

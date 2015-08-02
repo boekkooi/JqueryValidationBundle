@@ -158,6 +158,17 @@ class FormController extends Controller
         return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
 
+    public function issue18Action(Request $request)
+    {
+        /** @var FormInterface $form */
+        $form = $this->get('form.factory')->createNamedBuilder('')
+            ->add('submit', 'submit')
+            ->getForm();
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
+    }
+
     private function handleForm(Request $request, FormInterface $form)
     {
         $form->handleRequest($request);
