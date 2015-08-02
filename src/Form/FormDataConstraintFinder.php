@@ -28,6 +28,11 @@ class FormDataConstraintFinder
 
     public function find(FormInterface $form)
     {
+        $propertyPath = $form->getPropertyPath();
+        if ($form->getPropertyPath() === null) {
+            return new ConstraintCollection();
+        }
+
         $class = $this->getDataClass($form);
         if ($class === null) {
             return new ConstraintCollection();
@@ -38,7 +43,6 @@ class FormDataConstraintFinder
             return new ConstraintCollection();
         }
 
-        $propertyPath = $form->getPropertyPath();
         if ($propertyPath->getLength() != 1) {
             throw new UnsupportedException('Not supported please submit a issue with the form that produces this error!');
         }
