@@ -88,7 +88,8 @@ final class FormHelper
         if (!empty($vars['attr']['id'])) {
             return trim(sprintf('#%s', $vars['attr']['id']));
         }
-        if (!empty($vars['full_name'])) {
+
+        if (isset($vars['full_name'])) {
             $root = $view;
             while ($root->parent !== null) {
                 $root = $root->parent;
