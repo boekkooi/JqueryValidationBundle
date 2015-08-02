@@ -7,6 +7,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -71,10 +72,17 @@ final class FormHelper
             $groups = $cfg->getOption('validation_groups');
         }
 
-        if ($groups === null || $groups === false) {
-            return $groups;
+        # Is the default validation group used
+        if ($groups === null) {
+            return array(Constraint::DEFAULT_GROUP);
         }
 
+        # Is the validation suppressed
+        if ($groups === false) {
+            return array();
+        }
+
+        # Is a unsupported group used
         if (!is_string($groups) && is_callable($groups)) {
             throw new UnsupportedException('Callable validation_groups are not supported. Disable jquery_validation or set jquery_validation_groups');
         }

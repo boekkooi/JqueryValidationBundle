@@ -4,6 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -83,8 +84,9 @@ class FormRuleContextBuilder extends FormRuleContext
     protected function normalizeGroups($groups)
     {
         if ($groups === null) {
-            return null;
+            return array(Constraint::DEFAULT_GROUP);
         }
+
         if ($this->isValidGroup($groups)) {
             return array($groups);
         }
