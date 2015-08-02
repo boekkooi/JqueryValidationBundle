@@ -67,3 +67,8 @@ form_issue_8:
   path:  '/issue/8'
   defaults:
     _controller: TestBundle:Form:issue8
+
+form_issue_17:
+  path:  '/issue/17'
+  defaults:
+    _controller: TestBundle:Form:issue17EmptyName

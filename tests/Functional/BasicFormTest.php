@@ -1262,4 +1262,44 @@ class BasicFormTest extends FormTestCase
             $javascript
         );
     }
+
+    /**
+     * @test
+     */
+    public function issue_17_it_should_render_form_javascript_with_a_empty_name()
+    {
+        $javascript = $this->fetch_application_page_javascript('/issue/17');
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"\"]");
+                var validator = form.validate({
+                    rules: {
+                        "name": {"required": true, "minlength": 2},
+                        "password\x5Bfirst\x5D": {"required": true},
+                        "password\x5Bsecond\x5D": {
+                            "equalTo": {
+                                param: "form[name=\"\"] *[name=\"password[first]\"]",
+                                depends: function () {
+                                    if (("password\x5Bfirst\x5D" in validator.errorMap || "password\x5Bfirst\x5D" in validator.invalid)) {
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                            }
+                        }
+                    },
+                    messages: {
+                        "name": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more."
+                        },
+                        "password\x5Bfirst\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."},
+                        "password\x5Bsecond\x5D": {"equalTo": "WRONG\x21"}
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
 }

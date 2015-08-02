@@ -149,6 +149,14 @@ class FormController extends Controller
         return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
 
+    public function issue17EmptyNameAction(Request $request)
+    {
+        /** @var FormInterface $form */
+        $form = $this->get('form.factory')->createNamed('', new SimpleFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
 
     private function handleForm(Request $request, FormInterface $form)
     {
