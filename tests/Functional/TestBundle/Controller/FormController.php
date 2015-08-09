@@ -18,6 +18,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ViewTransformRulesFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -144,6 +145,17 @@ class FormController extends Controller
 
         $form = $this->createForm(new Issue8\Type\TestRangeType());
         $form->setData($resource);
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
+    }
+
+    public function issue16Action(Request $request)
+    {
+        $collection = new Issue16\Model\EntityRefCollection();
+        $collection->entityReferences[] = new Issue16\Model\EntityReferenceModel();
+
+        $form = $this->createForm(new Issue16\Type\EntityRefCollectionType(), $collection);
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));

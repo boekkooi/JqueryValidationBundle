@@ -1266,6 +1266,47 @@ class BasicFormTest extends FormTestCase
     /**
      * @test
      */
+    public function issue_16_property_path_hell()
+    {
+        $javascript = $this->fetch_application_page_javascript('/issue/16');
+        $this->assertEqualJs(
+            '(function ($) {
+                "use strict";
+                var form = $("form[name=\"entity_ref_collection\"]");
+                var validator = form.validate({
+                    rules: {
+                        "entity_ref_collection\x5Brooot\x5D": {
+                            "required": true,
+                            "minlength": "2",
+                            "maxlength": "255"
+                        },
+                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                            "required": true,
+                            "minlength": "2",
+                            "maxlength": "255"
+                        }
+                    },
+                    messages: {
+                        "entity_ref_collection\x5Brooot\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        },
+                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
+                        }
+                    }
+                });
+            })(jQuery);',
+            $javascript
+        );
+    }
+
+    /**
+     * @test
+     */
     public function issue_17_it_should_render_form_javascript_with_a_empty_name()
     {
         $javascript = $this->fetch_application_page_javascript('/issue/17');
