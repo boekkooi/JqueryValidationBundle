@@ -36,7 +36,7 @@ $.validator.addMethod("accept", function(value, element, param) {
 				file = element.files[i];
 
 				// Grab the mimetype from the loaded file, verify it matches
-				if (!file.type.match(new RegExp( ".?(" + typeParam + ")$", "i"))) {
+				if (!file.type.match(new RegExp( "\\.?(" + typeParam + ")$", "i"))) {
 					return false;
 				}
 			}
@@ -65,10 +65,6 @@ $.validator.addMethod("iban", function(value, element) {
 		cRest = "",
 		cOperator = "",
 		countrycode, ibancheck, charAt, cChar, bbanpattern, bbancountrypatterns, ibanregexp, i, p;
-
-	if (!(/^([a-zA-Z0-9]{4} ){2,8}[a-zA-Z0-9]{1,4}|[a-zA-Z0-9]{12,34}$/.test(iban))) {
-		return false;
-	}
 
 	// check the country code and find the country specific format
 	countrycode = iban.substring(0, 2);
@@ -207,7 +203,7 @@ $.validator.addMethod("pattern", function(value, element, param) {
 }, "Invalid format.");
 
 $.validator.addMethod("time", function(value, element) {
-	return this.optional(element) || /^([01]\d|2[0-3])(:[0-5]\d){1,2}$/.test(value);
+	return this.optional(element) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(value);
 }, "Please enter a valid time, between 00:00 and 23:59");
 
 /**

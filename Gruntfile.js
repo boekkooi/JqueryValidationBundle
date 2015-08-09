@@ -24,6 +24,14 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
+        gitclone: {
+            'validate': {
+                options: {
+                    repository: 'https://github.com/jzaefferer/jquery-validation.git',
+                    directory: '.tmp/jquery-validate'
+                }
+            }
+        },
         jshint: {
             all: ['src/Resources/public/additional/*.js', 'tests/Javascript/*.js']
         },
@@ -41,12 +49,12 @@ module.exports = function (grunt) {
                 },
                 files: {
                     "src/Resources/public/additional-methods.js": [
-                        "node_modules/jquery-validation/src/additional/accept.js",
-                        "node_modules/jquery-validation/src/additional/iban.js",
-                        "node_modules/jquery-validation/src/additional/ipv4.js",
-                        "node_modules/jquery-validation/src/additional/ipv6.js",
-                        "node_modules/jquery-validation/src/additional/pattern.js",
-                        "node_modules/jquery-validation/src/additional/time.js",
+                        ".tmp/jquery-validate/src/additional/accept.js",
+                        ".tmp/jquery-validate/src/additional/iban.js",
+                        ".tmp/jquery-validate/src/additional/ipv4.js",
+                        ".tmp/jquery-validate/src/additional/ipv6.js",
+                        ".tmp/jquery-validate/src/additional/pattern.js",
+                        ".tmp/jquery-validate/src/additional/time.js",
                         "src/Resources/public/additional/*.js"
                     ]
                 }
@@ -73,8 +81,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks('grunt-git');
+
+    grunt.registerTask('prepare', ['gitclone']);
 
     grunt.registerTask('build', ['concat', 'uglify']);
     grunt.registerTask('test', ['jshint', 'qunit']);
+
     grunt.registerTask('default', ['build', 'test']);
 };

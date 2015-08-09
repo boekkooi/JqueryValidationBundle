@@ -20,15 +20,15 @@
   "scripts": {
     "test": "grunt"
   },
-  "dependencies": { },
+  "dependencies": {},
   "devDependencies": {
-    "jquery-validation": "~1.13",
-    "qunit": "~0.5.15",
     "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-jshint": "~0.4.3",
     "grunt-contrib-qunit": "~0.2.1",
-    "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.4.0",
+    "grunt-git": "^0.3.5",
+    "qunit": "~0.5.15",
     "qunitjs": "~1.11.0"
   }
 }

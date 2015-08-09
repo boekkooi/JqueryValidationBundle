@@ -6,7 +6,7 @@ It's really simple just open a twig template that has a form and add the followi
 ```twig
 {# These are the required libs, you really should move them somewhere else! #}
 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 
 {# The code below generates the form validation #}
 <script>
