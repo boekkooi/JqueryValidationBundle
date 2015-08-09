@@ -39,6 +39,6 @@ class EmailType extends AbstractType
      */
     public function getName()
     {
-        return 'issue16';
+        return 'issue16_type';
     }
 }

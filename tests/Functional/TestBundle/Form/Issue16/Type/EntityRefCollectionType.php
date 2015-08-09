@@ -26,4 +26,12 @@ class EntityRefCollectionType extends AbstractType
             ))
         ;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'issue16_collection';
+    }
 }

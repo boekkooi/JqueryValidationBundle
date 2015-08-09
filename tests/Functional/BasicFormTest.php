@@ -1272,27 +1272,27 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"entity_ref_collection\"]");
+                var form = $("form[name=\"issue16_collection\"]");
                 var validator = form.validate({
                     rules: {
-                        "entity_ref_collection\x5Brooot\x5D": {
+                        "issue16_collection\x5Brooot\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         },
-                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                        "issue16_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         }
                     },
                     messages: {
-                        "entity_ref_collection\x5Brooot\x5D": {
+                        "issue16_collection\x5Brooot\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                        "issue16_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
