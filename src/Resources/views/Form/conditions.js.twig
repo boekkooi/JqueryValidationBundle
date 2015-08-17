@@ -14,3 +14,22 @@
         return false;
     }
 {% endmacro %}
+
+{% macro field_value_dependency(condition, rule) %}
+    var dep = form.find("[name=\"{{ condition.field|e('js') }}\"]");
+    if(dep.length > 1 || dep.is(':checkbox')) {
+        dep = dep.filter(':checked')
+    } else if(dep.is('select')) {
+        dep = dep.find(':selected');
+    }
+
+    if(
+    {%- if condition.condition is sameas('!=') -%}!{%- endif -%}
+        $.inArray(
+            "{{ condition.value|e('js') }}",
+            $.map(dep, function(elt) { return $(elt).val(); })
+        )
+    ) {
+        return false;
+    }
+{% endmacro %}

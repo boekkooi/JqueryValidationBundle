@@ -5,12 +5,12 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCondition;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 
 /**
- * Class used to indicate that a rule will only be validated when a field other field is valid.
+ * Class used to indicate that a rule will only be validated when a field has a specific value.
  */
-class FieldDependency implements RuleCondition
+class FieldValueDependency implements RuleCondition
 {
-    const FIELD_VALID = '=';
-    const FIELD_INVALID = '!';
+    const VALUE_EQUAL = '=';
+    const VALUE_NOT_EQUAL = '!=';
 
     /**
      * Dependent field
@@ -23,10 +23,16 @@ class FieldDependency implements RuleCondition
      */
     public $condition;
 
-    public function __construct($field, $condition = self::FIELD_VALID)
+    /**
+     * @var mixed
+     */
+    public $value;
+
+    public function __construct($field, $condition = self::VALUE_EQUAL, $value)
     {
         $this->field = FormHelper::getFormName($field);
         $this->condition = $condition;
+        $this->value = $value;
     }
 
     /**
@@ -34,6 +40,6 @@ class FieldDependency implements RuleCondition
      */
     public function macro()
     {
-        return 'field_dependency';
+        return 'field_value_dependency';
     }
 }
