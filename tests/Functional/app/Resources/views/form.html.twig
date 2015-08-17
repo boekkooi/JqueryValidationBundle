@@ -87,6 +87,7 @@
                 <li><a href="{{ path('form_view_transform') }}">View/Data transformers Form</a></li>
                 <li><a href="{{ path('form_collection_datetime') }}">Collection DateTime Form</a></li>
                 <li><a href="{{ path('form_additional_rules') }}">Additional Rules</a></li>
+                <li><a href="{{ path('form_manual_groups') }}">Manual validation groups</a></li>
                 <li><a href="{{ path('form_issue_7') }}">Issue 7</a></li>
                 <li><a href="{{ path('form_issue_8') }}">Issue 8</a></li>
                 <li><a href="{{ path('form_issue_16') }}">Issue 16</a></li>
@@ -119,6 +120,8 @@
                 <script id="validation_script">
                     {{ form_jquery_validation(form) }}
                 </script>
+
+                {% block extra_js %}{% endblock %}
             </div>
         </div>
     </div>

@@ -57,10 +57,8 @@ class JqueryValidationExtension extends Twig_Extension
             'fields' => $this->fieldRulesViewData($context),
             'validation_groups' => $this->validationGroupsViewData($rootContext),
         );
-        $templateVars['enforce_validation_groups'] = (
-            count($rootContext->getButtons()) > 0 &&
-            count($templateVars['validation_groups']) > 1
-        );
+        $templateVars['enforce_validation_groups'] = count($templateVars['validation_groups']) > 1;
+        $templateVars['enabled_validation_groups'] = count($rootContext->getButtons()) === 0 ? $templateVars['validation_groups'] : array();
 
         // Only add buttons from the root form
         if ($view->parent === null) {

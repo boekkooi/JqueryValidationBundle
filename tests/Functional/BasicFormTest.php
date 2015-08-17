@@ -1188,6 +1188,50 @@ class BasicFormTest extends FormTestCase
     /**
      * @test
      */
+    public function it_should_render_additional_groups_when_specified()
+    {
+        $client = self::createClient();
+
+        $javascript = $this->fetch_application_page_javascript('/manual_groups', $client);
+
+        $this->assertEqualJs('
+            (function ($) {
+                "use strict";
+                var form = $("form[name=\"manualGroups\"]");
+                var validator = form.validate({
+                    rules: {
+                        "manualGroups\x5Bname\x5D": {
+                            "required": {
+                                depends: function () {
+                                    return (validator.settings.validation_groups["Default"]);
+                                }
+                            }, "minlength": {
+                                param: "2", depends: function () {
+                                    return (validator.settings.validation_groups["lengthGroup"]);
+                                }
+                            }, "maxlength": {
+                                param: "10", depends: function () {
+                                    return (validator.settings.validation_groups["lengthGroup"]);
+                                }
+                            }
+                        }
+                    }, messages: {
+                        "manualGroups\x5Bname\x5D": {
+                            "required": "This\x20value\x20should\x20not\x20be\x20blank.",
+                            "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
+                            "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x2010\x20characters\x20or\x20less."
+                        }
+                    }
+                });
+                validator.settings.validation_groups = {"Default": true, "lengthGroup": true};
+            })(jQuery);',
+            $javascript
+        );
+    }
+
+    /**
+     * @test
+     */
     public function issue_7_should_not_occur()
     {
         $client = self::createClient();

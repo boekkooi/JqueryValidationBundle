@@ -1,0 +1,21 @@
+{% extends 'form.html.twig' %}
+
+{% import "BoekkooiJqueryValidationBundle:Form:macros.js.twig" as gen %}
+
+{% block extra_js %}
+<script>
+(function($) {
+    "use strict";
+    var form = $("{{- gen.form_jquery_selector(form) -}}");
+    var validator = form.validate();
+
+    var validationGroupIndicator = form.find(":input[name=\"{{- form.children['lengthCheck'].vars.full_name|e('js') -}}\"]");
+
+    validator.settings.validation_groups["lengthGroup"] = validationGroupIndicator.is(':checked');
+    validationGroupIndicator.change(function() {
+        validator.settings.validation_groups["lengthGroup"] = $(this).is(':checked');
+        validator.form();
+    });
+})(jQuery);
+</script>
+{% endblock %}

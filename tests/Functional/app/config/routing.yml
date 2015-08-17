@@ -58,6 +58,11 @@ form_additional_rules:
   defaults:
     _controller: TestBundle:Form:additionalRules
 
+form_manual_groups:
+  path:  '/manual_groups'
+  defaults:
+    _controller: TestBundle:Form:manualGroups
+
 form_issue_7:
   path:  '/issue/7'
   defaults:
