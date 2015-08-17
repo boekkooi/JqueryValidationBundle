@@ -20,6 +20,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -188,6 +189,17 @@ class FormController extends Controller
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
+    }
+
+    public function issue20Action(Request $request)
+    {
+        $form = $this->createForm(
+            new Issue20\Form\Type\ScheduleFormType(),
+            new Issue20\Model\Schedule()
+        );
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
 
     private function handleForm(Request $request, FormInterface $form)

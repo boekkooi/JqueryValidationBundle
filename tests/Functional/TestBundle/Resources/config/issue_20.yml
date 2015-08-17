@@ -1,0 +1,5 @@
+services:
+  test.issue.20.valid_schedule_end_date_processor:
+    class: Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20\Form\Rule\Processor\ValidScheduledEndDatePass
+    tags:
+     - { name: form_rule_processor }

@@ -87,3 +87,8 @@ form_issue_18:
   path:  '/issue/18'
   defaults:
     _controller: TestBundle:Form:issue18
+
+form_issue_20:
+  path:  '/issue/20'
+  defaults:
+    _controller: TestBundle:Form:issue20

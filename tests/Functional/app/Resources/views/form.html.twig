@@ -48,6 +48,13 @@
                 errorElement: 'li',
                 errorPlacement: function(error, element) {
                     var label = $('label[for="'+$(element).attr('id')+'"]');
+                    if (label.length === 0) {
+                        var elt = $(element);
+                        while (elt.length > 0 && label.length === 0) {
+                            elt = elt.parent('div');
+                            label = elt.prevAll('label');
+                        }
+                    }
                     var container = label.next('ul');
                     if (container.length === 1) {
                         container.empty();
@@ -93,6 +100,7 @@
                 <li><a href="{{ path('form_issue_16') }}">Issue 16</a></li>
                 <li><a href="{{ path('form_issue_17') }}">Issue 17</a></li>
                 <li><a href="{{ path('form_issue_18') }}">Issue 18</a></li>
+                <li><a href="{{ path('form_issue_20') }}">Issue 20</a></li>
             </ul>
             <div class="col-xs-7 col-sm-9">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
