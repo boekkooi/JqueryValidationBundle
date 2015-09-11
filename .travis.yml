@@ -2,6 +2,8 @@ language: php
 
 php: [5.3.3, 5.3, 5.4, 5.5, 5.6, 7.0, hhvm]
 
+sudo: false
+
 matrix:
   include:
   - { php: 5.3.3, env: "SYMFONY_VERSION=2.3.*" }
@@ -15,7 +17,7 @@ matrix:
 
 before_script:
   # Install npm deps
-  - travis_retry npm install grunt-cli -g
+  - travis_retry npm install grunt-cli
   - travis_retry npm install
   # Update composer and deps
   - sh -c 'if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update symfony/symfony=${SYMFONY_VERSION}; fi;'
@@ -23,7 +25,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit ${PHPUNIT_COVERAGE}
-  - grunt test
+  - node_modules/.bin/grunt test
 
 after_script:
   - if [[ "${PHPUNIT_COVERAGE}" != "" ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
@@ -31,4 +33,4 @@ after_script:
 
 cache:
   directories:
-  - $HOME/.composer/
+  - $HOME/.composer
