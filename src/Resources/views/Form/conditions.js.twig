@@ -1,12 +1,12 @@
 {% macro field_dependency(condition, rule) %}
-    {%- set isRequired = rule.name is sameas('required') -%}
+    {%- set isRequired = rule.name is same as('required') -%}
 
     {%- if isRequired -%}
         var dep = form.find("[name=\"{{ condition.field|e('js') }}\"]")[0];
     {%- endif -%}
 
     if (
-    {%- if condition.condition is sameas('!') -%}!{%- endif -%}
+    {%- if condition.condition is same as('!') -%}!{%- endif -%}
     (
         {%- if isRequired -%}
             !$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || {% endif -%}
@@ -24,7 +24,7 @@
     }
 
     if(
-    {%- if condition.condition is sameas('!=') -%}!{%- endif -%}
+    {%- if condition.condition is same as('!=') -%}!{%- endif -%}
         $.inArray(
             "{{ condition.value|e('js') }}",
             $.map(dep, function(elt) { return $(elt).val(); })
