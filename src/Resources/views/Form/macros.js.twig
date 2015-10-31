@@ -50,7 +50,7 @@
     {%- set hasConditions = (rule.conditions is not empty) -%}
 
     {%- if hasGroups or hasConditions -%}
-        {%- set hasParams = rule.options is not sameas(true) -%}
+        {%- set hasParams = rule.options is not same as(true) -%}
 
         {
         {%- if hasParams -%}
