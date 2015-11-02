@@ -16,6 +16,8 @@ class FormRuleCompilerTest extends \PHPUnit_Framework_TestCase
     {
         try {
             new FormRuleCompiler($invalid);
+        } catch (\TypeError $e) {
+            return;
         } catch (\PHPUnit_Framework_Error $e) {
             return;
         } catch (\InvalidArgumentException $e) {
