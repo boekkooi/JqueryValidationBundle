@@ -40,8 +40,8 @@ class TotalFormTest extends FormTestCase
             $javascript
         );
 
-        $elt = $client->getCrawler()->filterXPath('//div/@data-prototype-js');
-        $javascriptPrototype = $elt->text();
+        $elt = $client->getCrawler()->filterXPath('//div[@data-prototype-js]');
+        $javascriptPrototype = $elt->first()->attr('data-prototype-js');
 
         $this->assertEqualJs(
             '(function ($) {
