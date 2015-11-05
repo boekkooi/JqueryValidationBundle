@@ -1,15 +1,16 @@
 (function($){
     function locateErrorLabel(element) {
-        var id = $(element).attr('id');
+        var elt = $(element);
+
+        var id = elt.attr('id');
         var label = $('label[for="'+id+'"]');
         if (label.length > 0) {
             return label;
         }
 
-        var elt = $(element);
         do {
-            elt = elt.parent();
             label = elt.prevAll('label');
+            elt = elt.parent();
         } while(label.length == 0 && elt.length != 0);
 
         return label;
