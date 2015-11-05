@@ -14,6 +14,42 @@
 	}
 }(function( $ ) {
 
+
+/**
+ * Extend the validator elements to also detect 'data-validateable' elements
+ */
+var validatorPrototypeElements = $.validator.prototype.elements;
+
+$.validator.prototype.elements = function() {
+    var validator = this,
+        rulesCache = {};
+
+    var elements = validatorPrototypeElements.call(this);
+
+    var customElements = $(this.currentForm)
+        .find( "*[data-validateable]" )
+        .not( elements )
+        .not( this.settings.ignore )
+        .filter( function() {
+            var name = $( this ).attr( "data-validateable" );
+            if ( !name && validator.settings.debug && window.console ) {
+                console.error( "%o has no `data-validateable` assigned", this );
+            }
+
+            this.form = $( this ).closest( "form" )[ 0 ];
+            this.name = name;
+
+            // Select only the first element for each name, and only those with rules specified
+            if ( name in rulesCache || !validator.objectLength( $( this ).rules() ) ) {
+                return false;
+            }
+
+            rulesCache[ name ] = true;
+            return true;
+        });
+
+    return elements.add(customElements);
+};
 // Accept a value from a file input based on a required mimetype
 $.validator.addMethod("accept", function(value, element, param) {
 	// Split mime on commas in case we have multiple types we can accept
@@ -206,6 +242,41 @@ $.validator.addMethod("time", function(value, element) {
 	return this.optional(element) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(value);
 }, "Please enter a valid time, between 00:00 and 23:59");
 
+/**
+ * Validates the collection count
+ */
+$.validator.addMethod("collection_count_exact", function(value, element, param) {
+    if (!$.isPlainObject(param)) {
+        if ( this.settings.debug && window.console ) {
+            console.log( "Exception occurred when checking element " + element.id + ", check the 'collection_count_exact' method parameters." );
+        }
+        return false;
+    }
+
+    return ($(param.field).length !== param.limit);
+}, "Invalid number of items");
+
+$.validator.addMethod("collection_count_min", function(value, element, param) {
+    if (!$.isPlainObject(param)) {
+        if ( this.settings.debug && window.console ) {
+            console.log( "Exception occurred when checking element " + element.id + ", check the 'collection_count_min' method parameters." );
+        }
+        return false;
+    }
+
+    return ($(param.field).length >= param.min);
+}, "Not enough items");
+
+$.validator.addMethod("collection_count_max", function(value, element, param) {
+    if (!$.isPlainObject(param)) {
+        if ( this.settings.debug && window.console ) {
+            console.log( "Exception occurred when checking element " + element.id + ", check the 'collection_count_max' method parameters." );
+        }
+        return false;
+    }
+
+    return ($(param.field).length <= param.max);
+}, "To many items");
 /**
  * Validates a PAN using the LUHN Algorithm
  */

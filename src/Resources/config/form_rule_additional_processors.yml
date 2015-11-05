@@ -1,0 +1,8 @@
+services:
+  # Must run after `boekkooi.jquery_validation.form.rule.processor.collection`
+  boekkooi.jquery_validation.form.rule.processor.valid_constraint:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\CountConstraintTransformerPass
+    arguments: [ %boekkooi.jquery_validation.additional.count% ]
+    public: false
+    tags:
+     - { name: form_rule_processor, priority: -10 }

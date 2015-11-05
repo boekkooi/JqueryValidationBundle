@@ -48,6 +48,7 @@ class Configuration implements ConfigurationInterface
                         'time' => true,
                         'one_or_other' => true,
                         'required_group' => true,
+                        'count' => true,
                     ))
                     ->treatFalseLike(array())
                     ->addDefaultsIfNotSet()
@@ -61,6 +62,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('time')->defaultFalse()->end()
                         ->booleanNode('one_or_other')->defaultFalse()->end()
                         ->booleanNode('required_group')->defaultFalse()->end()
+                        ->booleanNode('count')->defaultFalse()->end()
                     ->end()
                 ->end()
             ->end();

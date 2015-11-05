@@ -26,7 +26,7 @@ class CollectionFormType extends AbstractType
                     'type' => 'text',
                     'constraints' => array(
                         new Constraints\Count(array(
-                            'min' => 1,
+                            'min' => 2,
                             'max' => 5,
                         )),
                     ),

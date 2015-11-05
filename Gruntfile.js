@@ -28,12 +28,17 @@ module.exports = function (grunt) {
             'validate': {
                 options: {
                     repository: 'https://github.com/jzaefferer/jquery-validation.git',
-                    directory: '.tmp/jquery-validate'
+                    directory: '.tmp/jquery-validate',
+                    branch: '1.14.0'
                 }
             }
         },
         jshint: {
-            all: ['src/Resources/public/additional/*.js', 'tests/Javascript/*.js']
+            all: [
+                "src/Resources/public/additional-validator-patch.js",
+                'src/Resources/public/additional/*.js',
+                'tests/Javascript/*.js'
+            ]
         },
         qunit: {
             all: ['tests/Javascript/index.html']
@@ -49,6 +54,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     "src/Resources/public/additional-methods.js": [
+                        "src/Resources/public/additional-validator-patch.js",
                         ".tmp/jquery-validate/src/additional/accept.js",
                         ".tmp/jquery-validate/src/additional/iban.js",
                         ".tmp/jquery-validate/src/additional/ipv4.js",

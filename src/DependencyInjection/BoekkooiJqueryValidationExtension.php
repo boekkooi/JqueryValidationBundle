@@ -72,6 +72,7 @@ class BoekkooiJqueryValidationExtension extends Extension
 
         if ($includeAdditional) {
             $loader->load('form_rule_additional_mappers.yml');
+            $loader->load('form_rule_additional_processors.yml');
         }
     }
 }
