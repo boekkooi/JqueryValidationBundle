@@ -109,6 +109,9 @@ final class FormHelper
 
             $formSelector = self::generateCssSelector($root);
 
+            if ($vars['compound'] && !empty($vars['id'])) {
+                return trim(sprintf('%s #%s', $formSelector, $vars['id']));
+            }
             return trim(sprintf('%s *[name="%s"]', $formSelector, $vars['full_name']));
         }
 
