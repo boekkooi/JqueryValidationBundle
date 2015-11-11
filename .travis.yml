@@ -12,13 +12,16 @@ matrix:
   - { php: hhvm }
   - { php: 7.0 }
 
-before_script:
+before_install:
+  # Patch composer dependencies
+  - sh -c 'if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update symfony/symfony=${SYMFONY_VERSION}; fi;';
+
+install:
+  # Install composer dependencies
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist;
   # Install npm deps
   - travis_retry npm install grunt-cli
   - travis_retry npm install
-  # Update composer and deps
-  - sh -c 'if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update symfony/symfony=${SYMFONY_VERSION}; fi;'
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script:
   - vendor/bin/phpunit ${PHPUNIT_COVERAGE}
@@ -30,4 +33,5 @@ after_script:
 
 cache:
   directories:
-  - $HOME/.composer
+    - vendor
+    - $HOME/.composer/cache
