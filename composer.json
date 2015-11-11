@@ -21,7 +21,13 @@
         "symfony/yaml": "~2.3",
 
         "phpunit/phpunit": "~4.7@stable",
-        "symfony/phpunit-bridge": "~2.7@stable"
+        "symfony/phpunit-bridge": "~2.7@stable",
+
+        "behat/behat": "~3.0",
+        "behat/mink": "~1.6",
+        "behat/mink-selenium2-driver":  "~1.1",
+        "behat/mink-extension": "~2.0",
+        "behat/symfony2-extension": "~2.0"
     },
     "license": "MIT",
     "authors": [

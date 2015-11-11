@@ -1,0 +1,33 @@
+default:
+  autoload:
+    '': %paths.base%/tests/Functional/features/bootstrap
+  suites:
+    javascript:
+      paths: [ %paths.base%/tests/Functional/features ]
+      contexts:
+        - FeatureContext
+        - Behat\MinkExtension\Context\MinkContext
+      filters:
+        tags: ~@serverSide&&~@additionals
+    javascript_additionals:
+      paths: [ %paths.base%/tests/Functional/features ]
+      contexts:
+        - FeatureContext
+        - Behat\MinkExtension\Context\MinkContext
+      filters:
+        tags: @additionals
+    server_side:
+      paths: [ %paths.base%/tests/Functional/features ]
+      contexts:
+        - FeatureContext:
+          - serverSide: true
+        - Behat\MinkExtension\Context\MinkContext
+      filters:
+        tags: ~@clientSide
+
+  extensions:
+    Behat\MinkExtension:
+      base_url: http:///127.0.0.1:8080/
+      default_session: selenium2
+      browser_name: firefox
+      selenium2: ~

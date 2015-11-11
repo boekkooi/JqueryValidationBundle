@@ -89,7 +89,7 @@
                 {{ form_end(form) }}
                 <div>
                     <label>
-                        <input type="checkbox" onclick="$('form').validate().cancelSubmit = $(this).is(':checked');">
+                        <input id="disable_js_validation" type="checkbox" onclick="$('form').validate().cancelSubmit = $(this).is(':checked');">
                         Server side validation
                     </label>
                 </div>
@@ -130,3 +130,13 @@
     </script>
     {% endif %}
 {%- endblock collection_widget %}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul id="{{ form.vars.attr.id|default(form.vars.id) }}-errors">
+            {%- for error in errors -%}
+                <li class="error">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}

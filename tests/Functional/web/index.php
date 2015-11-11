@@ -6,7 +6,12 @@ $loader = require_once __DIR__.'/../../bootstrap.php';
 
 require_once __DIR__.'/../app/AppKernel.php';
 
-$kernel = new AppKernel('dev', true);
+$environment = 'dev';
+if (isset($_SERVER['SYMFONY_ENVIRONMENT'])) {
+    $environment = $_SERVER['SYMFONY_ENVIRONMENT'];
+}
+
+$kernel = new AppKernel($environment, true);
 
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

@@ -1,13 +1,37 @@
 language: php
 
-php: [5.3, 5.4, 5.5, 5.6, 7.0, hhvm]
+php: [5.5, 7.0, hhvm]
 
 sudo: false
 
+env:
+  global:
+    - TEST_SCOPE='code'
+
 matrix:
   include:
-  - { php: 5.6,   env: "SYMFONY_VERSION=2.7.*" }
-  - { php: 5.3.3, env: "COMPOSER_FLAGS='--prefer-stable --prefer-lowest' PHPUNIT_COVERAGE='--coverage-text --coverage-clover=coverage.clover'"}
+  - php: 5.6
+    env: |
+      - SYMFONY_VERSION=2.7.*
+  - php: 5.3.3
+    env: |
+      COMPOSER_FLAGS='--prefer-stable --prefer-lowest'
+      PHPUNIT_COVERAGE='--coverage-text --coverage-clover=coverage.clover'
+  - php: 5.4
+    env: |
+      TEST_SCOPE='javascript'
+      SYMFONY_ENVIRONMENT='test'
+      SYMFONY__ENABLE_ADDITIONALS='false'
+    addons:
+      firefox: "42.0"
+  - php: 5.6
+    env: |
+      COMPOSER_FLAGS='--prefer-stable --prefer-lowest'
+      TEST_SCOPE='javascript'
+      SYMFONY_ENVIRONMENT='test'
+      SYMFONY__ENABLE_ADDITIONALS='true'
+    addons:
+      firefox: "42.0"
   allow_failures:
   - { php: hhvm }
   - { php: 7.0 }
@@ -18,18 +42,29 @@ before_install:
 
 install:
   # Install composer dependencies
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist;
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source;
   # Install npm deps
-  - travis_retry npm install grunt-cli
-  - travis_retry npm install
+  - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install grunt-cli; fi;
+  - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install; fi;
+  # Setup behat dependencies when needed
+  - if [ "$TEST_SCOPE" = "javascript" ]; then tests/bootstrap-functional.sh; fi;
 
 script:
-  - vendor/bin/phpunit ${PHPUNIT_COVERAGE}
-  - node_modules/.bin/grunt test
+  # Run code tests
+  - if [ "$TEST_SCOPE" = "code" ]; then vendor/bin/phpunit ${PHPUNIT_COVERAGE}; fi;
+  - if [ "$TEST_SCOPE" = "code" ]; then node_modules/.bin/grunt test; fi;
+  # Run functional/behat tests
+  - if [ "$TEST_SCOPE" = "javascript" ]; then vendor/bin/behat --suite=javascript; fi;
+  - if [ "$TEST_SCOPE" = "javascript" ]; then vendor/bin/behat --suite=server_side; fi;
+  - if [ "$TEST_SCOPE" = "javascript" ] && [ "$SYMFONY__ENABLE_ADDITIONALS" = "true" ]; then vendor/bin/behat --suite=javascript_additionals; fi;
 
 after_script:
-  - if [[ "${PHPUNIT_COVERAGE}" != "" ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ "${PHPUNIT_COVERAGE}" != "" ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [ "$TEST_SCOPE" = "code" ] && [ "${PHPUNIT_COVERAGE}" != "" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
+  - if [ "$TEST_SCOPE" = "code" ] && [ "${PHPUNIT_COVERAGE}" != "" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi;
+
+after_failure:
+  - if [ "$TEST_SCOPE" = "javascript" ]; then cat phpd.log; fi;
+  - if [ "$TEST_SCOPE" = "javascript" ]; then cat selenium.log; fi;
 
 cache:
   directories:

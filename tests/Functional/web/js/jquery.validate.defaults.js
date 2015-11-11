@@ -25,6 +25,7 @@
             var container = label.next('ul');
             if (container.length === 0) {
                 container = $('<ul></ul>').insertAfter(label);
+                container.attr('id', element.attr('id') + '-errors');
             } else if(container.data('jquery-validate-list') == undefined) {
                 container.empty();
             }
