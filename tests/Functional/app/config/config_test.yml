@@ -14,4 +14,4 @@ framework:
 
 boekkooi_jquery_validation:
   form:
-    additionals: %enable_additionals%
+    additionals: %ENABLE_ADDITIONALS%

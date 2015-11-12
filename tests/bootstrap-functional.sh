@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ev
 
+echo 'variables_order = "EGPCS"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
 # Setup virtual display
 export DISPLAY=:99.0
 sh -e /etc/init.d/xvfb start

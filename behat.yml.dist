@@ -8,7 +8,14 @@ default:
         - FeatureContext
         - Behat\MinkExtension\Context\MinkContext
       filters:
-        tags: ~@serverSide&&~@additionals
+        tags: ~@serverSide&&~@additionals&&~@basic
+    javascript_basic:
+      paths: [ %paths.base%/tests/Functional/features ]
+      contexts:
+        - FeatureContext
+        - Behat\MinkExtension\Context\MinkContext
+      filters:
+        tags: @basic
     javascript_additionals:
       paths: [ %paths.base%/tests/Functional/features ]
       contexts:

@@ -89,7 +89,7 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
         $this->onTheCorrectSide();
 
         $page = $this->getSession()->getPage();
-        $strict = $strict === 'only';
+        $strict = !empty($strict);
 
         $formSelector = sprintf('form[name="%s"]', $formName);
         $this->assertSession()->elementExists('css', $formSelector);

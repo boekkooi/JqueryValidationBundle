@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                 ->end()
                 ->arrayNode('additionals')
+                    ->beforeNormalization()->ifString()->then(function ($v) { return strtolower($v) === 'true'; })->end()
                     ->treatTrueLike(array(
                         'accept' => true,
                         'ipv4' => true,
