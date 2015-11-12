@@ -52,3 +52,10 @@ services:
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
+
+  boekkooi.jquery_validation.mapper.is_boolean:
+    class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IsBooleanRule
+    arguments: [ %boekkooi.jquery_validation.additional.is_boolean% ]
+    public: false
+    tags:
+     - { name: form_rule_constraint_mapper }

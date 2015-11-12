@@ -215,4 +215,14 @@
         ok(!method("4222222222222222"), "Invalid LUHN");
         ok(!method("0000000000000000"), "Invalid LUHN");
     });
+
+    test("equals", function() {
+        var method = methodTest("equals");
+        ok(method("1", "1"), "Valid");
+        ok(method("1", "1"), "Valid");
+        ok(method("1", 1), "Valid");
+        ok(method("0", 0), "Valid");
+
+        ok(!method("0", "1"), "Invalid");
+    });
 })(jQuery);

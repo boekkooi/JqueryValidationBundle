@@ -138,7 +138,7 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
         $formSelector = sprintf('form[name="%s"]', $formName);
         $this->assertSession()->elementExists('css', $formSelector);
 
-        $formErrors = $this->getSession()->getPage()->findAll('css',sprintf('%s ul[id$="-errors"] li.error', $formSelector));
+        $formErrors = $this->getSession()->getPage()->findAll('css', sprintf('%s ul[id$="-errors"] li.error', $formSelector));
 
         \PHPUnit_Framework_Assert::assertCount(0, $formErrors);
 

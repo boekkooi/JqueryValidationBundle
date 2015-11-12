@@ -15,28 +15,30 @@
 }(function( $ ) {
 
 // Accept a value from a file input based on a required mimetype
-$.validator.addMethod("accept", function(value, element, param) {
+$.validator.addMethod( "accept", function( value, element, param ) {
+
 	// Split mime on commas in case we have multiple types we can accept
-	var typeParam = typeof param === "string" ? param.replace(/\s/g, "").replace(/,/g, "|") : "image/*",
-	optionalValue = this.optional(element),
+	var typeParam = typeof param === "string" ? param.replace( /\s/g, "" ).replace( /,/g, "|" ) : "image/*",
+	optionalValue = this.optional( element ),
 	i, file;
 
 	// Element is optional
-	if (optionalValue) {
+	if ( optionalValue ) {
 		return optionalValue;
 	}
 
-	if ($(element).attr("type") === "file") {
+	if ( $( element ).attr( "type" ) === "file" ) {
+
 		// If we are using a wildcard, make it regex friendly
-		typeParam = typeParam.replace(/\*/g, ".*");
+		typeParam = typeParam.replace( /\*/g, ".*" );
 
 		// Check if the element has a FileList before checking each file
-		if (element.files && element.files.length) {
-			for (i = 0; i < element.files.length; i++) {
-				file = element.files[i];
+		if ( element.files && element.files.length ) {
+			for ( i = 0; i < element.files.length; i++ ) {
+				file = element.files[ i ];
 
 				// Grab the mimetype from the loaded file, verify it matches
-				if (!file.type.match(new RegExp( "\\.?(" + typeParam + ")$", "i"))) {
+				if ( !file.type.match( new RegExp( "\\.?(" + typeParam + ")$", "i" ) ) ) {
 					return false;
 				}
 			}
@@ -46,28 +48,31 @@ $.validator.addMethod("accept", function(value, element, param) {
 	// Either return true because we've validated each file, or because the
 	// browser does not support element.files and the FileList feature
 	return true;
-}, $.validator.format("Please enter a value with a valid mimetype."));
+}, $.validator.format( "Please enter a value with a valid mimetype." ) );
 
 /**
  * IBAN is the international bank account number.
  * It has a country - specific format, that is checked here too
+ *
+ * Validation is case-insensitive. Please make sure to normalize input yourself.
  */
-$.validator.addMethod("iban", function(value, element) {
-	// some quick simple tests to prevent needless work
-	if (this.optional(element)) {
+$.validator.addMethod( "iban", function( value, element ) {
+
+	// Some quick simple tests to prevent needless work
+	if ( this.optional( element ) ) {
 		return true;
 	}
 
-	// remove spaces and to upper case
-	var iban = value.replace(/ /g, "").toUpperCase(),
+	// Remove spaces and to upper case
+	var iban = value.replace( / /g, "" ).toUpperCase(),
 		ibancheckdigits = "",
 		leadingZeroes = true,
 		cRest = "",
 		cOperator = "",
 		countrycode, ibancheck, charAt, cChar, bbanpattern, bbancountrypatterns, ibanregexp, i, p;
 
-	// check the country code and find the country specific format
-	countrycode = iban.substring(0, 2);
+	// Check the country code and find the country specific format
+	countrycode = iban.substring( 0, 2 );
 	bbancountrypatterns = {
 		"AL": "\\d{8}[\\dA-Z]{16}",
 		"AD": "\\d{8}[\\dA-Z]{12}",
@@ -135,7 +140,8 @@ $.validator.addMethod("iban", function(value, element) {
 		"VG": "[\\dA-Z]{4}\\d{16}"
 	};
 
-	bbanpattern = bbancountrypatterns[countrycode];
+	bbanpattern = bbancountrypatterns[ countrycode ];
+
 	// As new countries will start using IBAN in the
 	// future, we only check if the countrycode is known.
 	// This prevents false negatives, while almost all
@@ -143,41 +149,41 @@ $.validator.addMethod("iban", function(value, element) {
 	// by the checksum validation below anyway.
 	// Strict checking should return FALSE for unknown
 	// countries.
-	if (typeof bbanpattern !== "undefined") {
-		ibanregexp = new RegExp("^[A-Z]{2}\\d{2}" + bbanpattern + "$", "");
-		if (!(ibanregexp.test(iban))) {
-			return false; // invalid country specific format
+	if ( typeof bbanpattern !== "undefined" ) {
+		ibanregexp = new RegExp( "^[A-Z]{2}\\d{2}" + bbanpattern + "$", "" );
+		if ( !( ibanregexp.test( iban ) ) ) {
+			return false; // Invalid country specific format
 		}
 	}
 
-	// now check the checksum, first convert to digits
-	ibancheck = iban.substring(4, iban.length) + iban.substring(0, 4);
-	for (i = 0; i < ibancheck.length; i++) {
-		charAt = ibancheck.charAt(i);
-		if (charAt !== "0") {
+	// Now check the checksum, first convert to digits
+	ibancheck = iban.substring( 4, iban.length ) + iban.substring( 0, 4 );
+	for ( i = 0; i < ibancheck.length; i++ ) {
+		charAt = ibancheck.charAt( i );
+		if ( charAt !== "0" ) {
 			leadingZeroes = false;
 		}
-		if (!leadingZeroes) {
-			ibancheckdigits += "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(charAt);
+		if ( !leadingZeroes ) {
+			ibancheckdigits += "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf( charAt );
 		}
 	}
 
-	// calculate the result of: ibancheckdigits % 97
-	for (p = 0; p < ibancheckdigits.length; p++) {
-		cChar = ibancheckdigits.charAt(p);
+	// Calculate the result of: ibancheckdigits % 97
+	for ( p = 0; p < ibancheckdigits.length; p++ ) {
+		cChar = ibancheckdigits.charAt( p );
 		cOperator = "" + cRest + "" + cChar;
 		cRest = cOperator % 97;
 	}
 	return cRest === 1;
-}, "Please specify a valid IBAN");
+}, "Please specify a valid IBAN" );
 
-$.validator.addMethod("ipv4", function(value, element) {
-	return this.optional(element) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test(value);
-}, "Please enter a valid IP v4 address.");
+$.validator.addMethod( "ipv4", function( value, element ) {
+	return this.optional( element ) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test( value );
+}, "Please enter a valid IP v4 address." );
 
-$.validator.addMethod("ipv6", function(value, element) {
-	return this.optional(element) || /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test(value);
-}, "Please enter a valid IP v6 address.");
+$.validator.addMethod( "ipv6", function( value, element ) {
+	return this.optional( element ) || /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test( value );
+}, "Please enter a valid IP v6 address." );
 
 /**
 * Return true if the field value matches the given format RegExp
@@ -192,19 +198,26 @@ $.validator.addMethod("ipv6", function(value, element) {
 * @type Boolean
 * @cat Plugins/Validate/Methods
 */
-$.validator.addMethod("pattern", function(value, element, param) {
-	if (this.optional(element)) {
+$.validator.addMethod( "pattern", function( value, element, param ) {
+	if ( this.optional( element ) ) {
 		return true;
 	}
-	if (typeof param === "string") {
-		param = new RegExp("^(?:" + param + ")$");
+	if ( typeof param === "string" ) {
+		param = new RegExp( "^(?:" + param + ")$" );
 	}
-	return param.test(value);
-}, "Invalid format.");
+	return param.test( value );
+}, "Invalid format." );
 
-$.validator.addMethod("time", function(value, element) {
-	return this.optional(element) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(value);
-}, "Please enter a valid time, between 00:00 and 23:59");
+$.validator.addMethod( "time", function( value, element ) {
+	return this.optional( element ) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test( value );
+}, "Please enter a valid time, between 00:00 and 23:59" );
+
+/**
+ * Validates that a value is the same as another
+ */
+$.validator.addMethod("equals", function(value, element, param) {
+    return this.optional( element ) || value == param;
+}, "This value should be {0}");
 
 /**
  * Validates a PAN using the LUHN Algorithm

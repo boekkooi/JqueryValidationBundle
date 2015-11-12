@@ -63,6 +63,11 @@ form_manual_groups:
   defaults:
     _controller: TestBundle:Form:manualGroups
 
+form_is_true_or_false:
+  path:  '/is_true_or_false'
+  defaults:
+    _controller: TestBundle:Form:isTrueOrFalse
+
 form_issue_7:
   path:  '/issue/7'
   defaults:

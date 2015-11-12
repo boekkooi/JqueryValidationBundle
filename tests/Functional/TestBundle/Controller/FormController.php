@@ -11,6 +11,7 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionWithGroupsFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\DateTimeFormType;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IsTrueOrFalseFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ManualGroupsFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\RootDataFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleDataFormType;
@@ -129,6 +130,14 @@ class FormController extends Controller
         $this->handleForm($request, $form);
 
         return $this->render('::form_manual_groups.html.twig', array('form' => $form->createView()));
+    }
+
+    public function isTrueOrFalseAction(Request $request)
+    {
+        $form = $this->createForm(new IsTrueOrFalseFormType());
+        $this->handleForm($request, $form);
+
+        return $this->render('::form.html.twig', array('form' => $form->createView()));
     }
 
     public function issue7Action(Request $request)
