@@ -14,7 +14,7 @@ Well I did! So I made this little bundle to do it for me.
 
 Do me a favor and give it a try and if you have any problem please create a issue or make a pull request.
 
-Some of the things that the bundle support:
+Some of the things that the bundle supports:
 - Automatic constraint mapping
 - Form Collection (including prototype)
 - Validation groups
@@ -53,5 +53,5 @@ Special thanks go to the [Symfony](http://symfony.com/) community and [Jörn Zae
 
 Alternatives
 -----
-If for some reason you don't like this bundle and you are looking for a alternative you may take a look at [FpJsFormValidatorBundle](https://packagist.org/packages/fp/jsformvalidator-bundle). 
+If for some reason you don't like this bundle and you are looking for a alternative you may take a look at [FpJsFormValidatorBundle](https://packagist.org/packages/fp/jsformvalidator-bundle) or [UberFrontendValidationBundle](https://github.com/Sleepness/UberFrontendValidationBundle). 
 It would also be appreciate if you create a issue telling why you don't like this bundle and what could be added/changed to make it more to your liking. 
