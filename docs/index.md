@@ -7,5 +7,5 @@ Chapters:
 - [Installation](install.md)
 - [Usage](usage.md)
 - [Error layout/design](layout.md)
-- [Supported constraints](supported_constraints.md)
+- [Supported Constraints and DataTransformers](supported_constraints.md)
 - [Custom constraints](custom_constraints.md)
