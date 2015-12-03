@@ -38,3 +38,7 @@ phpunit.xml
 ### NodeJS ###
 ##############
 node_modules/
+
+### JQueryValidation ###
+########################
+/.tmp/

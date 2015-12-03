@@ -2,7 +2,6 @@
 
 <phpunit colors="true" bootstrap="tests/bootstrap.php">
     <php>
-        <ini name="error_reporting" value="-1"/>
         <server name="KERNEL_DIR" value="tests/Functional/app" />
     </php>
 
