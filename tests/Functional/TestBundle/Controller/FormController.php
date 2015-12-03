@@ -1,26 +1,15 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Controller;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Util\FormUtil;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\AdditionalRulesFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ButtonsFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionDateTimeFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionWithGroupsFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\DateTimeFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IsTrueOrFalseFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ManualGroupsFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\RootDataFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleDataFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IncludeSimpleFormType;
-use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ViewTransformRulesFormType;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20;
 
 /**
@@ -30,7 +19,7 @@ class FormController extends Controller
 {
     public function simpleAction(Request $request)
     {
-        $form = $this->createForm(new SimpleFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -38,7 +27,9 @@ class FormController extends Controller
 
     public function simpleDataAction(Request $request)
     {
-        $form = $this->createForm(new SimpleDataFormType());
+        $form = $this->createForm(
+            'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleDataFormType'
+        );
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -46,7 +37,7 @@ class FormController extends Controller
 
     public function dateTimeAction(Request $request)
     {
-        $form = $this->createForm(new DateTimeFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\DateTimeFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -54,7 +45,7 @@ class FormController extends Controller
 
     public function includeSimpleDataAction(Request $request)
     {
-        $form = $this->createForm(new IncludeSimpleFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IncludeSimpleFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -62,7 +53,7 @@ class FormController extends Controller
 
     public function buttonsAction(Request $request)
     {
-        $form = $this->createForm(new ButtonsFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ButtonsFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
@@ -70,7 +61,7 @@ class FormController extends Controller
 
     public function collectionAction(Request $request)
     {
-        $form = $this->createForm(new CollectionFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -78,7 +69,7 @@ class FormController extends Controller
 
     public function collectionWithGroupAction(Request $request)
     {
-        $form = $this->createForm(new CollectionWithGroupsFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionWithGroupsFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
@@ -86,7 +77,7 @@ class FormController extends Controller
 
     public function collectionCompoundAction(Request $request)
     {
-        $form = $this->createForm(new CollectionCompoundFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionCompoundFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -94,7 +85,7 @@ class FormController extends Controller
 
     public function childDataAction(Request $request)
     {
-        $form = $this->createForm(new RootDataFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\RootDataFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -102,7 +93,7 @@ class FormController extends Controller
 
     public function viewTransformAction(Request $request)
     {
-        $form = $this->createForm(new ViewTransformRulesFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ViewTransformRulesFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
@@ -110,7 +101,7 @@ class FormController extends Controller
 
     public function collectionDateTimeAction(Request $request)
     {
-        $form = $this->createForm(new CollectionDateTimeFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\CollectionDateTimeFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView(), 'button' => true));
@@ -118,7 +109,7 @@ class FormController extends Controller
 
     public function additionalRulesAction(Request $request)
     {
-        $form = $this->createForm(new AdditionalRulesFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\AdditionalRulesFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -126,7 +117,7 @@ class FormController extends Controller
 
     public function manualGroupsAction(Request $request)
     {
-        $form = $this->createForm(new ManualGroupsFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\ManualGroupsFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form_manual_groups.html.twig', array('form' => $form->createView()));
@@ -134,7 +125,7 @@ class FormController extends Controller
 
     public function isTrueOrFalseAction(Request $request)
     {
-        $form = $this->createForm(new IsTrueOrFalseFormType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\IsTrueOrFalseFormType');
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -151,7 +142,7 @@ class FormController extends Controller
             new Issue7\Model\Content()
         ));
 
-        $form = $this->createForm(new Issue7\Type\RecourseType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue7\Type\RecourseType');
         $form->setData($resource);
         $this->handleForm($request, $form);
 
@@ -162,7 +153,7 @@ class FormController extends Controller
     {
         $resource = new Issue8\Model\TestRangeEntity();
 
-        $form = $this->createForm(new Issue8\Type\TestRangeType());
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8\Type\TestRangeType');
         $form->setData($resource);
         $this->handleForm($request, $form);
 
@@ -174,7 +165,7 @@ class FormController extends Controller
         $collection = new Issue16\Model\EntityRefCollection();
         $collection->entityReferences[] = new Issue16\Model\EntityReferenceModel();
 
-        $form = $this->createForm(new Issue16\Type\EntityRefCollectionType(), $collection);
+        $form = $this->createForm('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Type\EntityRefCollectionType', $collection);
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -183,7 +174,7 @@ class FormController extends Controller
     public function issue17EmptyNameAction(Request $request)
     {
         /** @var FormInterface $form */
-        $form = $this->get('form.factory')->createNamed('', new SimpleFormType());
+        $form = $this->get('form.factory')->createNamed('', TypeHelper::type('Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type\SimpleFormType'));
         $this->handleForm($request, $form);
 
         return $this->render('::form.html.twig', array('form' => $form->createView()));
@@ -193,7 +184,7 @@ class FormController extends Controller
     {
         /** @var FormInterface $form */
         $form = $this->get('form.factory')->createNamedBuilder('')
-            ->add('submit', 'submit')
+            ->add('submit', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
             ->getForm();
         $this->handleForm($request, $form);
 
@@ -203,7 +194,7 @@ class FormController extends Controller
     public function issue20Action(Request $request)
     {
         $form = $this->createForm(
-            new Issue20\Form\Type\ScheduleFormType(),
+            'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20\Form\Type\ScheduleFormType',
             new Issue20\Model\Schedule()
         );
         $this->handleForm($request, $form);
@@ -219,6 +210,11 @@ class FormController extends Controller
         } elseif ($request->isMethod('POST')) {
             $this->addNotice(date('H:i:s').': Invalid');
         }
+    }
+
+    public function createForm($type, $data = null, array $options = array())
+    {
+        return parent::createForm(TypeHelper::type($type), $data, $options);
     }
 
     private function addNotice($message)

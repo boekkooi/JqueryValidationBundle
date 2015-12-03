@@ -3,7 +3,9 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\For
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Laurent Heurtault <l.heurtault@lexik.fr>
@@ -17,7 +19,7 @@ class EmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('reference', null, array(
+            ->add('reference', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array(
                 'property_path' => 'entity.name',
                 'label'         => 'Entity.name',
             ))
@@ -29,16 +31,26 @@ class EmailType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Model\EntityReferenceModel'
-        ));
+        $this->configureOptions($resolver);
     }
 
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Model\EntityReferenceModel'
+        ));
+    }
+
     public function getName()
     {
-        return 'issue16_type';
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'entity_ref_email';
     }
 }

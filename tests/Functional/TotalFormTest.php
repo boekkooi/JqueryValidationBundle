@@ -27,13 +27,13 @@ class TotalFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_date_time\"]");
+                var form = $("form[name=\"collection_date_time_form\"]");
                 var validator = form.validate({rules: {}, messages: {}});
                 validator.settings.validation_groups = {"Default": false, "main": false};
-                form.find("*[name=\"collection_date_time\x5BdefaultValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_date_time_form\x5BdefaultValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": true, "main": false};
                 });
-                form.find("*[name=\"collection_date_time\x5BmainValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_date_time_form\x5BmainValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": false, "main": true};
                 });
             })(jQuery);',
@@ -46,11 +46,11 @@ class TotalFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_date_time\"]");
+                var form = $("form[name=\"collection_date_time_form\"]");
                 var validator = form.validate();
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]").rules("add", {
                     "number": true,
-                    "required_group": ["collection_date_time[tags][__name__][date][month]", "collection_date_time[tags][__name__][date][day]", "collection_date_time[tags][__name__][time][hour]", "collection_date_time[tags][__name__][time][minute]"],
+                    "required_group": ["collection_date_time_form[tags][__name__][date][month]", "collection_date_time_form[tags][__name__][date][day]", "collection_date_time_form[tags][__name__][time][hour]", "collection_date_time_form[tags][__name__][time][minute]"],
                     "required": {
                         depends: function () {
                             return (validator.settings.validation_groups["Default"]);
@@ -62,70 +62,70 @@ class TotalFormTest extends FormTestCase
                         "required": "This\x20value\x20should\x20not\x20be\x20blank."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]").rules("add", {
                     "min": {
                         param: 1,
                         depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
                         }
                     }, "max": {
                         param: 12, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
                         }
                     }, "messages": {"min": "This\x20value\x20is\x20not\x20valid.", "max": "This\x20value\x20is\x20not\x20valid."}
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]").rules("add", {
                     "min": {
                         param: 1,
                         depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
                         }
                     }, "max": {
                         param: 31, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
                         }
                     }, "messages": {"min": "This\x20value\x20is\x20not\x20valid.", "max": "This\x20value\x20is\x20not\x20valid."}
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]").rules("add", {
                     "min": 0,
                     "max": 23,
-                    "required_group": ["collection_date_time[tags][__name__][time][minute]"],
+                    "required_group": ["collection_date_time_form[tags][__name__][time][minute]"],
                     "messages": {
                         "min": "This\x20value\x20is\x20not\x20valid.",
                         "max": "This\x20value\x20is\x20not\x20valid.",
                         "required_group": "This\x20value\x20is\x20not\x20valid."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bminute\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bminute\x5D\"]").rules("add", {
                     "min": {
                         param: 0,
                         depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
                         }
                     }, "max": {
                         param: 59, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -541,25 +541,25 @@ class TotalFormTest extends FormTestCase
         $this->assertEqualJs('
             (function ($) {
                 "use strict";
-                var form = $("form[name=\"additional_rules\"]");
+                var form = $("form[name=\"additional_rules_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "additional_rules\x5Bipv4\x5D": {"ipv4": true},
-                        "additional_rules\x5Bipv6\x5D": {"ipv6": true},
-                        "additional_rules\x5Bipv4_ipv6\x5D": {"one_or_other": {"ipv4": true, "ipv6": true}},
-                        "additional_rules\x5Biban\x5D": {"iban": true},
-                        "additional_rules\x5Bluhn\x5D": {"luhn": true},
-                        "additional_rules\x5Bfile\x5D": {"accept": "text\/plain,application\/pdf"},
-                        "additional_rules\x5Bpattern\x5D": {"pattern": "[a-zA-Z]+"}
+                        "additional_rules_form\x5Bipv4\x5D": {"ipv4": true},
+                        "additional_rules_form\x5Bipv6\x5D": {"ipv6": true},
+                        "additional_rules_form\x5Bipv4_ipv6\x5D": {"one_or_other": {"ipv4": true, "ipv6": true}},
+                        "additional_rules_form\x5Biban\x5D": {"iban": true},
+                        "additional_rules_form\x5Bluhn\x5D": {"luhn": true},
+                        "additional_rules_form\x5Bfile\x5D": {"accept": "text\/plain,application\/pdf"},
+                        "additional_rules_form\x5Bpattern\x5D": {"pattern": "[a-zA-Z]+"}
                     },
                     messages: {
-                        "additional_rules\x5Bipv4\x5D": {"ipv4": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
-                        "additional_rules\x5Bipv6\x5D": {"ipv6": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
-                        "additional_rules\x5Bipv4_ipv6\x5D": {"one_or_other": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
-                        "additional_rules\x5Biban\x5D": {"iban": "This\x20is\x20not\x20a\x20valid\x20International\x20Bank\x20Account\x20Number\x20\x28IBAN\x29."},
-                        "additional_rules\x5Bluhn\x5D": {"luhn": "Invalid\x20card\x20number."},
-                        "additional_rules\x5Bfile\x5D": {"accept": "The\x20mime\x20type\x20of\x20the\x20file\x20is\x20invalid\x20\x28\x7B\x7B\x20type\x20\x7D\x7D\x29.\x20Allowed\x20mime\x20types\x20are\x20text\x2Fplain,\x20application\x2Fpdf."},
-                        "additional_rules\x5Bpattern\x5D": {"pattern": "This\x20value\x20is\x20not\x20valid."}
+                        "additional_rules_form\x5Bipv4\x5D": {"ipv4": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
+                        "additional_rules_form\x5Bipv6\x5D": {"ipv6": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
+                        "additional_rules_form\x5Bipv4_ipv6\x5D": {"one_or_other": "This\x20is\x20not\x20a\x20valid\x20IP\x20address."},
+                        "additional_rules_form\x5Biban\x5D": {"iban": "This\x20is\x20not\x20a\x20valid\x20International\x20Bank\x20Account\x20Number\x20\x28IBAN\x29."},
+                        "additional_rules_form\x5Bluhn\x5D": {"luhn": "Invalid\x20card\x20number."},
+                        "additional_rules_form\x5Bfile\x5D": {"accept": "The\x20mime\x20type\x20of\x20the\x20file\x20is\x20invalid\x20\x28\x7B\x7B\x20type\x20\x7D\x7D\x29.\x20Allowed\x20mime\x20types\x20are\x20text\x2Fplain,\x20application\x2Fpdf."},
+                        "additional_rules_form\x5Bpattern\x5D": {"pattern": "This\x20value\x20is\x20not\x20valid."}
                     }
                 });
             })(jQuery);',

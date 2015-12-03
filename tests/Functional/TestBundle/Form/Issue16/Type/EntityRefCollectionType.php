@@ -3,6 +3,10 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\For
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Model\EntityRefCollection;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -16,14 +20,16 @@ class EntityRefCollectionType extends AbstractType
                 'property_path' => 'root[0].child.name',
                 'label'         => 'Root[0].child.name',
             ))
-            ->add('entityReferences', 'collection', array(
-                'type' => new EmailType(),
+            ->add('entityReferences', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+                TypeHelper::fixCollectionOptions(array(
+                    'entry_type' => __NAMESPACE__ . '\EmailType',
 
-                'allow_add' => true,
-                'allow_delete' => true,
+                    'allow_add' => true,
+                    'allow_delete' => true,
 
-                'prototype' => true
-            ))
+                    'prototype' => true
+                ))
+            )
         ;
     }
 
@@ -32,6 +38,6 @@ class EntityRefCollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'issue16_collection';
+        return 'entity_ref_collection';
     }
 }
