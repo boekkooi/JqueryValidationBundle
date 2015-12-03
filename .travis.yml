@@ -61,7 +61,7 @@ before_install:
 
 install:
   # Install composer dependencies
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source;
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction;
   # Install npm deps
   - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install grunt-cli; fi;
   - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install; fi;
@@ -88,5 +88,4 @@ after_failure:
 
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
