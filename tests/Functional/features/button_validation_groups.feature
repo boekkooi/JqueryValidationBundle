@@ -5,11 +5,11 @@ Feature: Testing validation groups based on the button that is pressed
       And I wait for jQuery to be active
 
   Scenario Outline: I can submit a valid form instance
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | John Doe     |
       | content | -            |
-    And I submit "buttons" by clicking on "<button>"
-    Then I should see no validation errors in the "buttons" form
+    And I submit "buttons_form" by clicking on "<button>"
+    Then I should see no validation errors in the "buttons_form" form
 
     Examples:
       | button                   |
@@ -19,19 +19,19 @@ Feature: Testing validation groups based on the button that is pressed
       | noValidation             |
 
   Scenario: I can always submit a form when validation groups is false
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | |
       | content | |
-    And I submit "buttons" by clicking on "noValidation"
-    Then I should see no validation errors in the "buttons" form
+    And I submit "buttons_form" by clicking on "noValidation"
+    Then I should see no validation errors in the "buttons_form" form
 
   # NotBlank => [ 'groups' => [ 'main', 'Default' ] ]
   Scenario Outline: I can have constraints that have multiple validation groups
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   |              |
       | content | some content |
-    And I submit "buttons" by clicking on "<button>"
-    Then I should only see the following validation errors in the "buttons" form:
+    And I submit "buttons_form" by clicking on "<button>"
+    Then I should only see the following validation errors in the "buttons_form" form:
       | title | This value should not be blank. |
 
     Examples:
@@ -42,11 +42,11 @@ Feature: Testing validation groups based on the button that is pressed
 
   # Length => [ 'groups' => 'main' ]
   Scenario Outline: I can have a constraint that is only used by a single group (main)
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | a            |
       | content | some content |
-    And I submit "buttons" by clicking on "<button>"
-    Then I should only see the following validation errors in the "buttons" form:
+    And I submit "buttons_form" by clicking on "<button>"
+    Then I should only see the following validation errors in the "buttons_form" form:
       | title | This value is too short. It should have 8 characters or more. |
 
     Examples:
@@ -55,19 +55,19 @@ Feature: Testing validation groups based on the button that is pressed
       | mainAndDefaultValidation |
 
   Scenario: I can submit when a constraint is invalid but not I my group (main)
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | a            |
       | content | some content |
-    And I submit "buttons" by clicking on "defaultValidation"
-    Then I should see no validation errors in the "buttons" form
+    And I submit "buttons_form" by clicking on "defaultValidation"
+    Then I should see no validation errors in the "buttons_form" form
 
   # Length => [ 'groups' => 'Default' ]
   Scenario Outline: I can have a constraint that is only used by a single group (main)
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | John Doe |
       | content |          |
-    And I submit "buttons" by clicking on "<button>"
-    Then I should only see the following validation errors in the "buttons" form:
+    And I submit "buttons_form" by clicking on "<button>"
+    Then I should only see the following validation errors in the "buttons_form" form:
       | content | This value should not be blank. |
 
     Examples:
@@ -76,8 +76,8 @@ Feature: Testing validation groups based on the button that is pressed
       | mainAndDefaultValidation |
 
   Scenario: I can submit when a constraint is invalid but not I my group (main)
-    When I fill in the "buttons" form with the following:
+    When I fill in the "buttons_form" form with the following:
       | title   | John Doe |
       | content |          |
-    And I submit "buttons" by clicking on "mainValidation"
-    Then I should see no validation errors in the "buttons" form
+    And I submit "buttons_form" by clicking on "mainValidation"
+    Then I should see no validation errors in the "buttons_form" form

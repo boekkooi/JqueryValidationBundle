@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\WebAssert;
 use Behat\MinkExtension\Context\MinkAwareContext;
@@ -191,5 +192,16 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
     public function iWaitForJQueryToBeActive()
     {
         $this->getSession()->wait(5000, '(0 === jQuery.active)');
+    }
+
+    /**
+     * @BeforeFeature @constraintIsTrueExists
+     */
+    public static function beforeFeatureTagged() {
+        if (class_exists('Symfony\Component\Validator\Constraints\IsTrue', true)) {
+            return;
+        }
+
+        throw new \RuntimeException('Skipping because the IsTrue constraint is not existing');
     }
 }

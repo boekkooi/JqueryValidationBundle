@@ -64,16 +64,16 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"simple_form_data\"]");
+                var form = $("form[name=\"simple_data_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "simple_form_data\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "simple_form_data\x5Bpassword\x5D\x5Bsecond\x5D": {
+                        "simple_data_form\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "simple_data_form\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "simple_data_form\x5Bpassword\x5D\x5Bsecond\x5D": {
                             "equalTo": {
-                                param: "form[name=\"simple_form_data\"] *[name=\"simple_form_data[password][first]\"]",
+                                param: "form[name=\"simple_data_form\"] *[name=\"simple_data_form[password][first]\"]",
                                 depends: function () {
-                                    if (("simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                    if (("simple_data_form\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "simple_data_form\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
                                         return false;
                                     }
                                     return true;
@@ -82,17 +82,17 @@ class BasicFormTest extends FormTestCase
                         }
                     },
                     messages: {
-                        "simple_form_data\x5Bname\x5D": {
+                        "simple_data_form\x5Bname\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "simple_form_data\x5Bpassword\x5D\x5Bfirst\x5D": {
+                        "simple_data_form\x5Bpassword\x5D\x5Bfirst\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "simple_form_data\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
+                        "simple_data_form\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
                     }
                 });
             })(jQuery);',
@@ -109,10 +109,10 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"buttons\"]");
+                var form = $("form[name=\"buttons_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "buttons\x5Btitle\x5D": {
+                        "buttons_form\x5Btitle\x5D": {
                             "required": {
                                 depends: function () {
                                     return (validator.settings.validation_groups["main"] || validator.settings.validation_groups["Default"]);
@@ -129,7 +129,7 @@ class BasicFormTest extends FormTestCase
                                 }
                             }
                         },
-                        "buttons\x5Bcontent\x5D": {
+                        "buttons_form\x5Bcontent\x5D": {
                             "required": {
                                 depends: function () {
                                     return (validator.settings.validation_groups["Default"]);
@@ -138,26 +138,27 @@ class BasicFormTest extends FormTestCase
                         }
                     },
                     messages: {
-                        "buttons\x5Btitle\x5D": {
+                        "buttons_form\x5Btitle\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
-                        }, "buttons\x5Bcontent\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
+                        },
+                        "buttons_form\x5Bcontent\x5D": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
                     }
                 });
 
                 validator.settings.validation_groups = {"Default": false, "main": false};
 
-                form.find("*[name=\"buttons\x5BdefaultValidation\x5D\"]").click(function () {
+                form.find("*[name=\"buttons_form\x5BdefaultValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": true, "main": false};
                 });
-                form.find("*[name=\"buttons\x5BmainValidation\x5D\"]").click(function () {
+                form.find("*[name=\"buttons_form\x5BmainValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": false, "main": true};
                 });
-                form.find("*[name=\"buttons\x5BmainAndDefaultValidation\x5D\"]").click(function () {
+                form.find("*[name=\"buttons_form\x5BmainAndDefaultValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": true, "main": true};
                 });
-                form.find("*[name=\"buttons\x5BnoValidation\x5D\"]").addClass("cancel");
+                form.find("*[name=\"buttons_form\x5BnoValidation\x5D\"]").addClass("cancel");
             })(jQuery);',
             $javascript
         );
@@ -175,10 +176,10 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection\"]");
+                var form = $("form[name=\"collection_with_groups_form\\"]");
                 var validator = form.validate({
                     rules: {
-                        "collection\x5Btitle\x5D": {
+                        "collection_with_groups_form\\x5Btitle\x5D": {
                             "required": {
                                 depends: function () {
                                     return (validator.settings.validation_groups["Default"]);
@@ -197,7 +198,7 @@ class BasicFormTest extends FormTestCase
                         }
                     },
                     messages: {
-                        "collection\x5Btitle\x5D": {
+                        "collection_with_groups_form\\x5Btitle\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
@@ -205,10 +206,10 @@ class BasicFormTest extends FormTestCase
                     }
                 });
                 validator.settings.validation_groups = {"Default": false, "main": false};
-                form.find("*[name=\"collection\x5BdefaultValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_with_groups_form\\x5BdefaultValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": true, "main": false};
                 });
-                form.find("*[name=\"collection\x5BmainValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_with_groups_form\\x5BmainValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": false, "main": true};
                 });
             })(jQuery);',
@@ -221,9 +222,9 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection\"]");
+                var form = $("form[name=\"collection_with_groups_form\\"]");
                 var validator = form.validate();
-                form.find("*[name=\"collection\x5Btags\x5D\x5Btag__name__\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_with_groups_form\\x5Btags\x5D\x5Btag__name__\x5D\"]").rules("add", {
                     "required": {
                         depends: function () {
                             return (validator.settings.validation_groups["Default"]);
@@ -264,10 +265,10 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection\"]");
-                var validator = form.validate({rules: {"collection\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
+                var form = $("form[name=\"collection_form\"]");
+                var validator = form.validate({rules: {"collection_form\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
                     messages: {
-                        "collection\x5Btitle\x5D": {
+                        "collection_form\x5Btitle\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
@@ -284,9 +285,9 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection\"]");
+                var form = $("form[name=\"collection_form\"]");
                 var validator = form.validate();
-                form.find("*[name=\"collection\x5Btags\x5D\x5Btag__name__\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_form\x5Btags\x5D\x5Btag__name__\x5D\"]").rules("add", {
                     "required": true,
                     "messages": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
                 });
@@ -307,10 +308,10 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_compound\"]");
-                var validator = form.validate({rules: {"collection_compound\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
+                var form = $("form[name=\"collection_compound_form\"]");
+                var validator = form.validate({rules: {"collection_compound_form\x5Btitle\x5D": {"required": true, "minlength": 8, "maxlength": 200}},
                     messages: {
-                        "collection_compound\x5Btitle\x5D": {
+                        "collection_compound_form\x5Btitle\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x208\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20200\x20characters\x20or\x20less."
@@ -327,9 +328,9 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_compound\"]");
+                var form = $("form[name=\"collection_compound_form\"]");
                 var validator = form.validate();
-                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bname\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_compound_form\x5Btags\x5D\x5B__name__\x5D\x5Bname\x5D\"]").rules("add", {
                     "required": true,
                     "minlength": 2,
                     "messages": {
@@ -337,15 +338,15 @@ class BasicFormTest extends FormTestCase
                         "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more."
                     }
                 });
-                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_compound_form\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D\"]").rules("add", {
                     "required": true,
                     "messages": {"required": "This\x20value\x20should\x20not\x20be\x20blank."}
                 });
-                form.find("*[name=\"collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bsecond\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_compound_form\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bsecond\x5D\"]").rules("add", {
                     "equalTo": {
-                        param: "form[name=\"collection_compound\"] *[name=\"collection_compound[tags][__name__][password][first]\"]",
+                        param: "form[name=\"collection_compound_form\"] *[name=\"collection_compound_form[tags][__name__][password][first]\"]",
                         depends: function () {
-                            if (("collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "collection_compound\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                            if (("collection_compound_form\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "collection_compound_form\x5Btags\x5D\x5B__name__\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -370,13 +371,13 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_date_time\"]");
+                var form = $("form[name=\"collection_date_time_form\"]");
                 var validator = form.validate({rules: {}, messages: {}});
                 validator.settings.validation_groups = {"Default": false, "main": false};
-                form.find("*[name=\"collection_date_time\x5BdefaultValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_date_time_form\x5BdefaultValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": true, "main": false};
                 });
-                form.find("*[name=\"collection_date_time\x5BmainValidation\x5D\"]").click(function () {
+                form.find("*[name=\"collection_date_time_form\x5BmainValidation\x5D\"]").click(function () {
                     validator.settings.validation_groups = {"Default": false, "main": true};
                 });
             })(jQuery);',
@@ -389,9 +390,9 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"collection_date_time\"]");
+                var form = $("form[name=\"collection_date_time_form\"]");
                 var validator = form.validate();
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]").rules("add", {
                     "number": true,
                     "required": {
                         depends: function () {
@@ -403,11 +404,11 @@ class BasicFormTest extends FormTestCase
                         "required": "This\x20value\x20should\x20not\x20be\x20blank."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]").rules("add", {
                     "required": {
                         depends: function () {
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -415,7 +416,7 @@ class BasicFormTest extends FormTestCase
                     },
                     "min": {
                         param: 1, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -423,7 +424,7 @@ class BasicFormTest extends FormTestCase
                     },
                     "max": {
                         param: 12, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -435,15 +436,15 @@ class BasicFormTest extends FormTestCase
                         "max": "This\x20value\x20is\x20not\x20valid."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]").rules("add", {
                     "required": {
                         depends: function () {
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -451,10 +452,10 @@ class BasicFormTest extends FormTestCase
                     },
                     "min": {
                         param: 1, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -462,10 +463,10 @@ class BasicFormTest extends FormTestCase
                     },
                     "max": {
                         param: 31, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -477,7 +478,7 @@ class BasicFormTest extends FormTestCase
                         "max": "This\x20value\x20is\x20not\x20valid."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]").rules("add", {
                     "min": 0,
                     "max": 23,
                     "required": {
@@ -485,16 +486,16 @@ class BasicFormTest extends FormTestCase
                             if (!(validator.settings.validation_groups["Default"])) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -506,23 +507,23 @@ class BasicFormTest extends FormTestCase
                         "required": "This\x20value\x20is\x20not\x20valid."
                     }
                 });
-                form.find("*[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bminute\x5D\"]").rules("add", {
+                form.find("*[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bminute\x5D\"]").rules("add", {
                     "required": {
                         depends: function () {
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Byear\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bmonth\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Bdate\x5D\x5Bday\x5D" in validator.invalid)) {
                                 return false;
                             }
-                            var dep = form.find("[name=\"collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]")[0];
-                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
+                            var dep = form.find("[name=\"collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D\"]")[0];
+                            if ((!$.validator.methods.required.call(validator, validator.elementValue(dep), dep, true) || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -530,7 +531,7 @@ class BasicFormTest extends FormTestCase
                     },
                     "min": {
                         param: 0, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -538,7 +539,7 @@ class BasicFormTest extends FormTestCase
                     },
                     "max": {
                         param: 59, depends: function () {
-                            if (("collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
+                            if (("collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.errorMap || "collection_date_time_form\x5Btags\x5D\x5B__name__\x5D\x5Btime\x5D\x5Bhour\x5D" in validator.invalid)) {
                                 return false;
                             }
                             return true;
@@ -567,28 +568,28 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"root_form\"]");
+                var form = $("form[name=\"root_data_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "root_form\x5Broot\x5D": {"email": true},
-                        "root_form\x5Bchild\x5D\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
-                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                        "root_data_form\x5Broot\x5D": {"email": true},
+                        "root_data_form\x5Bchild\x5D\x5Bname\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {"required": true, "minlength": "2", "maxlength": "255"},
+                        "root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
                             "equalTo": {
-                                param: "form[name=\"root_form\"] *[name=\"root_form[child][password][first]\"]",
+                                param: "form[name=\"root_data_form\"] *[name=\"root_data_form[child][password][first]\"]",
                                 depends: function () {
-                                    if (("root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                    if (("root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
                                         return false;
                                     }
                                     return true;
                                 }
                             }
                         },
-                        "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                        "root_data_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
                             "equalTo": {
-                                param: "form[name=\"root_form\"] *[name=\"root_form[childNoValidation][password][first]\"]",
+                                param: "form[name=\"root_data_form\"] *[name=\"root_data_form[childNoValidation][password][first]\"]",
                                 depends: function () {
-                                    if (("root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                    if (("root_data_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "root_data_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
                                         return false;
                                     }
                                     return true;
@@ -597,19 +598,19 @@ class BasicFormTest extends FormTestCase
                         }
                     },
                     messages: {
-                        "root_form\x5Broot\x5D": {"email": "This\x20value\x20is\x20not\x20a\x20valid\x20email\x20address."},
-                        "root_form\x5Bchild\x5D\x5Bname\x5D": {
+                        "root_data_form\x5Broot\x5D": {"email": "This\x20value\x20is\x20not\x20a\x20valid\x20email\x20address."},
+                        "root_data_form\x5Bchild\x5D\x5Bname\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                        "root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "root_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."},
-                        "root_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
+                        "root_data_form\x5Bchild\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."},
+                        "root_data_form\x5BchildNoValidation\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
                     }
                 });
             })(jQuery);',
@@ -630,24 +631,24 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"include_simple_form_data\"]");
+                var form = $("form[name=\"include_simple_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "include_simple_form_data\x5Buser\x5D\x5Bname\x5D": {
+                        "include_simple_form\x5Buser\x5D\x5Bname\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         },
-                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                        "include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         },
-                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
+                        "include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {
                             "equalTo": {
-                                param: "form[name=\"include_simple_form_data\"] *[name=\"include_simple_form_data[user][password][first]\"]",
+                                param: "form[name=\"include_simple_form\"] *[name=\"include_simple_form[user][password][first]\"]",
                                 depends: function () {
-                                    if (("include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
+                                    if (("include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.errorMap || "include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D" in validator.invalid)) {
                                         return false;
                                     }
                                     return true;
@@ -656,17 +657,17 @@ class BasicFormTest extends FormTestCase
                         }
                     },
                     messages: {
-                        "include_simple_form_data\x5Buser\x5D\x5Bname\x5D": {
+                        "include_simple_form\x5Buser\x5D\x5Bname\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
+                        "include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bfirst\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "include_simple_form_data\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
+                        "include_simple_form\x5Buser\x5D\x5Bpassword\x5D\x5Bsecond\x5D": {"equalTo": "This\x20value\x20is\x20not\x20valid."}
                     }
                 });
             })(jQuery);',
@@ -1178,7 +1179,7 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs('
             (function ($) {
                 "use strict";
-                var form = $("form[name=\"additional_rules\"]");
+                var form = $("form[name=\"additional_rules_form\"]");
                 var validator = form.validate({ rules: {}, messages: {}});
             })(jQuery);',
             $javascript
@@ -1197,10 +1198,10 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs('
             (function ($) {
                 "use strict";
-                var form = $("form[name=\"manualGroups\"]");
+                var form = $("form[name=\"manual_groups_form\"]");
                 var validator = form.validate({
                     rules: {
-                        "manualGroups\x5Bname\x5D": {
+                        "manual_groups_form\x5Bname\x5D": {
                             "required": {
                                 depends: function () {
                                     return (validator.settings.validation_groups["Default"]);
@@ -1216,7 +1217,7 @@ class BasicFormTest extends FormTestCase
                             }
                         }
                     }, messages: {
-                        "manualGroups\x5Bname\x5D": {
+                        "manual_groups_form\x5Bname\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x2010\x20characters\x20or\x20less."
@@ -1241,27 +1242,27 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"recourses\"]");
+                var form = $("form[name=\"recourse\"]");
                 var validator = form.validate({
                     rules: {
-                        "recourses\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
+                        "recourse\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
                             "required": true,
                             "minlength": 3,
                             "maxlength": 8196
                         },
-                        "recourses\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
+                        "recourse\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
                             "required": true,
                             "minlength": 3,
                             "maxlength": 8196
                         }
                     },
                     messages: {
-                        "recourses\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
+                        "recourse\x5Bcontents\x5D\x5B0\x5D\x5Bmessage\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x203\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x208196\x20characters\x20or\x20less."
                         },
-                        "recourses\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
+                        "recourse\x5Bcontents\x5D\x5B1\x5D\x5Bmessage\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x203\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x208196\x20characters\x20or\x20less."
@@ -1316,27 +1317,27 @@ class BasicFormTest extends FormTestCase
         $this->assertEqualJs(
             '(function ($) {
                 "use strict";
-                var form = $("form[name=\"issue16_collection\"]");
+                var form = $("form[name=\"entity_ref_collection\"]");
                 var validator = form.validate({
                     rules: {
-                        "issue16_collection\x5Brooot\x5D": {
+                        "entity_ref_collection\x5Brooot\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         },
-                        "issue16_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
                             "required": true,
                             "minlength": "2",
                             "maxlength": "255"
                         }
                     },
                     messages: {
-                        "issue16_collection\x5Brooot\x5D": {
+                        "entity_ref_collection\x5Brooot\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."
                         },
-                        "issue16_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
+                        "entity_ref_collection\x5BentityReferences\x5D\x5B0\x5D\x5Breference\x5D": {
                             "required": "This\x20value\x20should\x20not\x20be\x20blank.",
                             "minlength": "This\x20value\x20is\x20too\x20short.\x20It\x20should\x20have\x202\x20characters\x20or\x20more.",
                             "maxlength": "This\x20value\x20is\x20too\x20long.\x20It\x20should\x20have\x20255\x20characters\x20or\x20less."

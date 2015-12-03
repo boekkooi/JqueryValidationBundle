@@ -4,6 +4,7 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\For
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -23,7 +24,7 @@ class ButtonsFormType extends AbstractType
                     )),
                 ),
             ))
-            ->add('content', 'textarea', array(
+            ->add('content', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextareaType'), array(
                 'constraints' => array(
                     new Constraints\NotBlank(),
                     new Constraints\Length(array(
@@ -33,14 +34,14 @@ class ButtonsFormType extends AbstractType
                     )),
                 ),
             ))
-            ->add('defaultValidation', 'submit')
-            ->add('mainValidation', 'submit', array(
+            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
+            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
                 'validation_groups' => 'main',
             ))
-            ->add('mainAndDefaultValidation', 'submit', array(
+            ->add('mainAndDefaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
                 'validation_groups' => array('main', 'Default'),
             ))
-            ->add('noValidation', 'submit', array(
+            ->add('noValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
                 'validation_groups' => false,
             ))
         ;
@@ -48,6 +49,6 @@ class ButtonsFormType extends AbstractType
 
     public function getName()
     {
-        return 'buttons';
+        return 'buttons_form';
     }
 }
