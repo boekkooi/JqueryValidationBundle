@@ -2,8 +2,12 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -14,6 +18,33 @@ class CollectionWithGroupsFormType extends AbstractType
     {
         $builder
             ->add('title', null, array(
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                    new Constraints\Length(array(
+                        'min' => 8,
+                        'max' => 200,
+                        'groups' => 'main',
+                    )),
+                ),
+            ))
+            ->add('tags',
+                TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+                TypeHelper::fixCollectionOptions(array(
+                'constraints' => array(
+                    new Constraints\Count(array(
+                        'min' => 1,
+                        'max' => 5,
+                    )),
+                ),
+
+                'allow_add' => true,
+                'allow_delete' => true,
+
+                'prototype' => true,
+                'prototype_name' => 'tag__name__',
+
+                'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
+                'entry_options' => array(
                     'constraints' => array(
                         new Constraints\NotBlank(),
                         new Constraints\Length(array(
@@ -22,34 +53,10 @@ class CollectionWithGroupsFormType extends AbstractType
                             'groups' => 'main',
                         )),
                     ),
-                ))
-            ->add('tags', 'collection', array(
-                    'type' => 'text',
-                    'constraints' => array(
-                        new Constraints\Count(array(
-                            'min' => 1,
-                            'max' => 5,
-                        )),
-                    ),
-
-                    'allow_add' => true,
-                    'allow_delete' => true,
-
-                    'prototype' => true,
-                    'prototype_name' => 'tag__name__',
-                    'options' => array(
-                        'constraints' => array(
-                            new Constraints\NotBlank(),
-                            new Constraints\Length(array(
-                                'min' => 8,
-                                'max' => 200,
-                                'groups' => 'main',
-                            )),
-                        ),
-                    ),
-                ))
-            ->add('defaultValidation', 'submit')
-            ->add('mainValidation', 'submit', array(
+                ),
+            )))
+            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
+            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
                 'validation_groups' => 'main',
             ))
         ;
@@ -57,6 +64,6 @@ class CollectionWithGroupsFormType extends AbstractType
 
     public function getName()
     {
-        return 'collection';
+        return 'collection_with_groups_form';
     }
 }

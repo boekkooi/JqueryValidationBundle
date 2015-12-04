@@ -8,21 +8,21 @@ default:
         - FeatureContext
         - Behat\MinkExtension\Context\MinkContext
       filters:
-        tags: ~@serverSide&&~@additionals&&~@basic
+        tags: "~@serverSide&&~@additionals&&~@basic"
     javascript_basic:
       paths: [ %paths.base%/tests/Functional/features ]
       contexts:
         - FeatureContext
         - Behat\MinkExtension\Context\MinkContext
       filters:
-        tags: @basic
+        tags: "@basic"
     javascript_additionals:
       paths: [ %paths.base%/tests/Functional/features ]
       contexts:
         - FeatureContext
         - Behat\MinkExtension\Context\MinkContext
       filters:
-        tags: @additionals
+        tags: "@additionals"
     server_side:
       paths: [ %paths.base%/tests/Functional/features ]
       contexts:
@@ -30,7 +30,7 @@ default:
           - serverSide: true
         - Behat\MinkExtension\Context\MinkContext
       filters:
-        tags: ~@clientSide
+        tags: "~@clientSide"
 
   extensions:
     Behat\MinkExtension:

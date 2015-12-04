@@ -7,8 +7,11 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -48,7 +51,13 @@ class MinLengthRule implements ConstraintMapperInterface
             return false;
         }
 
-        return !($constraintClass === 'Symfony\Component\Validator\Constraints\Length' && $this->isType($form, 'choice'));
+        return !(
+            $constraintClass === 'Symfony\Component\Validator\Constraints\Length' &&
+            (FormHelper::isSymfony3Compatible() ?
+                $this->isType($form, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType') :
+                $this->isType($form, 'choice')
+            )
+        );
     }
 
     protected function isType(FormInterface $type, $typeName)

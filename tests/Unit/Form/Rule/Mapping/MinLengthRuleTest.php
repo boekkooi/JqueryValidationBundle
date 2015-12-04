@@ -22,7 +22,7 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
 
     protected function setUpBaseTest()
     {
-        $this->given_form_is_of_type('text');
+        $this->given_form_is_of_type('Symfony\Component\Form\Extension\Core\Type\TextType');
     }
 
     /**
@@ -30,9 +30,9 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
      */
     public function it_should_not_support_length_constraint_for_choice_form_type()
     {
-        $this->given_form_is_of_type('choice');
+        $this->given_form_is_of_type('Symfony\Component\Form\Extension\Core\Type\ChoiceType');
 
-        $this->assertFalse($this->execute_supports(new Constraints\Length(array('min' => 1))));
+        self::assertFalse($this->execute_supports(new Constraints\Length(array('min' => 1))));
     }
 
     public function provide_supported_constraints()
@@ -71,11 +71,18 @@ class MinLengthRuleTest extends BaseConstraintMapperTest
     public function given_form_is_of_type($type)
     {
         $typeMock = $this->getMock('Symfony\Component\Form\ResolvedFormTypeInterface');
-        $typeMock->expects($this->any())->method('getName')->willReturn($type);
+        $innerType = new $type();
+
+        if (method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getInnerType')) {
+            $typeMock->expects(self::any())->method('getInnerType')->willReturn($innerType);
+        }
+        if (method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName')) {
+            $typeMock->expects(self::any())->method('getName')->willReturn($innerType->getName());
+        }
 
         $formConfigMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
-        $formConfigMock->expects($this->any())->method('getType')->willReturn($typeMock);
+        $formConfigMock->expects(self::any())->method('getType')->willReturn($typeMock);
 
-        $this->form->expects($this->any())->method('getConfig')->willReturn($formConfigMock);
+        $this->form->expects(self::any())->method('getConfig')->willReturn($formConfigMock);
     }
 }

@@ -5,7 +5,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -43,8 +45,30 @@ class RangeType extends AbstractType
         ));
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'type' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
+            'options' => array(),
+            'min_options' => array(),
+            'max_options' => array(),
+            'min_name' => 'min',
+            'max_name' => 'max',
+            'error_bubbling' => false,
+        ));
+
+        $resolver->setAllowedTypes('options', 'array');
+        $resolver->setAllowedTypes('min_options', 'array');
+        $resolver->setAllowedTypes('max_options', 'array');
+    }
+
     public function getName()
     {
-        return 'my_range';
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'issue8_range';
     }
 }

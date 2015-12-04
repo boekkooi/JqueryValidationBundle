@@ -5,6 +5,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -35,7 +36,7 @@ class ButtonTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'button';
+        return FormHelper::isSymfony3Compatible() ? ButtonType::class : 'button';
     }
 
     protected function hasRuleBuilderContext(FormView $view)

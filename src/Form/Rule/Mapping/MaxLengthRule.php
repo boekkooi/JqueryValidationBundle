@@ -48,7 +48,13 @@ class MaxLengthRule implements ConstraintMapperInterface
             return false;
         }
 
-        return !($constraintClass === 'Symfony\Component\Validator\Constraints\Length' && $this->isType($form, 'choice'));
+        return !(
+            $constraintClass === 'Symfony\Component\Validator\Constraints\Length' &&
+            (FormHelper::isSymfony3Compatible() ?
+                $this->isType($form, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType') :
+                $this->isType($form, 'choice')
+            )
+        );
     }
 
     protected function isType(FormInterface $type, $typeName)

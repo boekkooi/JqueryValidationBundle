@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\CascadingStrategy;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
-use Symfony\Component\Validator\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -21,8 +21,19 @@ class FormDataConstraintFinder
      */
     private $metadataFactory;
 
-    public function __construct(MetadataFactoryInterface $metadataFactory)
+    /**
+     * Constructor.
+     * @param MetadataFactoryInterface $metadataFactory
+     */
+    public function __construct($metadataFactory)
     {
+        if (
+            !$metadataFactory instanceof MetadataFactoryInterface &&
+            !$metadataFactory instanceof \Symfony\Component\Validator\MetadataFactoryInterface
+        ) {
+            throw new \InvalidArgumentException('metadataFactory must be a instanceof MetadataFactoryInterface');
+        }
+
         $this->metadataFactory = $metadataFactory;
     }
 
@@ -177,7 +188,7 @@ class FormDataConstraintFinder
 
         // Now locate the closest data class
         // TODO what is the length really for?
-        for ($i = $propertyPath->getLength(); $i != 0; $i--) {
+        for ($i = $propertyPath->getLength(); $i !== 0; $i--) {
             $dataForm = $dataForm->getParent();
 
             # When a data class is found then use that form
@@ -296,7 +307,7 @@ class FormDataConstraintFinder
             }
 
             $type = strtolower($constraint->type);
-            $type = $type == 'boolean' ? 'bool' : $constraint->type;
+            $type = $type === 'boolean' ? 'bool' : $constraint->type;
             $isFunction = 'is_' . $type;
             $ctypeFunction = 'ctype_' . $type;
             if (function_exists($isFunction) || function_exists($ctypeFunction)) {

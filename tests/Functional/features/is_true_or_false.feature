@@ -1,3 +1,4 @@
+@constraintIsTrueExists
 Feature: Testing validation using IsTrue or IsFalse constraints
 
   Background:
@@ -5,7 +6,7 @@ Feature: Testing validation using IsTrue or IsFalse constraints
       And I wait for jQuery to be active
 
   Scenario: I can submit a valid form instance
-    When I fill in the "isTrueOrFalse" form with the following:
+    When I fill in the "is_true_or_false_form" form with the following:
       | check-true       | 1 |
       | select-bool-true | 1 |
       | select-int-true  | 1 |
@@ -13,12 +14,12 @@ Feature: Testing validation using IsTrue or IsFalse constraints
       | check-false      | 0 |
       | select-false     | 0 |
       | text-false       | 0 |
-    And I submit "isTrueOrFalse"
-    Then I should see no validation errors in the "isTrueOrFalse" form
+    And I submit "is_true_or_false_form"
+    Then I should see no validation errors in the "is_true_or_false_form" form
 
   @clientSide @basic
   Scenario: I see only checkbox isTrue errors when additionals are not enabled
-    When I fill in the "isTrueOrFalse" form with the following:
+    When I fill in the "is_true_or_false_form" form with the following:
       | check-true       | 0     |
       | select-bool-true | 0     |
       | select-int-true  | 0     |
@@ -26,13 +27,13 @@ Feature: Testing validation using IsTrue or IsFalse constraints
       | check-false      | 1     |
       | select-false     | 1     |
       | text-false       | false |
-    And I submit "isTrueOrFalse"
-    Then I should only see the following validation errors in the "isTrueOrFalse" form:
+    And I submit "is_true_or_false_form"
+    Then I should only see the following validation errors in the "is_true_or_false_form" form:
       | check-true       | This value should be true.  |
 
   @additionals @server-side
   Scenario: I see errors when the value is not what is expected additional
-    When I fill in the "isTrueOrFalse" form with the following:
+    When I fill in the "is_true_or_false_form" form with the following:
       | check-true       | 0     |
       | select-bool-true | 0     |
       | select-int-true  | 0     |
@@ -40,8 +41,8 @@ Feature: Testing validation using IsTrue or IsFalse constraints
       | check-false      | 1     |
       | select-false     | 1     |
       | text-false       | false |
-    And I submit "isTrueOrFalse"
-    Then I should only see the following validation errors in the "isTrueOrFalse" form:
+    And I submit "is_true_or_false_form"
+    Then I should only see the following validation errors in the "is_true_or_false_form" form:
       | check-true       | This value should be true.  |
       | select-bool-true | This value should be true.  |
       | select-int-true  | This value should be true.  |

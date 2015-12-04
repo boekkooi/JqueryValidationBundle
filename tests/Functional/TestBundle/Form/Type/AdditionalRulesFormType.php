@@ -4,6 +4,7 @@ namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\For
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -47,7 +48,7 @@ class AdditionalRulesFormType extends AbstractType
                 ),
             ))
 
-            ->add('file', 'file', array(
+            ->add('file', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\FileType'), array(
                 'constraints' => array(
                     new Constraints\File(array(
                         'mimeTypes' => array('text/plain', 'application/pdf'),
@@ -55,7 +56,7 @@ class AdditionalRulesFormType extends AbstractType
                 ),
             ))
 
-            ->add('pattern', 'text', array(
+            ->add('pattern', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array(
                 'constraints' => array(
                     new Constraints\Regex('/^[a-zA-Z]+$/'),
                 ),
@@ -65,6 +66,6 @@ class AdditionalRulesFormType extends AbstractType
 
     public function getName()
     {
-        return 'additional_rules';
+        return 'additional_rules_form';
     }
 }

@@ -14,12 +14,33 @@ use Symfony\Component\Validator\Constraint;
  */
 final class FormHelper
 {
+    public static function isSymfony3Compatible()
+    {
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+    }
+
+    public static function isSymfony2Compatible()
+    {
+        return method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName');
+    }
+
     public static function isType(ResolvedFormTypeInterface $type, $typeName)
     {
         do {
-            if ($type->getName() === $typeName) {
+            if (
+                self::isSymfony3Compatible() &&
+                get_class($type->getInnerType()) === $typeName
+            ) {
                 return true;
             }
+
+            if (
+                self::isSymfony2Compatible() &&
+                $type->getName() === $typeName
+            ) {
+                return true;
+            }
+
             $type = $type->getParent();
         } while ($type !== null);
 

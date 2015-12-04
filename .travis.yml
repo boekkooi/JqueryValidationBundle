@@ -10,23 +10,42 @@ env:
 
 matrix:
   include:
-  - php: 5.6
-    env: |
-      - SYMFONY_VERSION=2.7.*
+  # [PHPUnit] Test symfony versions
   - php: 5.3.3
     env: |
       COMPOSER_FLAGS='--prefer-stable --prefer-lowest'
       PHPUNIT_COVERAGE='--coverage-text --coverage-clover=coverage.clover'
+  - php: 5.6
+    env: |
+      SYMFONY_VERSION=2.7.*
+  - php: 5.6
+    env: |
+      SYMFONY_VERSION=2.8.*
+  - php: 5.6
+    env: |
+      SYMFONY_VERSION=3.0.*
+  # [BEHAT] Test 2.8 without additionals in FF
   - php: 5.4
     env: |
+      SYMFONY_VERSION=2.8.*
       TEST_SCOPE='javascript'
       SYMFONY_ENVIRONMENT='test'
       SYMFONY__ENABLE_ADDITIONALS='false'
     addons:
       firefox: "42.0"
+  # [BEHAT] Test 2.3 with additionals in FF
+  - php: 5.4
+    env: |
+      SYMFONY_VERSION=2.3.*
+      TEST_SCOPE='javascript'
+      SYMFONY_ENVIRONMENT='test'
+      SYMFONY__ENABLE_ADDITIONALS='true'
+    addons:
+      firefox: "42.0"
+  # [BEHAT] Test 3.0 with additionals in FF
   - php: 5.6
     env: |
-      COMPOSER_FLAGS='--prefer-stable --prefer-lowest'
+      SYMFONY_VERSION=3.0.*
       TEST_SCOPE='javascript'
       SYMFONY_ENVIRONMENT='test'
       SYMFONY__ENABLE_ADDITIONALS='true'
@@ -42,7 +61,7 @@ before_install:
 
 install:
   # Install composer dependencies
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source;
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction;
   # Install npm deps
   - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install grunt-cli; fi;
   - if [ "$TEST_SCOPE" = "code" ]; then travis_retry npm install; fi;
@@ -69,5 +88,4 @@ after_failure:
 
 cache:
   directories:
-    - vendor
     - $HOME/.composer/cache
