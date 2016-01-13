@@ -25,7 +25,7 @@ matrix:
     env: |
       SYMFONY_VERSION=3.0.*
   # [BEHAT] Test 2.8 without additionals in FF
-  - php: 5.4
+  - php: 5.5
     env: |
       SYMFONY_VERSION=2.8.*
       TEST_SCOPE='javascript'
@@ -34,7 +34,7 @@ matrix:
     addons:
       firefox: "42.0"
   # [BEHAT] Test 2.3 with additionals in FF
-  - php: 5.4
+  - php: 5.5
     env: |
       SYMFONY_VERSION=2.3.*
       TEST_SCOPE='javascript'
