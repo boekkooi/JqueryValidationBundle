@@ -20,7 +20,7 @@ class TypeHelper
 
     public static function fixCollectionOptions(array $options)
     {
-        if (FormHelper::isSymfony3Compatible()) {
+        if(FormHelper::isSymfony3Compatible() && !FormHelper::isSymfony2Compatible()) {
             return $options;
         }
 
@@ -31,7 +31,11 @@ class TypeHelper
 
         if (isset($options['entry_options'])) {
             $options['options'] = TypeHelper::type($options['entry_options']);
-            unset($options['entry_options']);
+
+            // Due to a bug in 2.8 and 2.8.1 we need to ensure we also set options when we run 2.8.x
+            if (!FormHelper::isSymfony3Compatible()) {
+                unset($options['entry_options']);
+            }
         }
 
         return $options;
