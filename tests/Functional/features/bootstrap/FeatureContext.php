@@ -197,8 +197,9 @@ class FeatureContext extends RawMinkContext implements Context, SnippetAccepting
     /**
      * @BeforeFeature @constraintIsTrueExists
      */
-    public static function beforeFeatureTagged() {
-        if (class_exists('Symfony\Component\Validator\Constraints\IsTrue', true)) {
+    public static function beforeFeatureTagged()
+    {
+        if (class_exists(\Symfony\Component\Validator\Constraints\IsTrue::class, true)) {
             return;
         }
 

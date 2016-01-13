@@ -8,6 +8,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -49,6 +50,6 @@ class PatternRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return $this->enabled && get_class($constraint) === 'Symfony\Component\Validator\Constraints\Regex';
+        return $this->enabled && get_class($constraint) === Regex::class;
     }
 }

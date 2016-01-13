@@ -8,6 +8,8 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -42,8 +44,8 @@ class RequiredRule implements ConstraintMapperInterface
         return in_array(
             get_class($constraint),
             array(
-                'Symfony\Component\Validator\Constraints\NotBlank',
-                'Symfony\Component\Validator\Constraints\NotNull',
+                NotBlank::class,
+                NotNull::class,
             ),
             true
         );

@@ -2,9 +2,13 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
@@ -15,11 +19,11 @@ class SimpleDataFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array('label' => 'Name'))
+            ->add('name', TypeHelper::type(TextType::class), array('label' => 'Name'))
             ->add(
                 'password',
-                TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\RepeatedType'),
-                array('type' => TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\PasswordType'))
+                TypeHelper::type(RepeatedType::class),
+                array('type' => TypeHelper::type(PasswordType::class))
             )
         ;
     }
@@ -32,7 +36,7 @@ class SimpleDataFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData',
+            'data_class' => SimpleData::class,
         ));
     }
 

@@ -11,7 +11,7 @@ env:
 matrix:
   include:
   # [PHPUnit] Test symfony versions
-  - php: 5.3.3
+  - php: 5.5
     env: |
       COMPOSER_FLAGS='--prefer-stable --prefer-lowest'
       PHPUNIT_COVERAGE='--coverage-text --coverage-clover=coverage.clover'

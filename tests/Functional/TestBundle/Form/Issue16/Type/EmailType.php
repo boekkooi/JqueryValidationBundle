@@ -2,9 +2,11 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Model\EntityReferenceModel;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
@@ -19,7 +21,7 @@ class EmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('reference', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array(
+            ->add('reference', TypeHelper::type(TextType::class), array(
                 'property_path' => 'entity.name',
                 'label'         => 'Entity.name',
             ))
@@ -40,7 +42,7 @@ class EmailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Model\EntityReferenceModel'
+            'data_class' => EntityReferenceModel::class
         ));
     }
 

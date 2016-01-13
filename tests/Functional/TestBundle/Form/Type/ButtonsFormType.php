@@ -2,6 +2,8 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
@@ -24,7 +26,7 @@ class ButtonsFormType extends AbstractType
                     )),
                 ),
             ))
-            ->add('content', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextareaType'), array(
+            ->add('content', TypeHelper::type(TextareaType::class), array(
                 'constraints' => array(
                     new Constraints\NotBlank(),
                     new Constraints\Length(array(
@@ -34,14 +36,14 @@ class ButtonsFormType extends AbstractType
                     )),
                 ),
             ))
-            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
-            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('defaultValidation', TypeHelper::type(SubmitType::class))
+            ->add('mainValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => 'main',
             ))
-            ->add('mainAndDefaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('mainAndDefaultValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => array('main', 'Default'),
             ))
-            ->add('noValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('noValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => false,
             ))
         ;

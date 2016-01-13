@@ -2,6 +2,8 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompiler;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompilerInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -43,12 +45,12 @@ class FormRuleCompilerTest extends \PHPUnit_Framework_TestCase
      */
     public function compile_should_forward_to_all_compilers()
     {
-        $formRuleContext = $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder')
+        $formRuleContext = $this->getMockBuilder(FormRuleContextBuilder::class)
             ->disableOriginalConstructor()->getMock();
 
-        $compiler1 = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompilerInterface');
+        $compiler1 = $this->getMock(FormRuleCompilerInterface::class);
         $compiler1->expects($this->once())->method('compile')->with($formRuleContext);
-        $compiler2 = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleCompilerInterface');
+        $compiler2 = $this->getMock(FormRuleCompilerInterface::class);
         $compiler2->expects($this->once())->method('compile')->with($formRuleContext);
 
         $SUT = new FormRuleCompiler(array(

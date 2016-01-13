@@ -9,6 +9,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\IsFalse;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
 /**
@@ -59,7 +60,7 @@ class IsBooleanRule implements ConstraintMapperInterface
             return;
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\IsTrue | \Symfony\Component\Validator\Constraints\IsFalse $constraint */
+        /** @var IsTrue|IsFalse $constraint */
         $collection->set(
             'equals',
             new ConstraintRule(
@@ -76,8 +77,8 @@ class IsBooleanRule implements ConstraintMapperInterface
         return in_array(
             get_class($constraint),
             array(
-                'Symfony\Component\Validator\Constraints\IsTrue',
-                'Symfony\Component\Validator\Constraints\IsFalse',
+                IsTrue::class,
+                IsFalse::class,
             ),
             true
         );

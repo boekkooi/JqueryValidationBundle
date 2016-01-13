@@ -2,6 +2,8 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
@@ -24,7 +26,7 @@ class CollectionFormType extends AbstractType
                 ),
             ))
             ->add('tags',
-                TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+                TypeHelper::type(CollectionType::class),
                 TypeHelper::fixCollectionOptions(array(
                     'constraints' => array(
                         new Constraints\Count(array(
@@ -39,7 +41,7 @@ class CollectionFormType extends AbstractType
                     'prototype' => true,
                     'prototype_name' => 'tag__name__',
 
-                    'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
+                    'entry_type' => TextType::class,
                     'entry_options' => array(
                         'constraints' => array(
                             new Constraints\NotBlank(),

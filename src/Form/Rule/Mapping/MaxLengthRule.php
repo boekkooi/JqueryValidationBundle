@@ -7,8 +7,11 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -40,18 +43,18 @@ class MaxLengthRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
+        /** @var Choice|Length $constraint */
         $constraintClass = get_class($constraint);
-        if (!in_array($constraintClass, array('Symfony\Component\Validator\Constraints\Choice', 'Symfony\Component\Validator\Constraints\Length'), true) ||
+        if (!in_array($constraintClass, array(Choice::class, Length::class), true) ||
             $constraint->max === null ||
             $constraint->min == $constraint->max) {
             return false;
         }
 
         return !(
-            $constraintClass === 'Symfony\Component\Validator\Constraints\Length' &&
+            $constraintClass === Length::class &&
             (FormHelper::isSymfony3Compatible() ?
-                $this->isType($form, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType') :
+                $this->isType($form, ChoiceType::class) :
                 $this->isType($form, 'choice')
             )
         );

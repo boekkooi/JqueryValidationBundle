@@ -2,6 +2,12 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormConfigInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -15,9 +21,9 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function isType_should_return_true_if_a_type_is_the_same()
     {
-        $typeMock = $this->given_form_type_with_parents('Symfony\Component\Form\Extension\Core\Type\TextType');
+        $typeMock = $this->given_form_type_with_parents(TextType::class);
 
-        self::assertTrue(FormHelper::isType($typeMock, 'Symfony\Component\Form\Extension\Core\Type\TextType'));
+        self::assertTrue(FormHelper::isType($typeMock, TextType::class));
     }
 
     /**
@@ -26,8 +32,8 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     public function isType_should_return_true_if_one_of_the_parents_is_the_same()
     {
         if (
-            !method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName') ||
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            !method_exists(ResolvedFormTypeInterface::class, 'getName') ||
+            method_exists(AbstractType::class, 'getBlockPrefix')
         ) {
             self::markTestSkipped('Symfony 2 without 3 compatibility only!');
         }
@@ -53,8 +59,8 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     public function isType_should_return_false_if_the_type_is_not_found()
     {
         if (
-            !method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName') ||
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            !method_exists(ResolvedFormTypeInterface::class, 'getName') ||
+            method_exists(AbstractType::class, 'getBlockPrefix')
         ) {
             self::markTestSkipped('Symfony 2 without 3 compatibility only!');
         }
@@ -83,7 +89,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
 
         $currentType = null;
         foreach ($types as $type) {
-            $typeMock = $this->getMock('Symfony\Component\Form\ResolvedFormTypeInterface');
+            $typeMock = $this->getMock(ResolvedFormTypeInterface::class);
             $typeMock->expects(self::any())
                 ->method('getParent')
                 ->willReturn($currentType);
@@ -124,8 +130,8 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
 
     public function provide_valid_form_names()
     {
-        /** @var \Symfony\Component\Form\FormView $view */
-        $view = $this->getMock('Symfony\Component\Form\FormView');
+        /** @var FormView $view */
+        $view = $this->getMock(FormView::class);
         $view->vars['full_name'] = 'form_name';
 
         return array(
@@ -149,7 +155,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(false),
-            array($this->getMock('Symfony\Component\Form\FormView')),
+            array($this->getMock(FormView::class)),
         );
     }
 
@@ -158,12 +164,12 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function getValidationGroups_should_return_the_jquery_validation_groups_option()
     {
-        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig = $this->getMock(FormConfigInterface::class);
         $formConfig->expects(self::any())->method('hasOption')->with('jquery_validation_groups')->willReturn(true);
         $formConfig->expects(self::any())->method('getOption')->with('jquery_validation_groups')->willReturn('my_group');
 
         /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMock(FormInterface::class);
         $form->expects(self::any())->method('getConfig')->willReturn($formConfig);
 
         self::assertEquals(
@@ -177,12 +183,12 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function getValidationGroups_should_return_validation_groups_option_when_query_validation_groups_is_not_set()
     {
-        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig = $this->getMock(FormConfigInterface::class);
         $formConfig->expects(self::any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
         $formConfig->expects(self::any())->method('getOption')->with('validation_groups')->willReturn('my_val_group');
 
         /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMock(FormInterface::class);
         $form->expects(self::any())->method('getConfig')->willReturn($formConfig);
 
         self::assertEquals(
@@ -197,12 +203,12 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function getValidationGroups_should_return($value, $return)
     {
-        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig = $this->getMock(FormConfigInterface::class);
         $formConfig->expects(self::any())->method('hasOption')->with('jquery_validation_groups')->willReturn(false);
         $formConfig->expects(self::any())->method('getOption')->with('validation_groups')->willReturn($value);
 
         /** @var \Symfony\Component\Form\FormInterface|\PHPUnit_Framework_MockObject_MockObject $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMock(FormInterface::class);
         $form->expects(self::any())->method('getConfig')->willReturn($formConfig);
 
         self::assertEquals(
@@ -229,14 +235,14 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase
     public function getViewRoot_should_return_the_root_view()
     {
         /** @var \Symfony\Component\Form\FormView|\PHPUnit_Framework_MockObject_MockObject $rootView */
-        $rootView = $this->getMock('Symfony\Component\Form\FormView');
+        $rootView = $this->getMock(FormView::class);
         self::assertEquals(
             $rootView,
             FormHelper::getViewRoot($rootView)
         );
 
         /** @var \Symfony\Component\Form\FormView|\PHPUnit_Framework_MockObject_MockObject $formView */
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->getMock(FormView::class);
         $formView->parent = $rootView;
         self::assertEquals(
             $rootView,

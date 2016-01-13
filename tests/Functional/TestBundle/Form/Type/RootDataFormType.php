@@ -2,9 +2,11 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\RootData;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
@@ -15,9 +17,9 @@ class RootDataFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('root', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array('label' => 'Root Name'))
-            ->add('child', TypeHelper::type(__NAMESPACE__ . '\SimpleDataFormType'))
-            ->add('childNoValidation', TypeHelper::type(__NAMESPACE__ . '\SimpleDataFormType'))
+            ->add('root', TypeHelper::type(TextType::class), array('label' => 'Root Name'))
+            ->add('child', TypeHelper::type(SimpleDataFormType::class))
+            ->add('childNoValidation', TypeHelper::type(SimpleDataFormType::class))
         ;
     }
 
@@ -29,7 +31,7 @@ class RootDataFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\RootData',
+            'data_class' => RootData::class,
         ));
     }
 

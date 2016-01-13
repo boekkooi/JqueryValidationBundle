@@ -2,6 +2,9 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
@@ -15,7 +18,7 @@ class CollectionDateTimeFormType extends AbstractType
     {
         $builder
             ->add('tags',
-                TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+                TypeHelper::type(CollectionType::class),
                 TypeHelper::fixCollectionOptions(array(
                 'constraints' => array(
                     new Constraints\Count(array(
@@ -29,7 +32,7 @@ class CollectionDateTimeFormType extends AbstractType
 
                 'prototype' => true,
 
-                'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\DateTimeType',
+                'entry_type' => DateTimeType::class,
                 'entry_options' => array(
                     'widget' => 'text',
                     'constraints' => array(
@@ -37,8 +40,8 @@ class CollectionDateTimeFormType extends AbstractType
                     ),
                 ),
             )))
-            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
-            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('defaultValidation', TypeHelper::type(SubmitType::class))
+            ->add('mainValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => 'main',
             ))
         ;

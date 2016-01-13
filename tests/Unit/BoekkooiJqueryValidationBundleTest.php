@@ -2,6 +2,8 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle;
 
 use Boekkooi\Bundle\JqueryValidationBundle\BoekkooiJqueryValidationBundle;
+use Boekkooi\Bundle\JqueryValidationBundle\DependencyInjection\Compiler\ExtensionPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @covers Boekkooi\Bundle\JqueryValidationBundle\BoekkooiJqueryValidationBundle
@@ -15,10 +17,10 @@ class BoekkooiJqueryValidationBundleTest extends \PHPUnit_Framework_TestCase
     public function it_should_add_the_extension_pass()
     {
         try {
-            $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+            $container = $this->getMock(ContainerBuilder::class);
             $container->expects($this->once())
                 ->method('addCompilerPass')
-                ->with($this->isInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\DependencyInjection\Compiler\ExtensionPass'));
+                ->with($this->isInstanceOf(ExtensionPass::class));
 
             $SUT = new BoekkooiJqueryValidationBundle();
             $SUT->build($container);

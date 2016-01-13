@@ -48,8 +48,8 @@ class NumberRule implements ConstraintMapperInterface
     {
         $class = get_class($constraint);
 
-        return $class === 'Symfony\Component\Validator\Constraints\Range' || (
-            $class === 'Symfony\Component\Validator\Constraints\Type' &&
+        return $class === Range::class || (
+            $class === Type::class &&
             in_array(strtolower($constraint->type), array('int', 'integer', 'float', 'double'), true)
         );
     }

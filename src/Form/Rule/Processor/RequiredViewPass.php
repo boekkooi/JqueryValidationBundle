@@ -4,6 +4,9 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Required;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -11,9 +14,9 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 class RequiredViewPass implements FormRuleProcessorInterface
 {
     protected static $requiredConstraintClasses = array(
-        'Symfony\Component\Validator\Constraints\NotNull',
-        'Symfony\Component\Validator\Constraints\NotBlank',
-        'Symfony\Component\Validator\Constraints\Required',
+        NotNull::class,
+        NotBlank::class,
+        Required::class,
     );
 
     public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)

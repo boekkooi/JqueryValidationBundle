@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 class IncludeSimpleFormType extends AbstractType
@@ -12,7 +13,7 @@ class IncludeSimpleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', TypeHelper::type(__NAMESPACE__ . '\SimpleDataFormType'), array(
+            ->add('user', TypeHelper::type(SimpleDataFormType::class), array(
                 'mapped' => false,
                 'inherit_data' => true,
             ))
@@ -30,7 +31,7 @@ class IncludeSimpleFormType extends AbstractType
             'validation_groups' => array(
                 'Default'
             ),
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\SimpleData',
+            'data_class' => SimpleData::class,
         ));
     }
 

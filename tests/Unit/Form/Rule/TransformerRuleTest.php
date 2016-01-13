@@ -2,6 +2,7 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -27,7 +28,7 @@ class TransformerRuleTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'my_rule';
         $options = false;
-        $message = $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage')
+        $message = $this->getMockBuilder(RuleMessage::class)
             ->disableOriginalConstructor()->getMock();
         $groups = array('Yep', 'We', 'Have', 'groups');
 

@@ -15,7 +15,6 @@ use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20\C
 
 class ValidScheduledEndDatePass implements FormRuleProcessorInterface
 {
-
     /**
      * @param FormRuleProcessorContext $processContext
      * @param FormRuleContextBuilder $formRuleContext
@@ -72,7 +71,7 @@ class ValidScheduledEndDatePass implements FormRuleProcessorInterface
     private function getConstraint(ConstraintCollection $constraints)
     {
         foreach ($constraints as $constraint) {
-            if (get_class($constraint) === 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20\Constraints\ValidScheduledEndDate') {
+            if (get_class($constraint) === ValidScheduledEndDate::class) {
                 return $constraint;
             }
         }

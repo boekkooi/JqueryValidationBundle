@@ -2,6 +2,7 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 class TypeHelper
 {
@@ -43,7 +44,7 @@ class TypeHelper
 
     public static function fixChoices(array $options)
     {
-        if (!method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName')) {
+        if (!method_exists(ResolvedFormTypeInterface::class, 'getName')) {
             return $options;
         }
 

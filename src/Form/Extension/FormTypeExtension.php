@@ -151,7 +151,7 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return FormHelper::isSymfony3Compatible() ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
+        return FormHelper::isSymfony3Compatible() ? FormType::class : 'form';
     }
 
     /**

@@ -8,6 +8,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
+use Symfony\Component\Validator\Constraints\File;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -35,7 +36,7 @@ class FileRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\File $constraint */
+        /** @var File $constraint */
         $collection->set(
             self::RULE_NAME,
             new ConstraintRule(
@@ -51,9 +52,8 @@ class FileRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        /** @var \Symfony\Component\Validator\Constraints\File $constraint */
         return $this->active &&
-            get_class($constraint) === 'Symfony\Component\Validator\Constraints\File' &&
+            get_class($constraint) === File::class &&
             !empty($constraint->mimeTypes);
     }
 }

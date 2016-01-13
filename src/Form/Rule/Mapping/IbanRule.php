@@ -8,6 +8,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Iban;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -35,7 +36,7 @@ class IbanRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Iban $constraint */
+        /** @var Iban $constraint */
         $collection->set(
             self::RULE_NAME,
             new ConstraintRule(
@@ -49,6 +50,6 @@ class IbanRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return $this->active && get_class($constraint) === 'Symfony\Component\Validator\Constraints\Iban';
+        return $this->active && get_class($constraint) === Iban::class;
     }
 }

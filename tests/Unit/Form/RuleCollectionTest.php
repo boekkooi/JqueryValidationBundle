@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 
 /**
@@ -72,7 +73,7 @@ class RuleCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function set_should_only_allow_rule_instances($value)
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
 
         $this->SUT->set('rule', $value);
     }
@@ -90,7 +91,7 @@ class RuleCollectionTest extends \PHPUnit_Framework_TestCase
 
     private function create_a_rule_mock()
     {
-        return $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\Rule')
+        return $this->getMockBuilder(Rule::class)
             ->disableOriginalConstructor()->getMock();
     }
 }

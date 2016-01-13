@@ -5,7 +5,9 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Condition\FieldDependency;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\ValueToDuplicatesTransformerPass;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer;
+use Symfony\Component\Form\FormView;
 use Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler\BaseProcessorTest;
 
 /**
@@ -33,18 +35,18 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
 
         $this->formView->vars['full_name'] = 'pwd';
 
-        /** @var \Symfony\Component\Form\FormView $firstFormView */
-        $firstFormView = $this->getMock('Symfony\Component\Form\FormView');
+        /** @var FormView $firstFormView */
+        $firstFormView = $this->getMock(FormView::class);
         $firstFormView->vars['full_name'] = 'pwd_first';
         $firstFormView->vars['attr']['id'] = 'pwdFirst';
         $this->formView->children['first'] = $firstFormView;
 
-        /** @var \Symfony\Component\Form\FormView $secondFormView */
-        $secondFormView = $this->getMock('Symfony\Component\Form\FormView');
+        /** @var FormView $secondFormView */
+        $secondFormView = $this->getMock(FormView::class);
         $secondFormView->vars['full_name'] = 'pwd_second';
         $this->formView->children['second'] = $secondFormView;
 
-        $formRuleCollection = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection');
+        $formRuleCollection = $this->getMock(RuleCollection::class);
         $this->formRuleContext->expects($this->atLeastOnce())
             ->method('get')
             ->with($this->formView)
@@ -99,7 +101,7 @@ class ValueToDuplicatesTransformerPassTest extends BaseProcessorTest
     {
         $this->prepare_form_config_compound();
         $this->prepare_form_config_view_transformers(array(
-            $this->getMock('Symfony\Component\Form\DataTransformerInterface'),
+            $this->getMock(DataTransformerInterface::class),
         ));
 
         $this->expect_no_form_rule_context_interaction();

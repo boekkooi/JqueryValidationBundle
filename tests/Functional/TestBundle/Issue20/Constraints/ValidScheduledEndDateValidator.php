@@ -23,11 +23,11 @@ class ValidScheduledEndDateValidator extends ConstraintValidator
         }
 
         if (!$constraint instanceof ValidScheduledEndDate) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\ValidScheduledEndDate');
+            throw new UnexpectedTypeException($constraint, ValidScheduledEndDate::class);
         }
 
         if (!$value instanceof Schedule) {
-            throw new UnexpectedTypeException($value, 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Issue20\Model\Schedule');
+            throw new UnexpectedTypeException($value, Schedule::class);
         }
 
         if (!$value->isScheduledEndDate) {

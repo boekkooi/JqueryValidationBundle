@@ -2,6 +2,9 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
@@ -14,14 +17,14 @@ class ViewTransformRulesFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('time_text', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TimeType'), array(
+            ->add('time_text', TypeHelper::type(TimeType::class), array(
                 'widget' => 'text',
                 'label' => 'Time text',
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('equals', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\RepeatedType'), array(
+            ->add('equals', TypeHelper::type(RepeatedType::class), array(
                 'constraints' => array(
                     new Constraints\NotBlank(array(
                         'groups' => 'main',
@@ -31,8 +34,8 @@ class ViewTransformRulesFormType extends AbstractType
                 'second_options' => array('label' => 'Repeat'),
                 'invalid_message' => 'Oops they don\'t match',
             ))
-            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
-            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('defaultValidation', TypeHelper::type(SubmitType::class))
+            ->add('mainValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => 'main',
             ))
         ;

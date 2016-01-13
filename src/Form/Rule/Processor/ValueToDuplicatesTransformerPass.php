@@ -7,6 +7,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormHelper;
+use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTransformer;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -26,10 +27,7 @@ class ValueToDuplicatesTransformerPass extends ViewTransformerProcessor
             return;
         }
 
-        $transformer = $this->findTransformer(
-            $formConfig,
-            'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\ValueToDuplicatesTransformer'
-        );
+        $transformer = $this->findTransformer($formConfig, ValueToDuplicatesTransformer::class);
         if ($transformer === null) {
             return;
         }

@@ -38,8 +38,8 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
             return;
         }
 
-        /** @var \Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer $transformer */
-        $transformer = $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToArrayTransformer');
+        /** @var DateTimeToArrayTransformer $transformer */
+        $transformer = $this->findTransformer($formConfig, DateTimeToArrayTransformer::class);
         if ($transformer === null) {
             return;
         }
@@ -141,7 +141,7 @@ class DateTimeToArrayTransformerPass extends ViewTransformerProcessor
     private function getTransformerFields(DateTimeToArrayTransformer $transformer)
     {
         $property = new \ReflectionProperty(
-            'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToArrayTransformer',
+            DateTimeToArrayTransformer::class,
             'fields'
         );
         $property->setAccessible(true);

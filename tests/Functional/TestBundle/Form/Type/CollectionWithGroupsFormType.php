@@ -28,7 +28,7 @@ class CollectionWithGroupsFormType extends AbstractType
                 ),
             ))
             ->add('tags',
-                TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+                TypeHelper::type(CollectionType::class),
                 TypeHelper::fixCollectionOptions(array(
                 'constraints' => array(
                     new Constraints\Count(array(
@@ -43,7 +43,7 @@ class CollectionWithGroupsFormType extends AbstractType
                 'prototype' => true,
                 'prototype_name' => 'tag__name__',
 
-                'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\TextType',
+                'entry_type' => TextType::class,
                 'entry_options' => array(
                     'constraints' => array(
                         new Constraints\NotBlank(),
@@ -55,8 +55,8 @@ class CollectionWithGroupsFormType extends AbstractType
                     ),
                 ),
             )))
-            ->add('defaultValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'))
-            ->add('mainValidation', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\SubmitType'), array(
+            ->add('defaultValidation', TypeHelper::type(SubmitType::class))
+            ->add('mainValidation', TypeHelper::type(SubmitType::class), array(
                 'validation_groups' => 'main',
             ))
         ;

@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8\Model\TestRangeEntity;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 /**
@@ -14,7 +15,7 @@ class TestRangeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('size', TypeHelper::type(__NAMESPACE__ . '\RangeType'), array(
+        $builder->add('size', TypeHelper::type(RangeType::class), array(
             'inherit_data' => true,
             'min_name' => 'min_size',
             'max_name' => 'max_size',
@@ -29,7 +30,7 @@ class TestRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue8\Model\TestRangeEntity'
+            'data_class' => TestRangeEntity::class
         ));
     }
 

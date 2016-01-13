@@ -55,5 +55,4 @@ class TestRangeEntity
     {
         $this->maxSize = $maxSize;
     }
-
 }

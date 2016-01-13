@@ -2,6 +2,7 @@
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Validator;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @covers Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection
@@ -21,7 +22,7 @@ class ConstraintCollectionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->constraint = $this->getMock('Symfony\Component\Validator\Constraint');
+        $this->constraint = $this->getMock(Constraint::class);
         $this->SUT = new ConstraintCollection();
     }
 
@@ -40,8 +41,8 @@ class ConstraintCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_allow_adding_collections()
     {
-        $c1 = $this->getMock('Symfony\Component\Validator\Constraint');
-        $c2 = $this->getMock('Symfony\Component\Validator\Constraint');
+        $c1 = $this->getMock(Constraint::class);
+        $c2 = $this->getMock(Constraint::class);
 
         $collection = new ConstraintCollection();
         $collection->add($c1);

@@ -1,5 +1,12 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
+use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
+use Symfony\Component\Form\FormConfigInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -43,12 +50,12 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->form = $this->getMock('Symfony\Component\Form\FormInterface');
-        $this->formView = $this->getMock('Symfony\Component\Form\FormView');
-        $this->constraintCollection = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection', null);
+        $this->form = $this->getMock(FormInterface::class);
+        $this->formView = $this->getMock(FormView::class);
+        $this->constraintCollection = $this->getMock(ConstraintCollection::class, null);
 
         $this->processorContext = $this->getMock(
-            'Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext',
+            FormRuleProcessorContext::class,
             null,
             array(
                 $this->formView,
@@ -57,14 +64,14 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->formRuleContext = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder');
+        $this->formRuleContext = $this->getMock(FormRuleContextBuilder::class);
 
         $this->setUpFormConfig();
     }
 
     protected function setUpFormConfig()
     {
-        $this->formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $this->formConfig = $this->getMock(FormConfigInterface::class);
         $this->form->expects($this->any())
             ->method('getConfig')
             ->willReturn($this->formConfig);
@@ -75,7 +82,7 @@ abstract class BaseProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function it_should_implement_FormPassInterface()
     {
-        $this->assertInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface', $this->SUT);
+        $this->assertInstanceOf(FormRuleProcessorInterface::class, $this->SUT);
     }
 
     protected function execute_process()

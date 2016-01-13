@@ -4,6 +4,7 @@ namespace Boekkooi\Bundle\JqueryValidationBundle\Form\Util;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\InvalidArgumentException;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\LogicException;
 use Boekkooi\Bundle\JqueryValidationBundle\Exception\UnsupportedException;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
@@ -16,12 +17,12 @@ final class FormHelper
 {
     public static function isSymfony3Compatible()
     {
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        return method_exists(AbstractType::class, 'getBlockPrefix');
     }
 
     public static function isSymfony2Compatible()
     {
-        return method_exists('Symfony\Component\Form\ResolvedFormTypeInterface', 'getName');
+        return method_exists(ResolvedFormTypeInterface::class, 'getName');
     }
 
     public static function isType(ResolvedFormTypeInterface $type, $typeName)

@@ -2,6 +2,7 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form\Rule;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -29,7 +30,7 @@ class ConstraintRuleTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'my_rule';
         $options = false;
-        $message = $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage')
+        $message = $this->getMockBuilder(RuleMessage::class)
             ->disableOriginalConstructor()->getMock();
         $groups = array('Yep', 'We', 'Have', 'groups');
 

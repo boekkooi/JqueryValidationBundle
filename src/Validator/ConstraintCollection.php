@@ -53,7 +53,10 @@ class ConstraintCollection extends ArrayCollection
     private function assertConstraintInstance($value)
     {
         if (!$value instanceof Constraint) {
-            throw new InvalidArgumentException('Expected a "\Symfony\Component\Validator\Constraint" instance');
+            throw new InvalidArgumentException(sprintf(
+                'Expected a "%s" instance',
+                Constraint::class
+            ));
         }
     }
 }

@@ -11,6 +11,9 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -23,9 +26,9 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
     const RULE_NAME_GROUP_REQUIRED = 'required_group';
 
     protected static $copyForTypes = array(
-        'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType',
-        'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType',
-        'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType',
+        DateTimeType::class,
+        TimeType::class,
+        DateType::class,
     );
 
     /**

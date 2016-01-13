@@ -8,6 +8,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintMapperInterface;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Luhn;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -35,7 +36,7 @@ class LuhnRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Luhn $constraint */
+        /** @var Luhn $constraint */
         $collection->set(
             self::RULE_NAME,
             new ConstraintRule(
@@ -49,6 +50,6 @@ class LuhnRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return $this->active && get_class($constraint) === 'Symfony\Component\Validator\Constraints\Luhn';
+        return $this->active && get_class($constraint) === Luhn::class;
     }
 }

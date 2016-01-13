@@ -1,7 +1,10 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Unit\Form;
 
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessor;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -43,14 +46,14 @@ class FormRuleProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function process_should_forward_to_all_processors()
     {
-        $processContext = $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext')
+        $processContext = $this->getMockBuilder(FormRuleProcessorContext::class)
             ->disableOriginalConstructor()->getMock();
-        $formRuleContext = $this->getMockBuilder('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder')
+        $formRuleContext = $this->getMockBuilder(FormRuleContextBuilder::class)
             ->disableOriginalConstructor()->getMock();
 
-        $processor1 = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface');
+        $processor1 = $this->getMock(FormRuleProcessorInterface::class);
         $processor1->expects($this->once())->method('process')->with($processContext, $formRuleContext);
-        $processor2 = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface');
+        $processor2 = $this->getMock(FormRuleProcessorInterface::class);
         $processor2->expects($this->once())->method('process')->with($processContext, $formRuleContext);
 
         $SUT = new FormRuleProcessor(array(

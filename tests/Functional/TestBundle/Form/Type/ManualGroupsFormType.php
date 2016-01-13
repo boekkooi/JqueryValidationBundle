@@ -1,12 +1,15 @@
 <?php
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\ManualGroupsData;
 use Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\TypeHelper;
 
 class ManualGroupsFormType extends AbstractType
@@ -14,7 +17,7 @@ class ManualGroupsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\TextType'), array(
+            ->add('name', TypeHelper::type(TextType::class), array(
                 'label' => 'Name',
                 'constraints' => array(
                     new Constraints\NotBlank(),
@@ -25,7 +28,7 @@ class ManualGroupsFormType extends AbstractType
                     )),
                 )
             ))
-            ->add('lengthCheck', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CheckboxType'), array(
+            ->add('lengthCheck', TypeHelper::type(CheckboxType::class), array(
                 'label' => 'Enable length validation group',
             ))
         ;
@@ -39,7 +42,7 @@ class ManualGroupsFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Model\ManualGroupsData',
+            'data_class' => ManualGroupsData::class,
             'jquery_validation_groups' => array(
                 Constraint::DEFAULT_GROUP,
                 'lengthGroup'

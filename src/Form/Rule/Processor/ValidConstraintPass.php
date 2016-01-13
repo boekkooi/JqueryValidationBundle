@@ -9,14 +9,13 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
 use Boekkooi\Bundle\JqueryValidationBundle\Validator\ConstraintCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
  */
 class ValidConstraintPass implements FormRuleProcessorInterface
 {
-    const VALID_CONSTRAINT_CLASS = 'Symfony\Component\Validator\Constraints\Valid';
-
     public function process(FormRuleProcessorContext $processContext, FormRuleContextBuilder $formRuleContext)
     {
         $form = $processContext->getForm();
@@ -52,7 +51,7 @@ class ValidConstraintPass implements FormRuleProcessorInterface
     private function hasValidConstraint(ConstraintCollection $constraints)
     {
         foreach ($constraints as $constraint) {
-            if (get_class($constraint) === self::VALID_CONSTRAINT_CLASS) {
+            if (get_class($constraint) === Valid::class) {
                 return true;
             }
         }

@@ -50,7 +50,7 @@ class IpRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Ip $constraint */
+        /** @var Ip $constraint */
         $ruleOptions = true;
         switch ($constraint->version) {
             case Ip::V4:
@@ -100,7 +100,7 @@ class IpRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        return get_class($constraint) === 'Symfony\Component\Validator\Constraints\Ip' &&
+        return get_class($constraint) === Ip::class &&
             ($this->useIpv6 || $this->useIpv4);
     }
 }

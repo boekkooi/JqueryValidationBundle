@@ -3,6 +3,7 @@ namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\RequiredViewPass;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * @covers Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\RequiredViewPass
@@ -69,13 +70,13 @@ class RequiredViewPassTest extends BaseProcessorTest
     public function provide_required_constraint_classes()
     {
         return array(
-            array('Symfony\Component\Validator\Constraints\NotNull'),
-            array('Symfony\Component\Validator\Constraints\NotBlank'),
-            array('Symfony\Component\Validator\Constraints\Required'),
+            array(Constraints\NotNull::class),
+            array(Constraints\NotBlank::class),
+            array(Constraints\Required::class),
 
-            array( 'Symfony\Component\Validator\Constraints\Currency', 'Symfony\Component\Validator\Constraints\NotNull'),
-            array( 'Symfony\Component\Validator\Constraints\Time', 'Symfony\Component\Validator\Constraints\NotBlank'),
-            array( 'Symfony\Component\Validator\Constraints\Locale', 'Symfony\Component\Validator\Constraints\Required'),
+            array( Constraints\Currency::class, Constraints\NotNull::class),
+            array( Constraints\Time::class, Constraints\NotBlank::class),
+            array( Constraints\Locale::class, Constraints\Required::class),
         );
     }
 
@@ -83,12 +84,12 @@ class RequiredViewPassTest extends BaseProcessorTest
     {
         return array(
             array(
-                'Symfony\Component\Validator\Constraints\Currency',
-                'Symfony\Component\Validator\Constraints\Time',
-                'Symfony\Component\Validator\Constraints\Locale',
+                Constraints\Currency::class,
+                Constraints\Time::class,
+                Constraints\Locale::class,
             ),
             array(
-                'Symfony\Component\Validator\Constraints\Blank',
+                Constraints\Blank::class,
             ),
             array(),
         );

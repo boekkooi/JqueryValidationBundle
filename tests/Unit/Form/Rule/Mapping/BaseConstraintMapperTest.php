@@ -3,6 +3,9 @@ namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping;
 
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\ConstraintRule;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
+use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -27,8 +30,8 @@ abstract class BaseConstraintMapperTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->ruleCollection = $this->getMock('Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection', null);
-        $this->form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $this->ruleCollection = $this->getMock(RuleCollection::class, null);
+        $this->form = $this->getMock(FormInterface::class);
     }
 
     protected function setUpBaseTest()
@@ -117,7 +120,7 @@ abstract class BaseConstraintMapperTest extends \PHPUnit_Framework_TestCase
         if ($expectedRule->message === null) {
             $this->assertNull($rule->message);
         } else {
-            $this->assertInstanceOf('Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage', $rule->message);
+            $this->assertInstanceOf(RuleMessage::class, $rule->message);
             $this->assertEquals($expectedRule->message->message, $rule->message->message);
             $this->assertEquals($expectedRule->message->parameters, $rule->message->parameters);
             $this->assertEquals($expectedRule->message->plural, $rule->message->plural);

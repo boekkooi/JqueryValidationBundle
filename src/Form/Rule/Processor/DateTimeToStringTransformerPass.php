@@ -7,7 +7,11 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MaxRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\MinRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToRfc3339Transformer;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormView;
 
@@ -35,8 +39,8 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
         }
 
         if (
-            $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToStringTransformer') === null &&
-            $this->findTransformer($formConfig, 'Symfony\\Component\\Form\\Extension\\Core\\DataTransformer\\DateTimeToRfc3339Transformer') === null
+            $this->findTransformer($formConfig, DateTimeToStringTransformer::class) === null &&
+            $this->findTransformer($formConfig, DateTimeToRfc3339Transformer::class) === null
         ) {
             return;
         }
@@ -45,15 +49,15 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
         $formTypeClass = get_class($formConfig->getType()->getInnerType());
 
         switch ($formTypeClass) {
-            case 'Symfony\Component\Form\Extension\Core\Type\TimeType':
+            case TimeType::class:
                 $this->processTime($formView, $formConfig, $formRuleContext);
 
                 return;
-            case 'Symfony\Component\Form\Extension\Core\Type\DateType':
+            case DateType::class:
                 $this->processDate($formView, $formConfig, $formRuleContext);
 
                 return;
-            case 'Symfony\Component\Form\Extension\Core\Type\DateTimeType':
+            case DateTimeType::class:
                 $this->processDateTime($formView, $formConfig, $formRuleContext);
 
                 return;

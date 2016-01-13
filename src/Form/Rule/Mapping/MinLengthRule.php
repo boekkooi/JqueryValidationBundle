@@ -29,7 +29,7 @@ class MinLengthRule implements ConstraintMapperInterface
             throw new LogicException();
         }
 
-        /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
+        /** @var Choice|Length $constraint */
         $collection->set(
             self::RULE_NAME,
             new ConstraintRule(
@@ -43,18 +43,18 @@ class MinLengthRule implements ConstraintMapperInterface
 
     public function supports(Constraint $constraint, FormInterface $form)
     {
-        /** @var \Symfony\Component\Validator\Constraints\Choice|\Symfony\Component\Validator\Constraints\Length $constraint */
+        /** @var Choice|Length $constraint */
         $constraintClass = get_class($constraint);
-        if (!in_array($constraintClass, array('Symfony\Component\Validator\Constraints\Choice', 'Symfony\Component\Validator\Constraints\Length'), true) ||
+        if (!in_array($constraintClass, array(Choice::class, Length::class), true) ||
             $constraint->min === null ||
             $constraint->min == $constraint->max) {
             return false;
         }
 
         return !(
-            $constraintClass === 'Symfony\Component\Validator\Constraints\Length' &&
+            $constraintClass === Length::class &&
             (FormHelper::isSymfony3Compatible() ?
-                $this->isType($form, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType') :
+                $this->isType($form, ChoiceType::class) :
                 $this->isType($form, 'choice')
             )
         );

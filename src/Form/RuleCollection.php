@@ -46,7 +46,10 @@ class RuleCollection extends ArrayCollection
     private function assertRuleInstance($value)
     {
         if (!$value instanceof Rule) {
-            throw new InvalidArgumentException('Expected a "\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule" instance');
+            throw new InvalidArgumentException(sprintf(
+                'Expected a "%s" instance',
+                Rule::class
+            ));
         }
     }
 }

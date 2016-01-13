@@ -8,6 +8,9 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Range;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>
@@ -25,14 +28,14 @@ class MinRule implements ConstraintMapperInterface
         $constraintClass = get_class($constraint);
 
         /** @var \Symfony\Component\Validator\Constraints\AbstractComparison $constraint */
-        if ($constraintClass === 'Symfony\Component\Validator\Constraints\GreaterThan') {
+        if ($constraintClass === GreaterThan::class) {
             $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->value + 1, // TODO support floats
                 new RuleMessage($constraint->message, array('{{ compared_value }}' => $constraint->value)),
                 $constraint->groups
             );
-        } elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\GreaterThanOrEqual') {
+        } elseif ($constraintClass === GreaterThanOrEqual::class) {
             $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->value,
@@ -40,8 +43,8 @@ class MinRule implements ConstraintMapperInterface
                 $constraint->groups
             );
         }
-        /** @var \Symfony\Component\Validator\Constraints\Range $constraint */
-        elseif ($constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->min !== null) {
+        /** @var Range $constraint */
+        elseif ($constraintClass === Range::class && $constraint->min !== null) {
             $rule = new ConstraintRule(
                 self::RULE_NAME,
                 $constraint->min,
@@ -64,9 +67,9 @@ class MinRule implements ConstraintMapperInterface
 
         return
             in_array($constraintClass, array(
-                'Symfony\Component\Validator\Constraints\GreaterThan',
-                'Symfony\Component\Validator\Constraints\GreaterThanOrEqual',
+                GreaterThan::class,
+                GreaterThanOrEqual::class,
             ), true) ||
-            $constraintClass === 'Symfony\Component\Validator\Constraints\Range' && $constraint->min !== null;
+            $constraintClass === Range::class && $constraint->min !== null;
     }
 }

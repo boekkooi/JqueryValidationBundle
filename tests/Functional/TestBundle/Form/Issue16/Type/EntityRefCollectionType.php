@@ -2,6 +2,7 @@
 namespace Tests\Boekkooi\Bundle\JqueryValidationBundle\Functional\TestBundle\Form\Issue16\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,9 +21,9 @@ class EntityRefCollectionType extends AbstractType
                 'property_path' => 'root[0].child.name',
                 'label'         => 'Root[0].child.name',
             ))
-            ->add('entityReferences', TypeHelper::type('Symfony\Component\Form\Extension\Core\Type\CollectionType'),
+            ->add('entityReferences', TypeHelper::type(CollectionType::class),
                 TypeHelper::fixCollectionOptions(array(
-                    'entry_type' => __NAMESPACE__ . '\EmailType',
+                    'entry_type' => EmailType::class,
 
                     'allow_add' => true,
                     'allow_delete' => true,
