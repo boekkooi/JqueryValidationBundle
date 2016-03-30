@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Unit\Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Compiler;
+
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleContextBuilder;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorContext;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\FormRuleProcessorInterface;

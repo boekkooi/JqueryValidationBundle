@@ -21,7 +21,7 @@ class TypeHelper
 
     public static function fixCollectionOptions(array $options)
     {
-        if(FormHelper::isSymfony3Compatible() && !FormHelper::isSymfony2Compatible()) {
+        if (FormHelper::isSymfony3Compatible() && !FormHelper::isSymfony2Compatible()) {
             return $options;
         }
 

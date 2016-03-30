@@ -67,6 +67,18 @@ class DateTimeFormType extends AbstractType
                     new Constraints\NotBlank(),
                 ),
             ))
+
+            ->add('birthday', TypeHelper::type(CoreType\BirthdayType::class), array(
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                ),
+                'placeholder' => array(
+                    'year' => 'Jahr',
+                    'month' => 'Monat',
+                    'day' => 'Tag'
+                ),
+                'label' => 'Geburtstag',
+            ))
         ;
     }
 

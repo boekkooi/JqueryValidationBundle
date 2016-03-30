@@ -11,6 +11,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleMessage;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Util\FormViewRecursiveIterator;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -29,6 +30,7 @@ class CompoundCopyToChildPass implements FormRuleProcessorInterface
         DateTimeType::class,
         TimeType::class,
         DateType::class,
+        BirthdayType::class,
     );
 
     /**

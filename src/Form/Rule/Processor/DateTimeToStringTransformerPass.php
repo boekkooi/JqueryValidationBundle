@@ -9,6 +9,7 @@ use Boekkooi\Bundle\JqueryValidationBundle\Form\RuleCollection;
 use Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\TransformerRule;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToRfc3339Transformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -53,6 +54,7 @@ class DateTimeToStringTransformerPass extends ViewTransformerProcessor
                 $this->processTime($formView, $formConfig, $formRuleContext);
 
                 return;
+            case BirthdayType::class:
             case DateType::class:
                 $this->processDate($formView, $formConfig, $formRuleContext);
 
