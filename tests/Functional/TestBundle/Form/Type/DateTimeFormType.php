@@ -72,12 +72,7 @@ class DateTimeFormType extends AbstractType
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
-                'placeholder' => array(
-                    'year' => 'Jahr',
-                    'month' => 'Monat',
-                    'day' => 'Tag'
-                ),
-                'label' => 'Geburtstag',
+                'label' => 'Birthday',
             ))
         ;
     }
