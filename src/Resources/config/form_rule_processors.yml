@@ -13,7 +13,7 @@ services:
 
   boekkooi.jquery_validation.form.rule.processor.compound_copy_to_children:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\CompoundCopyToChildPass
-    arguments: [ %boekkooi.jquery_validation.additional.required_group% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.required_group%' ]
     public: false
     tags:
       - { name: form_rule_processor, priority: 10 }
@@ -32,14 +32,14 @@ services:
 
   boekkooi.jquery_validation.form.rule.processor.datetime_array_transformer:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\DateTimeToArrayTransformerPass
-    arguments: [ %boekkooi.jquery_validation.additional.required_group% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.required_group%' ]
     public: false
     tags:
      - { name: form_rule_processor, priority: 50 }
 
   boekkooi.jquery_validation.form.rule.processor.datetime_string_transformer:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Processor\DateTimeToStringTransformerPass
-    arguments: [ %boekkooi.jquery_validation.additional.time% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.time%' ]
     public: false
     tags:
      - { name: form_rule_processor, priority: 50 }

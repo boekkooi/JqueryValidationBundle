@@ -9,31 +9,31 @@ parameters:
 
 services:
   boekkooi.jquery_validation.form.form_extension:
-    class: %boekkooi.jquery_validation.form.form_extension.class%
+    class: '%boekkooi.jquery_validation.form.form_extension.class%'
     arguments:
       - "@boekkooi.jquery_validation.rule_processor"
       - "@boekkooi.jquery_validation.rule_compiler"
       - "@boekkooi.jquery_validation.constraint_finder"
-      - %boekkooi.jquery_validation.enabled%
+      - '%boekkooi.jquery_validation.enabled%'
     tags:
       - { name: form.type_extension, alias: form, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
   boekkooi.jquery_validation.form.button_extension:
-    class: %boekkooi.jquery_validation.form.button_extension.class%
+    class: '%boekkooi.jquery_validation.form.button_extension.class%'
     tags:
       - { name: form.type_extension, alias: button, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
 
   boekkooi.jquery_validation.rule_processor:
-    class: %boekkooi.jquery_validation.rule_processor.class%
+    class: '%boekkooi.jquery_validation.rule_processor.class%'
     arguments:
       - []
 
   boekkooi.jquery_validation.rule_compiler:
-    class: %boekkooi.jquery_validation.rule_compiler.class%
+    class: '%boekkooi.jquery_validation.rule_compiler.class%'
     arguments:
       - []
 
   boekkooi.jquery_validation.constraint_finder:
-    class: %boekkooi.jquery_validation.constraint_finder.class%
+    class: '%boekkooi.jquery_validation.constraint_finder.class%'
     arguments:
       - "@validator.mapping.class_metadata_factory"

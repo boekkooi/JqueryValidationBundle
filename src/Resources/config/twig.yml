@@ -3,6 +3,6 @@ parameters:
 
 services:
   boekkooi.jquery_validation.twig.jquery_validation:
-    class: %boekkooi.jquery_validation.twig.jquery_validation.class%
+    class: '%boekkooi.jquery_validation.twig.jquery_validation.class%'
     tags:
       - { name: twig.extension }
