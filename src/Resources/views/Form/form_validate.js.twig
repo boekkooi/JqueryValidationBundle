@@ -22,7 +22,7 @@
             form.find("*[name=\"{{ button.name|e('js') }}\"]").addClass("cancel");
         {%- elseif enforce_validation_groups -%}
             form.find("*[name=\"{{ button.name|e('js') }}\"]").click(function() {
-                validator.settings.validation_groups = { {{- gen.validation_groups(validation_groups, button.validation_groups) -}} };
+                validator.settings.validation_groups = { {{- gen.validation_groups(validation_groups, enabled_validation_groups) -}} };
             });
         {%- endif -%}
     {%- endfor %}
