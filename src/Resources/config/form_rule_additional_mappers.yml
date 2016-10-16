@@ -1,14 +1,14 @@
 services:
   boekkooi.jquery_validation.mapper.iban:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IbanRule
-    arguments: [ %boekkooi.jquery_validation.additional.iban% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.iban%' ]
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.luhn:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\LuhnRule
-    arguments: [ %boekkooi.jquery_validation.additional.luhn% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.luhn%' ]
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
@@ -16,23 +16,23 @@ services:
   boekkooi.jquery_validation.mapper.ip:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\IpRule
     arguments:
-      - %boekkooi.jquery_validation.additional.ipv4%
-      - %boekkooi.jquery_validation.additional.ipv6%
-      - %boekkooi.jquery_validation.additional.one_or_other%
+      - '%boekkooi.jquery_validation.additional.ipv4%'
+      - '%boekkooi.jquery_validation.additional.ipv6%'
+      - '%boekkooi.jquery_validation.additional.one_or_other%'
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.file:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\FileRule
-    arguments: [ %boekkooi.jquery_validation.additional.accept% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.accept%' ]
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
 
   boekkooi.jquery_validation.mapper.pattern:
     class: Boekkooi\Bundle\JqueryValidationBundle\Form\Rule\Mapping\PatternRule
-    arguments: [ %boekkooi.jquery_validation.additional.pattern% ]
+    arguments: [ '%boekkooi.jquery_validation.additional.pattern%' ]
     public: false
     tags:
      - { name: form_rule_constraint_mapper }
