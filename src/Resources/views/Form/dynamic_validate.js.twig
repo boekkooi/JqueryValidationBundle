@@ -1,7 +1,7 @@
 {% import "BoekkooiJqueryValidationBundle:Form:macros.js.twig" as gen %}
 
 {%- autoescape false -%}
-(function($) {
+jQuery(function($) {
     "use strict";
     var form = $("{{- gen.form_jquery_selector(form) -}}");
     var validator = form.validate();
@@ -13,5 +13,5 @@
             });
         {%- endif -%}
     {%- endfor -%}
-})(jQuery);
+});
 {%- endautoescape -%}
