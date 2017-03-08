@@ -69,7 +69,11 @@
                     {%- endif -%}
 
                     {%- for condition in rule.conditions -%}
-                        {{ attribute(macro_conditions, condition.macro, [condition, rule]) }}
+                        {% if condition.macro == 'field_dependency' %}
+                            {{ macro_conditions.field_dependency(condition, rule) }}
+                        {% elseif condition.macro == 'field_value_dependency' %}
+                            {{ macro_conditions.field_value_dependency(condition, rule) }}
+                        {% endif %}
                     {%- endfor -%}
 
                     return true;
